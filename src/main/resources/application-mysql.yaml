@@ -1,0 +1,8 @@
+datasource:
+  url: jdbc:mysql://172.29.12.252:3306/oywb_test
+  jdbcUrl: jdbc:mysql://172.29.12.252:3306/oywb_test
+  username: root
+  password: casa
+  driverClassName: com.mysql.jdbc.Driver
+  testOnBorrow: true
+  #validationQuery: "select 1"

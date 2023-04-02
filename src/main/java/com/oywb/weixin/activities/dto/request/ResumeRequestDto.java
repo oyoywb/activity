@@ -1,5 +1,6 @@
 package com.oywb.weixin.activities.dto.request;
 
+import com.oywb.weixin.activities.entity.ResumeEntity;
 import lombok.Data;
 
 //簡歷
@@ -9,7 +10,7 @@ public class ResumeRequestDto {
 
     private int userId;
 
-    private byte[] avatar;
+    private byte[] avatar;//头像
 
     private String name;
 
@@ -32,4 +33,22 @@ public class ResumeRequestDto {
     private String introduction;
 
     private boolean online;
+
+    private String school;
+
+    public ResumeEntity toResumeEntity() {
+        ResumeEntity resumeEntity = new ResumeEntity();
+        resumeEntity.setUserId(this.userId);
+        resumeEntity.setName(this.name);
+        resumeEntity.setGrade(this.grade);
+        resumeEntity.setCollege(this.college);
+        resumeEntity.setSubject(this.og);
+        resumeEntity.setSkill(this.skill);
+        resumeEntity.setExperience(this.experience);
+        resumeEntity.setInterest(this.interest);
+        resumeEntity.setSelfIntroduction(this.introduction);
+        resumeEntity.setAvatar(this.avatar);
+        resumeEntity.setSchool(this.school);
+        return resumeEntity;
+    }
 }

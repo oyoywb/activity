@@ -1,22 +1,44 @@
 package com.oywb.weixin.activities.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "dynamics", schema = "oywb_test", catalog = "")
 public class DynamicsEntity {
-    private long id;
-    private String content;
-    private String picture;
-    private String keyword;
-    private byte anonymous;
-    private byte provided;
-    private byte pass;
-    private long likes;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "content")
+    private String content;
+    @Basic
+    @Column(name = "picture")
+    private String picture;
+    @Basic
+    @Column(name = "keyword")
+    private String keyword;
+    @Basic
+    @Column(name = "anonymous")
+    private byte anonymous;
+    @Basic
+    @Column(name = "provided")
+    private byte provided;
+    @Basic
+    @Column(name = "pass")
+    private byte pass;
+    @Basic
+    @Column(name = "likes")
+    private long likes;
+    @Basic
+    @Column(name = "create_ts")
+    private Timestamp createTs;
+    @Basic
+    @Column(name = "user_id")
+    private Long userId;
+
     public long getId() {
         return id;
     }
@@ -25,8 +47,6 @@ public class DynamicsEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "content", nullable = false, length = -1)
     public String getContent() {
         return content;
     }
@@ -35,8 +55,6 @@ public class DynamicsEntity {
         this.content = content;
     }
 
-    @Basic
-    @Column(name = "picture", nullable = false, length = -1)
     public String getPicture() {
         return picture;
     }
@@ -45,8 +63,6 @@ public class DynamicsEntity {
         this.picture = picture;
     }
 
-    @Basic
-    @Column(name = "keyword", nullable = false, length = -1)
     public String getKeyword() {
         return keyword;
     }
@@ -55,8 +71,6 @@ public class DynamicsEntity {
         this.keyword = keyword;
     }
 
-    @Basic
-    @Column(name = "anonymous", nullable = false)
     public byte getAnonymous() {
         return anonymous;
     }
@@ -65,8 +79,6 @@ public class DynamicsEntity {
         this.anonymous = anonymous;
     }
 
-    @Basic
-    @Column(name = "provided", nullable = false)
     public byte getProvided() {
         return provided;
     }
@@ -75,8 +87,6 @@ public class DynamicsEntity {
         this.provided = provided;
     }
 
-    @Basic
-    @Column(name = "pass", nullable = false)
     public byte getPass() {
         return pass;
     }
@@ -85,8 +95,6 @@ public class DynamicsEntity {
         this.pass = pass;
     }
 
-    @Basic
-    @Column(name = "likes", nullable = false)
     public long getLikes() {
         return likes;
     }
@@ -95,23 +103,32 @@ public class DynamicsEntity {
         this.likes = likes;
     }
 
+    public Timestamp getCreateTs() {
+        return createTs;
+    }
+
+    public void setCreateTs(Timestamp createTs) {
+        this.createTs = createTs;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DynamicsEntity that = (DynamicsEntity) o;
-        return id == that.id &&
-                anonymous == that.anonymous &&
-                provided == that.provided &&
-                pass == that.pass &&
-                likes == that.likes &&
-                Objects.equals(content, that.content) &&
-                Objects.equals(picture, that.picture) &&
-                Objects.equals(keyword, that.keyword);
+        return id == that.id && anonymous == that.anonymous && provided == that.provided && pass == that.pass && likes == that.likes && Objects.equals(content, that.content) && Objects.equals(picture, that.picture) && Objects.equals(keyword, that.keyword) && Objects.equals(createTs, that.createTs) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, picture, keyword, anonymous, provided, pass, likes);
+        return Objects.hash(id, content, picture, keyword, anonymous, provided, pass, likes, createTs, userId);
     }
 }

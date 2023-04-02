@@ -7,13 +7,29 @@ import java.util.Objects;
 @Entity
 @Table(name = "shop_comment", schema = "oywb_test", catalog = "")
 public class ShopCommentEntity {
-    private long id;
-    private byte score;
-    private Timestamp ts;
-    private String content;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "shop_id")
+    private long shopId;
+    @Basic
+    @Column(name = "user_id")
+    private long userId;
+    @Basic
+    @Column(name = "score")
+    private byte score;
+    @Basic
+    @Column(name = "ts")
+    private Timestamp ts;
+    @Basic
+    @Column(name = "content")
+    private String content;
+    @Basic
+    @Column(name = "seller_id")
+    private long sellerId;
+
     public long getId() {
         return id;
     }
@@ -22,8 +38,22 @@ public class ShopCommentEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "score", nullable = false)
+    public long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(long shopId) {
+        this.shopId = shopId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public byte getScore() {
         return score;
     }
@@ -32,8 +62,6 @@ public class ShopCommentEntity {
         this.score = score;
     }
 
-    @Basic
-    @Column(name = "ts", nullable = false)
     public Timestamp getTs() {
         return ts;
     }
@@ -42,8 +70,6 @@ public class ShopCommentEntity {
         this.ts = ts;
     }
 
-    @Basic
-    @Column(name = "content", nullable = false, length = -1)
     public String getContent() {
         return content;
     }
@@ -52,19 +78,24 @@ public class ShopCommentEntity {
         this.content = content;
     }
 
+    public long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(long sellerId) {
+        this.sellerId = sellerId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShopCommentEntity that = (ShopCommentEntity) o;
-        return id == that.id &&
-                score == that.score &&
-                Objects.equals(ts, that.ts) &&
-                Objects.equals(content, that.content);
+        return id == that.id && shopId == that.shopId && userId == that.userId && score == that.score && sellerId == that.sellerId && Objects.equals(ts, that.ts) && Objects.equals(content, that.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, score, ts, content);
+        return Objects.hash(id, shopId, userId, score, ts, content, sellerId);
     }
 }

@@ -7,12 +7,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "message_history", schema = "oywb_test", catalog = "")
 public class MessageHistoryEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id")
     private long id;
+    @Basic
+    @Column(name = "sender")
+    private Long sender;
+    @Basic
+    @Column(name = "receiver")
+    private Long receiver;
+    @Basic
+    @Column(name = "context")
     private String context;
+    @Basic
+    @Column(name = "ts")
     private Timestamp ts;
 
-    @Id
-    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -21,8 +32,22 @@ public class MessageHistoryEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "context", nullable = true, length = -1)
+    public Long getSender() {
+        return sender;
+    }
+
+    public void setSender(Long sender) {
+        this.sender = sender;
+    }
+
+    public Long getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Long receiver) {
+        this.receiver = receiver;
+    }
+
     public String getContext() {
         return context;
     }
@@ -31,8 +56,6 @@ public class MessageHistoryEntity {
         this.context = context;
     }
 
-    @Basic
-    @Column(name = "ts", nullable = true)
     public Timestamp getTs() {
         return ts;
     }
@@ -46,13 +69,11 @@ public class MessageHistoryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageHistoryEntity that = (MessageHistoryEntity) o;
-        return id == that.id &&
-                Objects.equals(context, that.context) &&
-                Objects.equals(ts, that.ts);
+        return id == that.id && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver) && Objects.equals(context, that.context) && Objects.equals(ts, that.ts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, context, ts);
+        return Objects.hash(id, sender, receiver, context, ts);
     }
 }

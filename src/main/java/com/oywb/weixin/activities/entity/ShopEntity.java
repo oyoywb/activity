@@ -1,24 +1,58 @@
 package com.oywb.weixin.activities.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "shop", schema = "oywb_test", catalog = "")
+@DynamicInsert
+@DynamicUpdate
 public class ShopEntity {
-    private long id;
-    private long userId;
-    private String name;
-    private byte type;
-    private String picture;
-    private String start;
-    private String end;
-    private String location;
-    private String condition;
-    private byte pass;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "user_id")
+    private Long userId;
+    @Basic
+    @Column(name = "name")
+    private String name;
+    @Basic
+    @Column(name = "type")
+    private String type;
+    @Basic
+    @Column(name = "picture")
+    private String picture;
+    @Basic
+    @Column(name = "start")
+    private String start;
+    @Basic
+    @Column(name = "end")
+    private String end;
+    @Basic
+    @Column(name = "location")
+    private String location;
+    @Basic
+    @Column(name = "conditions")
+    private String conditions;
+    @Basic
+    @Column(name = "pass")
+    private Integer pass;
+    @Basic
+    @Column(name = "status")
+    private Integer status;
+    @Basic
+    @Column(name = "create_ts")
+    private Timestamp createTs;
+    @Basic
+    @Column(name = "update_ts")
+    private Timestamp updateTs;
+
     public long getId() {
         return id;
     }
@@ -27,18 +61,14 @@ public class ShopEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "user_id", nullable = false)
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 255)
     public String getName() {
         return name;
     }
@@ -47,18 +77,14 @@ public class ShopEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "type", nullable = false)
-    public byte getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(byte type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "picture", nullable = false, length = -1)
     public String getPicture() {
         return picture;
     }
@@ -67,8 +93,6 @@ public class ShopEntity {
         this.picture = picture;
     }
 
-    @Basic
-    @Column(name = "start", nullable = false, length = 255)
     public String getStart() {
         return start;
     }
@@ -77,8 +101,6 @@ public class ShopEntity {
         this.start = start;
     }
 
-    @Basic
-    @Column(name = "end", nullable = false, length = 255)
     public String getEnd() {
         return end;
     }
@@ -87,8 +109,6 @@ public class ShopEntity {
         this.end = end;
     }
 
-    @Basic
-    @Column(name = "location", nullable = false, length = 255)
     public String getLocation() {
         return location;
     }
@@ -97,24 +117,44 @@ public class ShopEntity {
         this.location = location;
     }
 
-    @Basic
-    @Column(name = "condition", nullable = false, length = -1)
-    public String getCondition() {
-        return condition;
+    public String getConditions() {
+        return conditions;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setConditions(String conditions) {
+        this.conditions = conditions;
     }
 
-    @Basic
-    @Column(name = "pass", nullable = false)
-    public byte getPass() {
+    public Integer getPass() {
         return pass;
     }
 
-    public void setPass(byte pass) {
+    public void setPass(Integer pass) {
         this.pass = pass;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Timestamp getCreateTs() {
+        return createTs;
+    }
+
+    public void setCreateTs(Timestamp createTs) {
+        this.createTs = createTs;
+    }
+
+    public Timestamp getUpdateTs() {
+        return updateTs;
+    }
+
+    public void setUpdateTs(Timestamp updateTs) {
+        this.updateTs = updateTs;
     }
 
     @Override
@@ -122,20 +162,11 @@ public class ShopEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShopEntity that = (ShopEntity) o;
-        return id == that.id &&
-                userId == that.userId &&
-                type == that.type &&
-                pass == that.pass &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(picture, that.picture) &&
-                Objects.equals(start, that.start) &&
-                Objects.equals(end, that.end) &&
-                Objects.equals(location, that.location) &&
-                Objects.equals(condition, that.condition);
+        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(name, that.name) && Objects.equals(type, that.type) && Objects.equals(picture, that.picture) && Objects.equals(start, that.start) && Objects.equals(end, that.end) && Objects.equals(location, that.location) && Objects.equals(conditions, that.conditions) && Objects.equals(pass, that.pass) && Objects.equals(status, that.status) && Objects.equals(createTs, that.createTs) && Objects.equals(updateTs, that.updateTs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, name, type, picture, start, end, location, condition, pass);
+        return Objects.hash(id, userId, name, type, picture, start, end, location, conditions, pass, status, createTs, updateTs);
     }
 }

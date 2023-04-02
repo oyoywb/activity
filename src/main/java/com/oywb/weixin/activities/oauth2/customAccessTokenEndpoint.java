@@ -1,8 +1,9 @@
 package com.oywb.weixin.activities.oauth2;
 
 import com.oywb.weixin.activities.config.WeChatProperties;
+import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.SessionDto;
-import com.oywb.weixin.activities.service.UserService;
+import com.oywb.weixin.activities.service.impl.UserServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,17 @@ public class customAccessTokenEndpoint {
     final WeChatProperties weChatProperties;
     final RestTemplate restTemplate;
     final KeyPair keyPair;
-    final UserService userService;
+    final UserServiceImpl userService;
 
-    public customAccessTokenEndpoint(RestTemplateBuilder restTemplateBuilder, WeChatProperties weChatProperties, KeyPair keyPair, UserService userService) {
+    private final UserRepository userRepository;
+
+    public customAccessTokenEndpoint(RestTemplateBuilder restTemplateBuilder, WeChatProperties weChatProperties, KeyPair keyPair, UserServiceImpl userService
+            , UserRepository userRepository) {
         this.restTemplate = restTemplateBuilder.build();
         this.weChatProperties = weChatProperties;
         this.keyPair = keyPair;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/accesstoken")
@@ -57,7 +62,7 @@ public class customAccessTokenEndpoint {
                 .signWith(keyPair.getPrivate(), SignatureAlgorithm.RS256)
                 .compact();
         // @formatter:on
-        return Map.of("accesstoken", accesstoken, "user", userService.findUserByOpenId(sessionDto.getOpenid()));
+        return Map.of("accesstoken", accesstoken, "user", userRepository.findByOpenid(sessionDto.getOpenid()));
     }
 
     private SessionDto getSession(Object... uriVariables) {

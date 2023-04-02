@@ -1,3 +1,4 @@
+/*
 package com.oywb.weixin.activities.controller;
 
 import com.oywb.weixin.activities.dto.CommonResponse;
@@ -21,3 +22,4 @@ public class DynamicsController {
         return new CommonResponse<>();
     }
 }
+*/

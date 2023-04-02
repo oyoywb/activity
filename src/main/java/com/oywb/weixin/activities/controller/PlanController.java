@@ -1,3 +1,4 @@
+/*
 package com.oywb.weixin.activities.controller;
 
 import com.oywb.weixin.activities.dto.CommonResponse;
@@ -38,3 +39,4 @@ public class PlanController {
         return new CommonResponse();
     }
 }
+*/

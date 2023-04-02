@@ -1,6 +1,5 @@
 package com.oywb.weixin.activities.dto.response;
 
-import com.oywb.weixin.activities.entity.ShopCommentEntity;
 import lombok.Data;
 import java.util.List;
 

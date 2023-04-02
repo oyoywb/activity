@@ -1,31 +1,15 @@
 package com.oywb.weixin.activities.service;
 
-import com.oywb.weixin.activities.dao.UserRepository;
-import com.oywb.weixin.activities.entity.User;
-import io.swagger.v3.oas.annotations.servers.Server;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.oywb.weixin.activities.dto.CommonResponse;
+import com.oywb.weixin.activities.dto.request.PersonalInfoDto;
+import com.oywb.weixin.activities.dto.request.UserRequestDto;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
-@Service
-public class UserService {
+public interface UserService {
+    public CommonResponse auth(PersonalInfoDto personalInfoDto) throws Exception;
 
-    @Autowired
-    private UserRepository userRepository;
+    public CommonResponse authByAdmin(List<String> userIds) throws Exception;
 
-    @Transactional
-    public User checkAndCreate (String openid) {
-        User user = userRepository.findByOpenid(openid);
-        if (user == null) {
-            user = new User();
-            user.setOpenid(openid);
-            userRepository.save(user);
-        }
-        return user;
-    }
-
-    public User findUserByOpenId (String openId) {
-        return userRepository.findByOpenid(openId);
-    }
+    public CommonResponse updateUserInfo(UserRequestDto userRequestDto) throws Exception;
 }

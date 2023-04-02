@@ -7,24 +7,62 @@ import java.util.Objects;
 @Entity
 @Table(name = "activity", schema = "oywb_test", catalog = "")
 public class ActivityEntity {
-    private long id;
-    private String title;
-    private String type;
-    private Timestamp start;
-    private Timestamp end;
-    private Integer count;
-    private String location;
-    private String organizer;
-    private String introduction;
-    private String rule;
-    private String form;
-    private Byte collectOrNot;
-    private String recommand;
-    private String reaper;
-    private Byte verified;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "title")
+    private String title;
+    @Basic
+    @Column(name = "type")
+    private String type;
+    @Basic
+    @Column(name = "start")
+    private Timestamp start;
+    @Basic
+    @Column(name = "end")
+    private Timestamp end;
+    @Basic
+    @Column(name = "count")
+    private Integer count;
+    @Basic
+    @Column(name = "location")
+    private String location;
+    @Basic
+    @Column(name = "organizer")
+    private String organizer;
+    @Basic
+    @Column(name = "introduction")
+    private String introduction;
+    @Basic
+    @Column(name = "rule")
+    private String rule;
+    @Basic
+    @Column(name = "form")
+    private String form;
+    @Basic
+    @Column(name = "collect_or_not")
+    private Byte collectOrNot;
+    @Basic
+    @Column(name = "recommand")
+    private String recommand;
+    @Basic
+    @Column(name = "reaper")
+    private String reaper;
+    @Basic
+    @Column(name = "verified")
+    private Byte verified;
+    @Basic
+    @Column(name = "user_id")
+    private Long userId;
+    @Basic
+    @Column(name = "school")
+    private String school;
+    @Basic
+    @Column(name = "campus")
+    private String campus;
+
     public long getId() {
         return id;
     }
@@ -33,8 +71,6 @@ public class ActivityEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "title", nullable = false, length = 255)
     public String getTitle() {
         return title;
     }
@@ -43,8 +79,6 @@ public class ActivityEntity {
         this.title = title;
     }
 
-    @Basic
-    @Column(name = "type", nullable = true, length = 50)
     public String getType() {
         return type;
     }
@@ -53,8 +87,6 @@ public class ActivityEntity {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "start", nullable = true)
     public Timestamp getStart() {
         return start;
     }
@@ -63,8 +95,6 @@ public class ActivityEntity {
         this.start = start;
     }
 
-    @Basic
-    @Column(name = "end", nullable = true)
     public Timestamp getEnd() {
         return end;
     }
@@ -73,8 +103,6 @@ public class ActivityEntity {
         this.end = end;
     }
 
-    @Basic
-    @Column(name = "count", nullable = true)
     public Integer getCount() {
         return count;
     }
@@ -83,8 +111,6 @@ public class ActivityEntity {
         this.count = count;
     }
 
-    @Basic
-    @Column(name = "location", nullable = true, length = 255)
     public String getLocation() {
         return location;
     }
@@ -93,8 +119,6 @@ public class ActivityEntity {
         this.location = location;
     }
 
-    @Basic
-    @Column(name = "organizer", nullable = true, length = 255)
     public String getOrganizer() {
         return organizer;
     }
@@ -103,8 +127,6 @@ public class ActivityEntity {
         this.organizer = organizer;
     }
 
-    @Basic
-    @Column(name = "introduction", nullable = true, length = -1)
     public String getIntroduction() {
         return introduction;
     }
@@ -113,8 +135,6 @@ public class ActivityEntity {
         this.introduction = introduction;
     }
 
-    @Basic
-    @Column(name = "rule", nullable = true, length = -1)
     public String getRule() {
         return rule;
     }
@@ -123,8 +143,6 @@ public class ActivityEntity {
         this.rule = rule;
     }
 
-    @Basic
-    @Column(name = "form", nullable = true, length = -1)
     public String getForm() {
         return form;
     }
@@ -133,8 +151,6 @@ public class ActivityEntity {
         this.form = form;
     }
 
-    @Basic
-    @Column(name = "collect_or_not", nullable = true)
     public Byte getCollectOrNot() {
         return collectOrNot;
     }
@@ -143,8 +159,6 @@ public class ActivityEntity {
         this.collectOrNot = collectOrNot;
     }
 
-    @Basic
-    @Column(name = "recommand", nullable = true, length = -1)
     public String getRecommand() {
         return recommand;
     }
@@ -153,8 +167,6 @@ public class ActivityEntity {
         this.recommand = recommand;
     }
 
-    @Basic
-    @Column(name = "reaper", nullable = true, length = -1)
     public String getReaper() {
         return reaper;
     }
@@ -163,8 +175,6 @@ public class ActivityEntity {
         this.reaper = reaper;
     }
 
-    @Basic
-    @Column(name = "verified", nullable = true)
     public Byte getVerified() {
         return verified;
     }
@@ -173,30 +183,40 @@ public class ActivityEntity {
         this.verified = verified;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActivityEntity that = (ActivityEntity) o;
-        return id == that.id &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(type, that.type) &&
-                Objects.equals(start, that.start) &&
-                Objects.equals(end, that.end) &&
-                Objects.equals(count, that.count) &&
-                Objects.equals(location, that.location) &&
-                Objects.equals(organizer, that.organizer) &&
-                Objects.equals(introduction, that.introduction) &&
-                Objects.equals(rule, that.rule) &&
-                Objects.equals(form, that.form) &&
-                Objects.equals(collectOrNot, that.collectOrNot) &&
-                Objects.equals(recommand, that.recommand) &&
-                Objects.equals(reaper, that.reaper) &&
-                Objects.equals(verified, that.verified);
+        return id == that.id && Objects.equals(title, that.title) && Objects.equals(type, that.type) && Objects.equals(start, that.start) && Objects.equals(end, that.end) && Objects.equals(count, that.count) && Objects.equals(location, that.location) && Objects.equals(organizer, that.organizer) && Objects.equals(introduction, that.introduction) && Objects.equals(rule, that.rule) && Objects.equals(form, that.form) && Objects.equals(collectOrNot, that.collectOrNot) && Objects.equals(recommand, that.recommand) && Objects.equals(reaper, that.reaper) && Objects.equals(verified, that.verified) && Objects.equals(userId, that.userId) && Objects.equals(school, that.school) && Objects.equals(campus, that.campus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, type, start, end, count, location, organizer, introduction, rule, form, collectOrNot, recommand, reaper, verified);
+        return Objects.hash(id, title, type, start, end, count, location, organizer, introduction, rule, form, collectOrNot, recommand, reaper, verified, userId, school, campus);
     }
 }

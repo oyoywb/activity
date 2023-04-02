@@ -2,6 +2,11 @@ application:
   name: activities
 
 spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   quartz:
     #相关属性配置
     properties:
@@ -13,7 +18,7 @@ spring:
           jobStore:
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            tablePrefix: QRTZ_
+            tablePrefix: qrtz_
             isClustered: true
             clusterCheckinInterval: 10000
             useProperties: false
@@ -24,7 +29,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mariadb://${EN_DB_ADDRESSES:localhost:3306}/${EN_MARIADB_NAME:aems_alarm}?serverTimezone=UTC&useLegacyDatetimeCode=false
+              URL: jdbc:mariadb://${EN_DB_ADDRESSES:localhost:3306}/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
               user: ${EN_MARIADB_USER:root}
               password: ${EN_MARIADB_PASSWORD:casa}
               driver: com.mysql.jdbc.Driver
@@ -39,8 +44,6 @@ spring:
   #  url: jdbc:mysql://localhost:3306/activities
   #  username: root
   #  password: casa
-  jpa:
-    pa
 server:
   port: 8080
 
@@ -49,3 +52,15 @@ sai:
     mini-program:
       app-id: wx4d45764acb3348c7
       app-secret: 964fd7e004f4d0330ad9ebe8e319e201
+
+minio:
+  endpoint: http://localhost:9000
+  accessKey: admin
+  secretKey: admin123
+  bucket:
+    - shop
+    - seller
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.sql: debug

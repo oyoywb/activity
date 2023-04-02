@@ -1,20 +1,44 @@
 package com.oywb.weixin.activities.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "seller", schema = "oywb_test", catalog = "")
+@Table(name = "seller")
+@DynamicInsert
+@DynamicUpdate
 public class SellerEntity {
-    private long id;
-    private String name;
-    private BigDecimal price;
-    private String discription;
-    private String picture;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "name")
+    private String name;
+    @Basic
+    @Column(name = "price")
+    private BigDecimal price;
+    @Basic
+    @Column(name = "discription")
+    private String discription;
+    @Basic
+    @Column(name = "picture")
+    private String picture;
+    @Basic
+    @Column(name = "shop_id")
+    private long shopId;
+    @Basic
+    @Column(name = "create_ts")
+    private Timestamp createTs;
+    @Basic
+    @Column(name = "update_ts")
+    private Timestamp updateTs;
+
     public long getId() {
         return id;
     }
@@ -23,8 +47,6 @@ public class SellerEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 255)
     public String getName() {
         return name;
     }
@@ -33,8 +55,6 @@ public class SellerEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "price", nullable = false, precision = 2)
     public BigDecimal getPrice() {
         return price;
     }
@@ -43,8 +63,6 @@ public class SellerEntity {
         this.price = price;
     }
 
-    @Basic
-    @Column(name = "discription", nullable = false, length = 255)
     public String getDiscription() {
         return discription;
     }
@@ -53,8 +71,6 @@ public class SellerEntity {
         this.discription = discription;
     }
 
-    @Basic
-    @Column(name = "picture", nullable = false, length = -1)
     public String getPicture() {
         return picture;
     }
@@ -63,20 +79,40 @@ public class SellerEntity {
         this.picture = picture;
     }
 
+    public long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(long shopId) {
+        this.shopId = shopId;
+    }
+
+    public Timestamp getCreateTs() {
+        return createTs;
+    }
+
+    public void setCreateTs(Timestamp createTs) {
+        this.createTs = createTs;
+    }
+
+    public Timestamp getUpdateTs() {
+        return updateTs;
+    }
+
+    public void setUpdateTs(Timestamp updateTs) {
+        this.updateTs = updateTs;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SellerEntity that = (SellerEntity) o;
-        return id == that.id &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(price, that.price) &&
-                Objects.equals(discription, that.discription) &&
-                Objects.equals(picture, that.picture);
+        return id == that.id && shopId == that.shopId && Objects.equals(name, that.name) && Objects.equals(price, that.price) && Objects.equals(discription, that.discription) && Objects.equals(picture, that.picture) && Objects.equals(createTs, that.createTs) && Objects.equals(updateTs, that.updateTs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, discription, picture);
+        return Objects.hash(id, name, price, discription, picture, shopId, createTs, updateTs);
     }
 }

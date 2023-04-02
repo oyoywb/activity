@@ -1,25 +1,59 @@
 package com.oywb.weixin.activities.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "project", schema = "oywb_test", catalog = "")
 public class ProjectEntity {
-    private long id;
-    private String name;
-    private String tag;
-    private String organizer;
-    private String location;
-    private String introduction;
-    private String rop;
-    private int count;
-    private String expect;
-    private int scope;
-    private String picture;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "name")
+    private String name;
+    @Basic
+    @Column(name = "tag")
+    private String tag;
+    @Basic
+    @Column(name = "organizer")
+    private String organizer;
+    @Basic
+    @Column(name = "location")
+    private String location;
+    @Basic
+    @Column(name = "introduction")
+    private String introduction;
+    @Basic
+    @Column(name = "rop")
+    private String rop;
+    @Basic
+    @Column(name = "count")
+    private int count;
+    @Basic
+    @Column(name = "expect")
+    private String expect;
+    @Basic
+    @Column(name = "scope")
+    private int scope;
+    @Basic
+    @Column(name = "picture")
+    private String picture;
+    @Basic
+    @Column(name = "end")
+    private Timestamp end;
+    @Basic
+    @Column(name = "period")
+    private String period;
+    @Basic
+    @Column(name = "current_situation")
+    private String currentSituation;
+    @Basic
+    @Column(name = "pass")
+    private Byte pass;
+
     public long getId() {
         return id;
     }
@@ -28,8 +62,6 @@ public class ProjectEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 0)
     public String getName() {
         return name;
     }
@@ -38,8 +70,6 @@ public class ProjectEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "tag", nullable = false, length = -1)
     public String getTag() {
         return tag;
     }
@@ -48,8 +78,6 @@ public class ProjectEntity {
         this.tag = tag;
     }
 
-    @Basic
-    @Column(name = "organizer", nullable = false, length = 255)
     public String getOrganizer() {
         return organizer;
     }
@@ -58,8 +86,6 @@ public class ProjectEntity {
         this.organizer = organizer;
     }
 
-    @Basic
-    @Column(name = "location", nullable = false, length = 255)
     public String getLocation() {
         return location;
     }
@@ -68,8 +94,6 @@ public class ProjectEntity {
         this.location = location;
     }
 
-    @Basic
-    @Column(name = "introduction", nullable = false, length = -1)
     public String getIntroduction() {
         return introduction;
     }
@@ -78,8 +102,6 @@ public class ProjectEntity {
         this.introduction = introduction;
     }
 
-    @Basic
-    @Column(name = "rop", nullable = false, length = -1)
     public String getRop() {
         return rop;
     }
@@ -88,8 +110,6 @@ public class ProjectEntity {
         this.rop = rop;
     }
 
-    @Basic
-    @Column(name = "count", nullable = false)
     public int getCount() {
         return count;
     }
@@ -98,8 +118,6 @@ public class ProjectEntity {
         this.count = count;
     }
 
-    @Basic
-    @Column(name = "expect", nullable = false, length = 255)
     public String getExpect() {
         return expect;
     }
@@ -108,8 +126,6 @@ public class ProjectEntity {
         this.expect = expect;
     }
 
-    @Basic
-    @Column(name = "scope", nullable = false)
     public int getScope() {
         return scope;
     }
@@ -118,8 +134,6 @@ public class ProjectEntity {
         this.scope = scope;
     }
 
-    @Basic
-    @Column(name = "picture", nullable = false, length = -1)
     public String getPicture() {
         return picture;
     }
@@ -128,26 +142,48 @@ public class ProjectEntity {
         this.picture = picture;
     }
 
+    public Timestamp getEnd() {
+        return end;
+    }
+
+    public void setEnd(Timestamp end) {
+        this.end = end;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getCurrentSituation() {
+        return currentSituation;
+    }
+
+    public void setCurrentSituation(String currentSituation) {
+        this.currentSituation = currentSituation;
+    }
+
+    public Byte getPass() {
+        return pass;
+    }
+
+    public void setPass(Byte pass) {
+        this.pass = pass;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectEntity that = (ProjectEntity) o;
-        return id == that.id &&
-                count == that.count &&
-                scope == that.scope &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(tag, that.tag) &&
-                Objects.equals(organizer, that.organizer) &&
-                Objects.equals(location, that.location) &&
-                Objects.equals(introduction, that.introduction) &&
-                Objects.equals(rop, that.rop) &&
-                Objects.equals(expect, that.expect) &&
-                Objects.equals(picture, that.picture);
+        return id == that.id && count == that.count && scope == that.scope && Objects.equals(name, that.name) && Objects.equals(tag, that.tag) && Objects.equals(organizer, that.organizer) && Objects.equals(location, that.location) && Objects.equals(introduction, that.introduction) && Objects.equals(rop, that.rop) && Objects.equals(expect, that.expect) && Objects.equals(picture, that.picture) && Objects.equals(end, that.end) && Objects.equals(period, that.period) && Objects.equals(currentSituation, that.currentSituation) && Objects.equals(pass, that.pass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, tag, organizer, location, introduction, rop, count, expect, scope, picture);
+        return Objects.hash(id, name, tag, organizer, location, introduction, rop, count, expect, scope, picture, end, period, currentSituation, pass);
     }
 }

@@ -14,7 +14,7 @@ public class PersonalInfoDto {
     private String og;
 
     //年級
-    private String grade;
+    private String subject;
 
     private byte[] picture;
 }

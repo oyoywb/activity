@@ -1,3 +1,4 @@
+/*
 package com.oywb.weixin.activities.controller;
 
 import com.oywb.weixin.activities.config.CustomConfig;
@@ -35,3 +36,4 @@ public class ActivityController {
         return new CommonResponse();
     }
 }
+*/

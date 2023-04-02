@@ -7,17 +7,41 @@ import java.util.Objects;
 @Entity
 @Table(name = "personal_plan", schema = "oywb_test", catalog = "")
 public class PersonalPlanEntity {
-    private long id;
-    private String name;
-    private String mode;
-    private Timestamp start;
-    private Timestamp end;
-    private String remarks;
-    private byte isAllDay;
-    private byte isMind;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
+    private long id;
+    @Basic
+    @Column(name = "user_id")
+    private long userId;
+    @Basic
+    @Column(name = "name")
+    private String name;
+    @Basic
+    @Column(name = "mode")
+    private String mode;
+    @Basic
+    @Column(name = "start")
+    private Timestamp start;
+    @Basic
+    @Column(name = "end")
+    private Timestamp end;
+    @Basic
+    @Column(name = "remarks")
+    private String remarks;
+    @Basic
+    @Column(name = "is_all_day")
+    private byte isAllDay;
+    @Basic
+    @Column(name = "is_mind")
+    private byte isMind;
+    @Basic
+    @Column(name = "cron")
+    private String cron;
+    @Basic
+    @Column(name = "is_top")
+    private byte isTop;
+
     public long getId() {
         return id;
     }
@@ -26,8 +50,14 @@ public class PersonalPlanEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 255)
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,8 +66,6 @@ public class PersonalPlanEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "mode", nullable = false, length = 255)
     public String getMode() {
         return mode;
     }
@@ -46,8 +74,6 @@ public class PersonalPlanEntity {
         this.mode = mode;
     }
 
-    @Basic
-    @Column(name = "start", nullable = true)
     public Timestamp getStart() {
         return start;
     }
@@ -56,8 +82,6 @@ public class PersonalPlanEntity {
         this.start = start;
     }
 
-    @Basic
-    @Column(name = "end", nullable = true)
     public Timestamp getEnd() {
         return end;
     }
@@ -66,8 +90,6 @@ public class PersonalPlanEntity {
         this.end = end;
     }
 
-    @Basic
-    @Column(name = "remarks", nullable = true, length = 255)
     public String getRemarks() {
         return remarks;
     }
@@ -76,8 +98,6 @@ public class PersonalPlanEntity {
         this.remarks = remarks;
     }
 
-    @Basic
-    @Column(name = "is_all_day", nullable = false)
     public byte getIsAllDay() {
         return isAllDay;
     }
@@ -86,8 +106,6 @@ public class PersonalPlanEntity {
         this.isAllDay = isAllDay;
     }
 
-    @Basic
-    @Column(name = "is_mind", nullable = false)
     public byte getIsMind() {
         return isMind;
     }
@@ -96,23 +114,32 @@ public class PersonalPlanEntity {
         this.isMind = isMind;
     }
 
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
+    }
+
+    public byte getIsTop() {
+        return isTop;
+    }
+
+    public void setIsTop(byte isTop) {
+        this.isTop = isTop;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonalPlanEntity that = (PersonalPlanEntity) o;
-        return id == that.id &&
-                isAllDay == that.isAllDay &&
-                isMind == that.isMind &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(mode, that.mode) &&
-                Objects.equals(start, that.start) &&
-                Objects.equals(end, that.end) &&
-                Objects.equals(remarks, that.remarks);
+        return id == that.id && userId == that.userId && isAllDay == that.isAllDay && isMind == that.isMind && isTop == that.isTop && Objects.equals(name, that.name) && Objects.equals(mode, that.mode) && Objects.equals(start, that.start) && Objects.equals(end, that.end) && Objects.equals(remarks, that.remarks) && Objects.equals(cron, that.cron);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, mode, start, end, remarks, isAllDay, isMind);
+        return Objects.hash(id, userId, name, mode, start, end, remarks, isAllDay, isMind, cron, isTop);
     }
 }

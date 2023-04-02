@@ -6,23 +6,53 @@ import java.util.Objects;
 @Entity
 @Table(name = "information", schema = "oywb_test", catalog = "")
 public class InformationEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id")
     private long id;
+    @Basic
+    @Column(name = "title")
     private String title;
+    @Basic
+    @Column(name = "welcome_message")
     private String welcomeMessage;
+    @Basic
+    @Column(name = "activity_id")
+    private long activityId;
+    @Basic
+    @Column(name = "need_name")
     private byte needName;
+    @Basic
+    @Column(name = "need_sex")
     private byte needSex;
+    @Basic
+    @Column(name = "need_age")
     private byte needAge;
+    @Basic
+    @Column(name = "need_school")
     private byte needSchool;
+    @Basic
+    @Column(name = "need_sps")
     private byte needSps;
+    @Basic
+    @Column(name = "need_grade")
     private byte needGrade;
+    @Basic
+    @Column(name = "need_phone")
     private byte needPhone;
+    @Basic
+    @Column(name = "need_email")
     private byte needEmail;
+    @Basic
+    @Column(name = "need_wechat")
     private byte needWechat;
+    @Basic
+    @Column(name = "custom_question")
     private String customQuestion;
+    @Basic
+    @Column(name = "conclusion")
     private String conclusion;
 
-    @Id
-    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -31,8 +61,6 @@ public class InformationEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "title", nullable = false, length = 255)
     public String getTitle() {
         return title;
     }
@@ -41,8 +69,6 @@ public class InformationEntity {
         this.title = title;
     }
 
-    @Basic
-    @Column(name = "welcome_message", nullable = false, length = 255)
     public String getWelcomeMessage() {
         return welcomeMessage;
     }
@@ -51,8 +77,14 @@ public class InformationEntity {
         this.welcomeMessage = welcomeMessage;
     }
 
-    @Basic
-    @Column(name = "need_name", nullable = false)
+    public long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(long activityId) {
+        this.activityId = activityId;
+    }
+
     public byte getNeedName() {
         return needName;
     }
@@ -61,8 +93,6 @@ public class InformationEntity {
         this.needName = needName;
     }
 
-    @Basic
-    @Column(name = "need_sex", nullable = false)
     public byte getNeedSex() {
         return needSex;
     }
@@ -71,8 +101,6 @@ public class InformationEntity {
         this.needSex = needSex;
     }
 
-    @Basic
-    @Column(name = "need_age", nullable = false)
     public byte getNeedAge() {
         return needAge;
     }
@@ -81,8 +109,6 @@ public class InformationEntity {
         this.needAge = needAge;
     }
 
-    @Basic
-    @Column(name = "need_school", nullable = false)
     public byte getNeedSchool() {
         return needSchool;
     }
@@ -91,8 +117,6 @@ public class InformationEntity {
         this.needSchool = needSchool;
     }
 
-    @Basic
-    @Column(name = "need_sps", nullable = false)
     public byte getNeedSps() {
         return needSps;
     }
@@ -101,8 +125,6 @@ public class InformationEntity {
         this.needSps = needSps;
     }
 
-    @Basic
-    @Column(name = "need_grade", nullable = false)
     public byte getNeedGrade() {
         return needGrade;
     }
@@ -111,8 +133,6 @@ public class InformationEntity {
         this.needGrade = needGrade;
     }
 
-    @Basic
-    @Column(name = "need_phone", nullable = false)
     public byte getNeedPhone() {
         return needPhone;
     }
@@ -121,8 +141,6 @@ public class InformationEntity {
         this.needPhone = needPhone;
     }
 
-    @Basic
-    @Column(name = "need_email", nullable = false)
     public byte getNeedEmail() {
         return needEmail;
     }
@@ -131,8 +149,6 @@ public class InformationEntity {
         this.needEmail = needEmail;
     }
 
-    @Basic
-    @Column(name = "need_wechat", nullable = false)
     public byte getNeedWechat() {
         return needWechat;
     }
@@ -141,8 +157,6 @@ public class InformationEntity {
         this.needWechat = needWechat;
     }
 
-    @Basic
-    @Column(name = "custom_question", nullable = false, length = -1)
     public String getCustomQuestion() {
         return customQuestion;
     }
@@ -151,8 +165,6 @@ public class InformationEntity {
         this.customQuestion = customQuestion;
     }
 
-    @Basic
-    @Column(name = "conclusion", nullable = false, length = -1)
     public String getConclusion() {
         return conclusion;
     }
@@ -166,24 +178,11 @@ public class InformationEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InformationEntity that = (InformationEntity) o;
-        return id == that.id &&
-                needName == that.needName &&
-                needSex == that.needSex &&
-                needAge == that.needAge &&
-                needSchool == that.needSchool &&
-                needSps == that.needSps &&
-                needGrade == that.needGrade &&
-                needPhone == that.needPhone &&
-                needEmail == that.needEmail &&
-                needWechat == that.needWechat &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(welcomeMessage, that.welcomeMessage) &&
-                Objects.equals(customQuestion, that.customQuestion) &&
-                Objects.equals(conclusion, that.conclusion);
+        return id == that.id && activityId == that.activityId && needName == that.needName && needSex == that.needSex && needAge == that.needAge && needSchool == that.needSchool && needSps == that.needSps && needGrade == that.needGrade && needPhone == that.needPhone && needEmail == that.needEmail && needWechat == that.needWechat && Objects.equals(title, that.title) && Objects.equals(welcomeMessage, that.welcomeMessage) && Objects.equals(customQuestion, that.customQuestion) && Objects.equals(conclusion, that.conclusion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, welcomeMessage, needName, needSex, needAge, needSchool, needSps, needGrade, needPhone, needEmail, needWechat, customQuestion, conclusion);
+        return Objects.hash(id, title, welcomeMessage, activityId, needName, needSex, needAge, needSchool, needSps, needGrade, needPhone, needEmail, needWechat, customQuestion, conclusion);
     }
 }

@@ -109,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 设置所有http请求都必需认证用户才能访问，必须设置。
         // 可以根据系统需求定制URL的访问权限。
         http.authorizeRequests().antMatchers("/cors","/swagger-ui/**", "/v3/api-docs/**","/user/**", "/swagger-resources/**"
-                        ).permitAll()
+                        , "/**").permitAll()
                 .anyRequest().authenticated();
 
         // 默认开启了 http.csrf()，但 jwt() 后，会忽略header含有Bearer token的请求。

@@ -5,6 +5,10 @@ import lombok.Data;
 //簡歷
 @Data
 public class ResumeResponseDto {
+    private long id;
+
+    private long userId;
+
     private byte[] avatar;
 
     private String name;
@@ -28,4 +32,6 @@ public class ResumeResponseDto {
     private String introduction;
 
     private boolean online;
+
+    private String school;
 }

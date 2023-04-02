@@ -1,6 +1,6 @@
 datasource:
-  url: jdbc:mysql://172.29.12.252:3306/oywb_test
-  jdbcUrl: jdbc:mysql://172.29.12.252:3306/oywb_test
+  url: jdbc:mysql://localhost:3306/oywb_test
+  jdbcUrl: jdbc:mysql://localhost:3306/oywb_test
   username: root
   password: casa
   driverClassName: com.mysql.jdbc.Driver

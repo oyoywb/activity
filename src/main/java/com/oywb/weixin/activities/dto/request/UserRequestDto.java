@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserRequestDto {
-    private int userId;
+    private long userId;
     //頭像
     private byte[] profile;
 

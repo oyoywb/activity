@@ -1,11 +1,13 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.response.SellerResponseDto;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -114,5 +116,16 @@ public class SellerEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, price, discription, picture, shopId, createTs, updateTs);
+    }
+
+    public SellerResponseDto toSellerResponseDto() {
+        SellerResponseDto sellerResponseDto = new SellerResponseDto();
+        sellerResponseDto.setId(this.id);
+        sellerResponseDto.setName(this.name);
+        sellerResponseDto.setPrice(this.price);
+        sellerResponseDto.setDescription(this.discription);
+        sellerResponseDto.setPicture(Arrays.asList(this.picture.split(",")));
+
+        return sellerResponseDto;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,13 +33,13 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public CommonResponse auth (@RequestBody PersonalInfoDto personalInfoDto) throws Exception {
-        return userService.auth(personalInfoDto);
+    public CommonResponse auth (@ModelAttribute PersonalInfoDto personalInfoDto, @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
+        return userService.auth(personalInfoDto, file);
     }
 
     @PatchMapping()
-    public CommonResponse updateUserInfo (@RequestBody UserRequestDto userRequestDto) throws Exception {
-        return userService.updateUserInfo(userRequestDto);
+    public CommonResponse updateUserInfo (@ModelAttribute UserRequestDto userRequestDto, @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
+        return userService.updateUserInfo(userRequestDto, file);
     }
 
     @PatchMapping("/auth/admin")

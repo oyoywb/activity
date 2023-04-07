@@ -23,10 +23,10 @@ public class UserEntity {
     private String phone;
     @Basic
     @Column(name = "profile")
-    private byte[] profile;
+    private String profile;
     @Basic
     @Column(name = "scp")
-    private byte[] scp;
+    private String scp;
     @Basic
     @Column(name = "registed")
     private Integer registed;
@@ -84,19 +84,19 @@ public class UserEntity {
         this.phone = phone;
     }
 
-    public byte[] getProfile() {
+    public String getProfile() {
         return profile;
     }
 
-    public void setProfile(byte[] profile) {
+    public void setProfile(String profile) {
         this.profile = profile;
     }
 
-    public byte[] getScp() {
+    public String getScp() {
         return scp;
     }
 
-    public void setScp(byte[] scp) {
+    public void setScp(String scp) {
         this.scp = scp;
     }
 
@@ -169,14 +169,12 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return id == that.id && Objects.equals(openid, that.openid) && Objects.equals(name, that.name) && Objects.equals(phone, that.phone) && Arrays.equals(profile, that.profile) && Arrays.equals(scp, that.scp) && Objects.equals(registed, that.registed) && Objects.equals(sex, that.sex) && Objects.equals(birthday, that.birthday) && Objects.equals(sign, that.sign) && Objects.equals(nameFake, that.nameFake) && Objects.equals(school, that.school) && Objects.equals(subject, that.subject) && Objects.equals(grade, that.grade);
+        return id == that.id && Objects.equals(openid, that.openid) && Objects.equals(name, that.name) && Objects.equals(phone, that.phone) && Objects.equals(profile, that.profile) && Objects.equals(scp, that.scp) && Objects.equals(registed, that.registed) && Objects.equals(sex, that.sex) && Objects.equals(birthday, that.birthday) && Objects.equals(sign, that.sign) && Objects.equals(nameFake, that.nameFake) && Objects.equals(school, that.school) && Objects.equals(subject, that.subject) && Objects.equals(grade, that.grade);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, openid, name, phone, registed, sex, birthday, sign, nameFake, school, subject, grade);
-        result = 31 * result + Arrays.hashCode(profile);
-        result = 31 * result + Arrays.hashCode(scp);
+        int result = Objects.hash(id, openid, name, phone, registed, sex, birthday, sign, nameFake, school, subject, grade, profile, scp);
         return result;
     }
 }

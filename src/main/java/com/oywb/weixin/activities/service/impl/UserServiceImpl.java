@@ -1,5 +1,7 @@
 package com.oywb.weixin.activities.service.impl;
 
+import com.oywb.weixin.activities.config.minio.Minio;
+import com.oywb.weixin.activities.config.minio.MinioConfig;
 import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.PersonalInfoDto;
@@ -8,6 +10,7 @@ import com.oywb.weixin.activities.entity.UserEntity;
 import com.oywb.weixin.activities.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
@@ -19,8 +22,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private final Minio minio;
+
+    private final MinioConfig minioConfig;
+
+    public UserServiceImpl(UserRepository userRepository, Minio minio, MinioConfig minioConfig) {
         this.userRepository = userRepository;
+        this.minio = minio;
+        this.minioConfig = minioConfig;
     }
 
     @Transactional
@@ -36,15 +45,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public CommonResponse auth(PersonalInfoDto personalInfoDto) throws Exception {
+    public CommonResponse auth(PersonalInfoDto personalInfoDto, MultipartFile file) throws Exception {
         Optional<UserEntity> userEntityOptional = userRepository.findById(personalInfoDto.getUserId());
         if (userEntityOptional.isPresent()) {
+
+            String fileName = file.getOriginalFilename();
+            minio.upload(fileName, "scp", file);
+
             UserEntity userEntity = userEntityOptional.get();
             userEntity.setName(personalInfoDto.getName());
             userEntity.setSchool(personalInfoDto.getSchool());
             userEntity.setSubject(personalInfoDto.getSubject());
             userEntity.setGrade(personalInfoDto.getSubject());
-            userEntity.setScp(personalInfoDto.getPicture());
+            userEntity.setScp(minioConfig.getEndpoint() + "/" + "scp/" + fileName);
             userRepository.save(userEntity);
         }
 
@@ -64,11 +77,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResponse updateUserInfo(UserRequestDto userRequestDto) throws Exception {
+    public CommonResponse updateUserInfo(UserRequestDto userRequestDto, MultipartFile file) throws Exception {
         Optional<UserEntity> userEntityOptional = userRepository.findById(userRequestDto.getUserId());
         if (userEntityOptional.isPresent()) {
+
+            String fileName = file.getOriginalFilename();
+            minio.upload(fileName, "profile", file);
+
             UserEntity userEntity = userEntityOptional.get();
-            userEntity.setProfile(userRequestDto.getProfile());
+            userEntity.setProfile(minioConfig.getEndpoint() + "/" + "profile/" + fileName);
             userEntity.setNameFake(userRequestDto.getName());
             userEntity.setSex(userRequestDto.getSex());
             userEntity.setBirthday(new Timestamp(userRequestDto.getBirthday()));

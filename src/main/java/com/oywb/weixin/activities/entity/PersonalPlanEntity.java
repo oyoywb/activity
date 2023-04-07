@@ -1,5 +1,8 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.request.PersonalInfoDto;
+import com.oywb.weixin.activities.dto.response.PlanResponseDto;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -141,5 +144,20 @@ public class PersonalPlanEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, userId, name, mode, start, end, remarks, isAllDay, isMind, cron, isTop);
+    }
+
+    public PlanResponseDto toPlanResponseDto() {
+        PlanResponseDto planResponseDto = new PlanResponseDto();
+        planResponseDto.setId(this.id);
+        planResponseDto.setUserId(this.userId);
+        planResponseDto.setName(this.name);
+        planResponseDto.setMode(this.mode);
+        planResponseDto.setAllDay(this.isAllDay == 1 ? true : false);
+        planResponseDto.setMind(this.isMind == 1 ? true : false);
+        planResponseDto.setRemarks(this.remarks);
+        planResponseDto.setTop(this.isTop == 1 ? true : false);
+
+        return planResponseDto;
+
     }
 }

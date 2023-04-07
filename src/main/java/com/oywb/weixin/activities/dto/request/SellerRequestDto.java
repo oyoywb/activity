@@ -8,6 +8,8 @@ import java.util.List;
 
 @Data
 public class SellerRequestDto {
+    private long id;
+
     private String name;
 
     private BigDecimal price;
@@ -21,7 +23,6 @@ public class SellerRequestDto {
         sellerEntity.setName(this.name);
         sellerEntity.setPrice(this.price);
         sellerEntity.setDiscription(this.description);
-        sellerEntity.setPicture(String.join(",", this.picture));
 
         return sellerEntity;
     }

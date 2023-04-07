@@ -2,14 +2,13 @@ package com.oywb.weixin.activities.dto.response;
 
 import lombok.Data;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Data
 public class PlanResponseDto {
 
-    private int id;
-    private int userId;
+    private long id;
+    private long userId;
 
     private String name;
 

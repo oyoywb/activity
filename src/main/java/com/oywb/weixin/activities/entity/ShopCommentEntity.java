@@ -19,7 +19,7 @@ public class ShopCommentEntity {
     private long userId;
     @Basic
     @Column(name = "score")
-    private byte score;
+    private int score;
     @Basic
     @Column(name = "ts")
     private Timestamp ts;
@@ -29,6 +29,9 @@ public class ShopCommentEntity {
     @Basic
     @Column(name = "seller_id")
     private long sellerId;
+    @Basic
+    @Column(name = "picture")
+    private String picture;
 
     public long getId() {
         return id;
@@ -54,11 +57,11 @@ public class ShopCommentEntity {
         this.userId = userId;
     }
 
-    public byte getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(byte score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -86,16 +89,24 @@ public class ShopCommentEntity {
         this.sellerId = sellerId;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShopCommentEntity that = (ShopCommentEntity) o;
-        return id == that.id && shopId == that.shopId && userId == that.userId && score == that.score && sellerId == that.sellerId && Objects.equals(ts, that.ts) && Objects.equals(content, that.content);
+        return id == that.id && shopId == that.shopId && userId == that.userId && score == that.score && sellerId == that.sellerId && Objects.equals(ts, that.ts) && Objects.equals(content, that.content) && Objects.equals(picture, that.picture);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, shopId, userId, score, ts, content, sellerId);
+        return Objects.hash(id, shopId, userId, score, ts, content, sellerId, picture);
     }
 }

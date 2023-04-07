@@ -1,16 +1,11 @@
 package com.oywb.weixin.activities.entity;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "shop", schema = "oywb_test", catalog = "")
-@DynamicInsert
-@DynamicUpdate
 public class ShopEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -18,7 +13,7 @@ public class ShopEntity {
     private long id;
     @Basic
     @Column(name = "user_id")
-    private Long userId;
+    private long userId;
     @Basic
     @Column(name = "name")
     private String name;
@@ -42,16 +37,22 @@ public class ShopEntity {
     private String conditions;
     @Basic
     @Column(name = "pass")
-    private Integer pass;
+    private int pass;
     @Basic
     @Column(name = "status")
-    private Integer status;
+    private int status;
     @Basic
     @Column(name = "create_ts")
     private Timestamp createTs;
     @Basic
     @Column(name = "update_ts")
     private Timestamp updateTs;
+    @Basic
+    @Column(name = "school")
+    private String school;
+    @Basic
+    @Column(name = "zone")
+    private String zone;
 
     public long getId() {
         return id;
@@ -61,11 +62,11 @@ public class ShopEntity {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -125,19 +126,19 @@ public class ShopEntity {
         this.conditions = conditions;
     }
 
-    public Integer getPass() {
+    public int getPass() {
         return pass;
     }
 
-    public void setPass(Integer pass) {
+    public void setPass(int pass) {
         this.pass = pass;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -157,16 +158,32 @@ public class ShopEntity {
         this.updateTs = updateTs;
     }
 
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShopEntity that = (ShopEntity) o;
-        return id == that.id && Objects.equals(userId, that.userId) && Objects.equals(name, that.name) && Objects.equals(type, that.type) && Objects.equals(picture, that.picture) && Objects.equals(start, that.start) && Objects.equals(end, that.end) && Objects.equals(location, that.location) && Objects.equals(conditions, that.conditions) && Objects.equals(pass, that.pass) && Objects.equals(status, that.status) && Objects.equals(createTs, that.createTs) && Objects.equals(updateTs, that.updateTs);
+        return id == that.id && userId == that.userId && pass == that.pass && status == that.status && Objects.equals(name, that.name) && Objects.equals(type, that.type) && Objects.equals(picture, that.picture) && Objects.equals(start, that.start) && Objects.equals(end, that.end) && Objects.equals(location, that.location) && Objects.equals(conditions, that.conditions) && Objects.equals(createTs, that.createTs) && Objects.equals(updateTs, that.updateTs) && Objects.equals(school, that.school) && Objects.equals(zone, that.zone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, name, type, picture, start, end, location, conditions, pass, status, createTs, updateTs);
+        return Objects.hash(id, userId, name, type, picture, start, end, location, conditions, pass, status, createTs, updateTs, school, zone);
     }
 }

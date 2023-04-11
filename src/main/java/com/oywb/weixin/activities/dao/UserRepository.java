@@ -10,10 +10,14 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    public UserEntity findByOpenid(@Param("openid") String openid);
+    UserEntity findByOpenid(@Param("openid") String openid);
 
 
     @Modifying
     @Query(value = "update user set registed = 1 where id in :userIds", nativeQuery = true)
-    public List<UserEntity> authByAdmin(@Param("userIds") List<String> userIds);
+    List<UserEntity> authByAdmin(@Param("userIds") List<String> userIds);
+
+    @Query(value = "select id from user where open_id = ?1", nativeQuery = true)
+    long getUserIdByOpenId(String openId);
+
 }

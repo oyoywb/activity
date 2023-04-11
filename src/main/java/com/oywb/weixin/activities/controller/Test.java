@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class Test {
     @GetMapping("/service-a")
-    public String test() {
+    public String test(Authentication authentication) {
         log.error("test");
         return "try";
     }

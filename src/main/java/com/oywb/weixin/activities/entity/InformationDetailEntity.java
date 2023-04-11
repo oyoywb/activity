@@ -1,15 +1,20 @@
 package com.oywb.weixin.activities.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "information_detail", schema = "oywb_test", catalog = "")
+@Table(name = "information_detail")
+@DynamicUpdate
+@DynamicInsert
 public class InformationDetailEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Basic
     @Column(name = "name")
     private String name;
@@ -42,13 +47,13 @@ public class InformationDetailEntity {
     private String customQuestion;
     @Basic
     @Column(name = "activity_id")
-    private long activityId;
+    private Long activityId;
     @Basic
     @Column(name = "passed")
-    private byte passed;
+    private Byte passed;
     @Basic
     @Column(name = "user_id")
-    private long userId;
+    private Long userId;
 
     public long getId() {
         return id;

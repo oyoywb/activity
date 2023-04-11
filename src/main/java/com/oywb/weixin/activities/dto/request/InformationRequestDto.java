@@ -6,13 +6,13 @@ import java.util.List;
 
 @Data
 public class InformationRequestDto {
-    private int id;
+    private long id;
 
     private String title;
 
     private String welcomeMessage;
 
-    private int activityId;
+    private long activityId;
 
     private boolean needName;
 

@@ -60,9 +60,10 @@ minio:
   bucket:
     - shop
     - seller
-    - shopComment
+    - shop-comment
     - scp     #用户认证学生证
     - profile #用户头像
+    - activity #活动图片
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: trace

@@ -76,11 +76,6 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public CommonResponse updatePlan(PlanRequestDto planRequestDto) throws Exception {
-        boolean exist = planRepository.existsByIdAndUserId(planRequestDto.getId(), planRequestDto.getUserId());
-
-        if(!exist) {
-            throw new Exception("user :" + planRequestDto.getUserId() + "不存在该计划: " + planRequestDto.getId());
-        }
 
         PersonalPlanEntity personalPlanEntity = planRequestDto.toPersonalPlanEntity();
         personalPlanEntity.setId(planRequestDto.getId());
@@ -95,11 +90,6 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public CommonResponse deletePlan(long id, long userId) throws Exception {
-        boolean exist = planRepository.existsByIdAndUserId(id, userId);
-
-        if(!exist) {
-            throw new Exception("user :" + userId + "不存在该计划: " + id);
-        }
 
         planRepository.deleteById(id);
 

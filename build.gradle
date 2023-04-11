@@ -38,6 +38,9 @@ dependencies {
 	compile 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	compile 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 	implementation 'io.minio:minio:8.1.0'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
+	// Jackson Databind
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 	//compile 'javax.persistence:persistence-api:2.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 

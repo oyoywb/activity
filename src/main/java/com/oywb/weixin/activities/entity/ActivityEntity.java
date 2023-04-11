@@ -1,11 +1,19 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
+import org.checkerframework.checker.units.qual.A;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
-@Table(name = "activity", schema = "oywb_test", catalog = "")
+@Table(name = "activity")
+@DynamicInsert
+@DynamicUpdate
 public class ActivityEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -62,6 +70,18 @@ public class ActivityEntity {
     @Basic
     @Column(name = "campus")
     private String campus;
+
+    @Basic
+    @Column(name = "picture")
+    private String picture;
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     public long getId() {
         return id;
@@ -218,5 +238,29 @@ public class ActivityEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, type, start, end, count, location, organizer, introduction, rule, form, collectOrNot, recommand, reaper, verified, userId, school, campus);
+    }
+
+    public ActivityResponseDto toActivityResponseDto() {
+        ActivityResponseDto activityResponseDto = new ActivityResponseDto();
+        activityResponseDto.setId(this.id);
+        activityResponseDto.setTitle(this.title);
+        activityResponseDto.setPicture(Arrays.asList(this.picture.split(",")));
+        activityResponseDto.setType(this.type);
+        activityResponseDto.setStart(this.start);
+        activityResponseDto.setEnd(this.end);
+        activityResponseDto.setCount(this.count);
+        activityResponseDto.setLocation(this.location);
+        activityResponseDto.setOrganizer(this.organizer);
+        activityResponseDto.setIntroduction(this.introduction);
+        activityResponseDto.setRule(this.rule);
+        activityResponseDto.setForm(this.form);
+        activityResponseDto.setCollectOrNot(this.collectOrNot ==  1);
+        activityResponseDto.setRecommand(this.recommand);
+        activityResponseDto.setVerified(this.verified == 1);
+        activityResponseDto.setUserId(this.userId);
+        activityResponseDto.setSchool(this.school);
+        activityResponseDto.setCampus(this.campus);
+
+        return activityResponseDto;
     }
 }

@@ -1,6 +1,9 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.request.InformationRequestDto;
+
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -184,5 +187,27 @@ public class InformationEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, welcomeMessage, activityId, needName, needSex, needAge, needSchool, needSps, needGrade, needPhone, needEmail, needWechat, customQuestion, conclusion);
+    }
+
+    public InformationRequestDto toInformationRequestDto() {
+        InformationRequestDto informationRequestDto = new InformationRequestDto();
+        informationRequestDto.setId(this.id);
+        informationRequestDto.setTitle(this.title);
+        informationRequestDto.setWelcomeMessage(this.welcomeMessage);
+        informationRequestDto.setActivityId(this.activityId);
+        informationRequestDto.setNeedName(this.needName == 1);
+        informationRequestDto.setNeedSex(this.needSex == 1);
+        informationRequestDto.setNeedAge(this.needAge == 1);
+        informationRequestDto.setNeedSchool(this.needSchool == 1);
+        informationRequestDto.setNeedSps(this.needSps == 1);
+        informationRequestDto.setNeedSchool(this.needSchool == 1);
+        informationRequestDto.setNeedGrade(this.needGrade == 1);
+        informationRequestDto.setNeedPhone(this.needPhone == 1);
+        informationRequestDto.setNeedEmail(this.needEmail == 1);
+        informationRequestDto.setNeedWechat(this.needWechat == 1);
+        informationRequestDto.setCustomerQuestion(Arrays.asList(this.customQuestion.split(",")));
+        informationRequestDto.setConclusion(this.conclusion);
+
+        return informationRequestDto;
     }
 }

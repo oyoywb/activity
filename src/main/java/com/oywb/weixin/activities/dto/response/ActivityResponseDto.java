@@ -8,9 +8,9 @@ import java.util.List;
 
 @Data
 public class ActivityResponseDto {
-    private int id;
+    private long id;
 
-    private List<byte[]> picture;
+    private List<String> picture;
 
     private String title;
 
@@ -39,7 +39,7 @@ public class ActivityResponseDto {
 
     private boolean verified;
 
-    private int userId;
+    private long userId;
 
     private String school;
 
@@ -48,5 +48,5 @@ public class ActivityResponseDto {
     private InformationRequestDto informationRequestDto;
 
     //已報名人數
-    private int passCount;
+    private long passCount;
 }

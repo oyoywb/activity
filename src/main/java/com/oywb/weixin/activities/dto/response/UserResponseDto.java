@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserResponseDto {
     //頭像
-    private byte[] profile;
+    private String profile;
 
     private String name;
 

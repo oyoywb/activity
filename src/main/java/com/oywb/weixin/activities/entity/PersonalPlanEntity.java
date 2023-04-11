@@ -2,13 +2,17 @@ package com.oywb.weixin.activities.entity;
 
 import com.oywb.weixin.activities.dto.request.PersonalInfoDto;
 import com.oywb.weixin.activities.dto.response.PlanResponseDto;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "personal_plan", schema = "oywb_test", catalog = "")
+@Table(name = "personal_plan")
+@DynamicInsert
+@DynamicUpdate
 public class PersonalPlanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

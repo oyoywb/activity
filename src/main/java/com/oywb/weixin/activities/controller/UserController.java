@@ -4,8 +4,6 @@ import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.PersonalInfoDto;
 import com.oywb.weixin.activities.dto.request.ResumeRequestDto;
 import com.oywb.weixin.activities.dto.request.UserRequestDto;
-import com.oywb.weixin.activities.dto.response.ResumeResponseDto;
-import com.oywb.weixin.activities.dto.response.UserResponseDto;
 import com.oywb.weixin.activities.service.ResumeService;
 import com.oywb.weixin.activities.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

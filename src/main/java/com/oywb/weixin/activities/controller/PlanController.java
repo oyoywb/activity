@@ -5,12 +5,14 @@ import com.oywb.weixin.activities.dto.request.PlanRequestDto;
 import com.oywb.weixin.activities.dto.response.PlanResponseDto;
 import com.oywb.weixin.activities.service.PlanService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/plan")
+@PreAuthorize("@roleEvaluator.isRegistered(authentication)")
 public class PlanController {
 
     private final PlanService planService;
@@ -20,8 +22,8 @@ public class PlanController {
     }
 
     @PostMapping
-    public CommonResponse createPlan(@RequestBody PlanRequestDto planRequestDto) throws Exception {
-        return planService.createPlan(planRequestDto);
+    public CommonResponse createPlan(@RequestBody PlanRequestDto planRequestDto, Authentication authentication) throws Exception {
+        return planService.createPlan(planRequestDto, authentication.getName());
     }
 
     @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, #planRequestDto.id, #planRequestDto.userId)")
@@ -30,10 +32,10 @@ public class PlanController {
         return planService.updatePlan(planRequestDto);
     }
 
-    @PreAuthorize("@roleEvaluator.sameUser(authentication, userId)")
+    //@PreAuthorize("@roleEvaluator.sameUser(authentication, userId)")
     @GetMapping
-    public CommonResponse<List<PlanResponseDto>> getPlans(@RequestParam long userId) throws Exception {
-        return planService.getPlan(userId);
+    public CommonResponse<List<PlanResponseDto>> getPlans(Authentication authentication) throws Exception {
+        return planService.getPlan(authentication.getName());
     }
 
     @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, id, userId)")

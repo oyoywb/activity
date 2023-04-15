@@ -10,7 +10,7 @@ public class DynamicsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Basic
     @Column(name = "content")
     private String content;
@@ -38,6 +38,10 @@ public class DynamicsEntity {
     @Basic
     @Column(name = "user_id")
     private Long userId;
+
+    @Basic
+    @Column(name = "contact")
+    private String contact;
 
     public long getId() {
         return id;
@@ -117,6 +121,14 @@ public class DynamicsEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     @Override

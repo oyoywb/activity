@@ -4,10 +4,6 @@ import lombok.Data;
 
 @Data
 public class UserRequestDto {
-    private long userId;
-    //頭像
-    private byte[] profile;
-
     private String name;
 
     private int sex;

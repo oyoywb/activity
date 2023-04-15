@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     private final MinioConfig minioConfig;
 
+    private static final String AUTH_BUCKET = "scp";
+    private static final String PROFILE_BUCKET = "profile";
+
     public UserServiceImpl(UserRepository userRepository, Minio minio, MinioConfig minioConfig) {
         this.userRepository = userRepository;
         this.minio = minio;
@@ -45,19 +48,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public CommonResponse auth(PersonalInfoDto personalInfoDto, MultipartFile file) throws Exception {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(personalInfoDto.getUserId());
+    public CommonResponse auth(PersonalInfoDto personalInfoDto, MultipartFile file, String openId) throws Exception {
+        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userRepository.findByOpenid(openId));
         if (userEntityOptional.isPresent()) {
 
             String fileName = file.getOriginalFilename();
-            minio.upload(fileName, "scp", file);
+            minio.upload(fileName, AUTH_BUCKET, file);
 
             UserEntity userEntity = userEntityOptional.get();
             userEntity.setName(personalInfoDto.getName());
             userEntity.setSchool(personalInfoDto.getSchool());
             userEntity.setSubject(personalInfoDto.getSubject());
             userEntity.setGrade(personalInfoDto.getSubject());
-            userEntity.setScp(minioConfig.getEndpoint() + "/" + "scp/" + fileName);
+            userEntity.setScp(minioConfig.getEndpoint() + "/" + AUTH_BUCKET + "/" + fileName);
             userRepository.save(userEntity);
         }
 
@@ -77,15 +80,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResponse updateUserInfo(UserRequestDto userRequestDto, MultipartFile file) throws Exception {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(userRequestDto.getUserId());
+    public CommonResponse updateUserInfo(UserRequestDto userRequestDto, MultipartFile file, String openId) throws Exception {
+        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userRepository.findByOpenid(openId));
         if (userEntityOptional.isPresent()) {
 
             String fileName = file.getOriginalFilename();
-            minio.upload(fileName, "profile", file);
+            minio.upload(fileName, PROFILE_BUCKET, file);
 
             UserEntity userEntity = userEntityOptional.get();
-            userEntity.setProfile(minioConfig.getEndpoint() + "/" + "profile/" + fileName);
+            userEntity.setProfile(minioConfig.getEndpoint() + "/" + PROFILE_BUCKET + "/" + fileName);
             userEntity.setNameFake(userRequestDto.getName());
             userEntity.setSex(userRequestDto.getSex());
             userEntity.setBirthday(new Timestamp(userRequestDto.getBirthday()));

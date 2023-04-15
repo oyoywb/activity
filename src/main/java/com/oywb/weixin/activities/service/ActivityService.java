@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface ActivityService {
-    CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files) throws Exception;
+    CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception;
 
     CommonResponse getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end) throws Exception;
 

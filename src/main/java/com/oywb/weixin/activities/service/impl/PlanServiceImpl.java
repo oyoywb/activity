@@ -1,6 +1,7 @@
 package com.oywb.weixin.activities.service.impl;
 
 import com.oywb.weixin.activities.dao.PlanRepository;
+import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.PlanRequestDto;
 import com.oywb.weixin.activities.dto.response.PlanResponseDto;
@@ -23,14 +24,17 @@ public class PlanServiceImpl implements PlanService {
     private final static long THREE_DAY_AFTER = 3 * 24 * 60 * 60 * 1000;
 
     private final PlanRepository planRepository;
+    private final UserRepository userRepository;
 
-    public PlanServiceImpl(PlanRepository planRepository) {
+    public PlanServiceImpl(PlanRepository planRepository, UserRepository userRepository) {
         this.planRepository = planRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public CommonResponse createPlan(PlanRequestDto planRequestDto) throws Exception {
+    public CommonResponse createPlan(PlanRequestDto planRequestDto, String openId) throws Exception {
         PersonalPlanEntity personalPlanEntity = planRequestDto.toPersonalPlanEntity();
+        personalPlanEntity.setUserId(userRepository.getUserIdByOpenId(openId));
 
         planRepository.save(personalPlanEntity);
 
@@ -42,8 +46,8 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public CommonResponse getPlan(long userId) throws Exception {
-        List<PersonalPlanEntity> personalPlanEntityList = planRepository.findPersonalPlanEntitiesByUserId(userId);
+    public CommonResponse getPlan(String openId) throws Exception {
+        List<PersonalPlanEntity> personalPlanEntityList = planRepository.findPersonalPlanEntitiesByUserId(userRepository.getUserIdByOpenId(openId));
 
         List<PlanResponseDto> planResponseDtoList = new ArrayList<>();
 
@@ -78,7 +82,6 @@ public class PlanServiceImpl implements PlanService {
     public CommonResponse updatePlan(PlanRequestDto planRequestDto) throws Exception {
 
         PersonalPlanEntity personalPlanEntity = planRequestDto.toPersonalPlanEntity();
-        personalPlanEntity.setId(planRequestDto.getId());
 
         planRepository.save(personalPlanEntity);
 

@@ -43,8 +43,6 @@ public class ActivityRequestDto {
 
     private boolean verified;
 
-    private long userId;
-
     private String school;
 
     private String campus;
@@ -66,7 +64,6 @@ public class ActivityRequestDto {
         activityEntity.setCollectOrNot((byte) (collectOrNot ? 1 : 0));
         activityEntity.setRecommand(this.recommand);
         activityEntity.setReaper(this.reaper); //你将收获
-        activityEntity.setUserId(this.userId);
         activityEntity.setSchool(this.school);
         activityEntity.setCampus(this.campus);
 

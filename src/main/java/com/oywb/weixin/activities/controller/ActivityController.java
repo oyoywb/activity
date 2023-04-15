@@ -23,8 +23,8 @@ public class ActivityController {
     }
 
     @PostMapping()
-    public CommonResponse createActivity(@ModelAttribute ActivityRequestDto activityRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
-        return activityService.createActivity(activityRequestDto, Arrays.asList(files));
+    public CommonResponse createActivity(@ModelAttribute ActivityRequestDto activityRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files, Authentication authentication) throws Exception {
+        return activityService.createActivity(activityRequestDto, Arrays.asList(files), authentication.getName());
     }
 
     @GetMapping()

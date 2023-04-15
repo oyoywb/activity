@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class PersonalInfoDto {
-    private long userId;
 
     private String school;
 

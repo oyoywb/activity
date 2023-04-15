@@ -9,7 +9,7 @@ public class ResumeResponseDto {
 
     private long userId;
 
-    private byte[] avatar;
+    private String avatar;
 
     private String name;
 

@@ -1,11 +1,16 @@
 package com.oywb.weixin.activities.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dynamics_comment", schema = "oywb_test", catalog = "")
+@Table(name = "dynamics_comment")
+@DynamicInsert
+@DynamicUpdate
 public class DynamicsCommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -38,6 +43,10 @@ public class DynamicsCommentEntity {
     @Basic
     @Column(name = "dy_id")
     private long dyId;
+
+    @Basic
+    @Column(name = "user_name")
+    private String userName;
 
     public long getId() {
         return id;
@@ -117,6 +126,14 @@ public class DynamicsCommentEntity {
 
     public void setDyId(long dyId) {
         this.dyId = dyId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

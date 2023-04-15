@@ -54,7 +54,7 @@ public class ResumeEntity {
     private long userId;
     @Basic
     @Column(name = "avatar")
-    private byte[] avatar;
+    private String avatar;
 
     public long getId() {
         return id;
@@ -177,11 +177,11 @@ public class ResumeEntity {
         return Objects.hash(id, name, grade, college, subject, skill, experience, interest, selfIntroduction, online, createTs, updateTs, userId);
     }
 
-    public byte[] getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 

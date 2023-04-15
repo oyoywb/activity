@@ -2,6 +2,7 @@ package com.oywb.weixin.activities.security;
 
 import com.oywb.weixin.activities.Enum.Role;
 import com.oywb.weixin.activities.dao.PlanRepository;
+import com.oywb.weixin.activities.dao.ShopRepository;
 import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.entity.RoleBinding;
 import com.oywb.weixin.activities.entity.UserEntity;
@@ -19,11 +20,13 @@ public class RoleEvaluator {
     private final UserRepository userRepository;
 
     private final PlanRepository planRepository;
+    private final ShopRepository shopRepository;
 
-    public RoleEvaluator(RoleBindingService roleBindingService, UserRepository userRepository, PlanRepository planRepository) {
+    public RoleEvaluator(RoleBindingService roleBindingService, UserRepository userRepository, PlanRepository planRepository, ShopRepository shopRepository) {
         this.roleBindingService = roleBindingService;
         this.userRepository = userRepository;
         this.planRepository = planRepository;
+        this.shopRepository = shopRepository;
     }
 
     public boolean isAdmin(Authentication authentication) {
@@ -56,5 +59,13 @@ public class RoleEvaluator {
 
         return sameUser && exist;
 
+    }
+
+    public boolean shopBelongToUser(Authentication authentication, long id, long userId) {
+        boolean sameUser = this.sameUser(authentication, userId);
+
+        boolean exist = shopRepository.existsByIdAndUserId(id, userId);
+
+        return sameUser && exist;
     }
 }

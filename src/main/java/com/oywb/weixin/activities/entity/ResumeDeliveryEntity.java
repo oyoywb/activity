@@ -1,10 +1,15 @@
 package com.oywb.weixin.activities.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "resume_delivery", schema = "oywb_test", catalog = "")
+@DynamicUpdate
+@DynamicInsert
 public class ResumeDeliveryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

@@ -1,11 +1,18 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.response.ProjectResponseDto;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
-@Table(name = "project", schema = "oywb_test", catalog = "")
+@Table(name = "project")
+@DynamicUpdate
+@DynamicInsert
 public class ProjectEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -185,5 +192,26 @@ public class ProjectEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, tag, organizer, location, introduction, rop, count, expect, scope, picture, end, period, currentSituation, pass);
+    }
+
+    public ProjectResponseDto toProjectResponseDto() {
+        ProjectResponseDto projectResponseDto = new ProjectResponseDto();
+        projectResponseDto.setId(this.id);
+        projectResponseDto.setEnd(this.end);
+        projectResponseDto.setTag(this.tag);
+        projectResponseDto.setOrganizer(this.organizer);
+        projectResponseDto.setLocation(this.location);
+        projectResponseDto.setIntroduction(this.introduction);
+        projectResponseDto.setRop(this.rop);
+        projectResponseDto.setPeriod(this.period);
+        projectResponseDto.setCount(this.count);
+        projectResponseDto.setScope(this.scope);
+        projectResponseDto.setExpect(this.expect);
+        projectResponseDto.setPicture(Arrays.asList(this.picture.split(",")));
+        projectResponseDto.setCurrentSituation(this.currentSituation);
+        projectResponseDto.setPass(this.pass == 1);
+
+        return projectResponseDto;
+
     }
 }

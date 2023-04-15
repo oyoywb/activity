@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class ProjectResponseDto {
 
-    private int id;
+    private long id;
 
     //截止日期
     private Timestamp end;
@@ -35,12 +35,12 @@ public class ProjectResponseDto {
 
     private String expect;
 
-    private List<byte[]> picture;
+    private List<String> picture;
 
     //目前情況
     private String currentSituation;
 
-    private String pass;
+    private boolean pass;
 
     //已報名人數
     private int passCount;

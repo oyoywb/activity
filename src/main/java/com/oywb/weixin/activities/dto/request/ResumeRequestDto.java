@@ -10,8 +10,6 @@ public class ResumeRequestDto {
 
     private int userId;
 
-    private byte[] avatar;//头像
-
     private String name;
 
     private String grade;
@@ -38,7 +36,6 @@ public class ResumeRequestDto {
 
     public ResumeEntity toResumeEntity() {
         ResumeEntity resumeEntity = new ResumeEntity();
-        resumeEntity.setUserId(this.userId);
         resumeEntity.setName(this.name);
         resumeEntity.setGrade(this.grade);
         resumeEntity.setCollege(this.college);
@@ -47,7 +44,6 @@ public class ResumeRequestDto {
         resumeEntity.setExperience(this.experience);
         resumeEntity.setInterest(this.interest);
         resumeEntity.setSelfIntroduction(this.introduction);
-        resumeEntity.setAvatar(this.avatar);
         resumeEntity.setSchool(this.school);
         return resumeEntity;
     }

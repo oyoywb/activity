@@ -7,6 +7,7 @@ import com.oywb.weixin.activities.dto.response.ShopResponseDto;
 import com.oywb.weixin.activities.service.ShopService;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shop")
+@PreAuthorize("@roleEvaluator.isRegistered(authentication)")
 public class ShopController {
 
     private final ShopService shopService;
@@ -30,6 +32,7 @@ public class ShopController {
         return shopService.createShop(shopRequestDto, Arrays.asList(files));
     }
 
+    @PreAuthorize("@roleEvaluator.shopBelongToUser(authentication, #shopRequestDto.id, #shopRequestDto.userId)")
     @PatchMapping
     public CommonResponse updateShop(@ModelAttribute ShopRequestDto shopRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
         return shopService.updateShop(shopRequestDto, Arrays.asList(files));
@@ -56,14 +59,4 @@ public class ShopController {
     public CommonResponse getComment(@RequestParam Long shopId) throws Exception {
         return shopService.getComments(shopId);
     }
-
- /*   @GetMapping
-    public CommonResponse<List<ShopResponseDto>> getShops (@RequestParam int userId) {
-        return new CommonResponse<List<ShopResponseDto>>();
-    }
-
-    @PatchMapping()
-    public CommonResponse updateShop(@RequestBody ShopRequestDto shopRequestDto) {
-        return new CommonResponse();
-    }*/
 }

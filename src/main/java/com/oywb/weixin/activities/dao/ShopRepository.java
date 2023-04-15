@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
 
-
+    boolean existsByIdAndUserId(Long id, Long userId);
 }

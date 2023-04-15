@@ -51,7 +51,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Transactional
-    public CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files) throws Exception {
+    public CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception {
 
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
@@ -59,6 +59,7 @@ public class ActivityServiceImpl implements ActivityService {
         });
 
         ActivityEntity activityEntity = activityRequestDto.toActivityEntity();
+        activityEntity.setUserId(userRepository.getUserIdByOpenId(openId));
 
         activityEntity = activityRepository.save(activityEntity);
         InformationEntity informationEntity = activityRequestDto.toInformationEntity();

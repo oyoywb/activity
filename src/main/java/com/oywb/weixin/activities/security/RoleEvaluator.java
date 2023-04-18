@@ -42,7 +42,7 @@ public class RoleEvaluator {
     public boolean isRegistered(Authentication authentication) {
         UserEntity userEntity = userRepository.findByOpenid(authentication.getName());
 
-        return userEntity == null ? false : (userEntity.getRegisted() == 1 ? true : false );
+        return userEntity == null ? false : (userEntity.getRegisted() == 1);
     }
 
     public boolean sameUser(Authentication authentication, long userId) {

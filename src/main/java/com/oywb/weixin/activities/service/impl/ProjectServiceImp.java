@@ -3,6 +3,7 @@ package com.oywb.weixin.activities.service.impl;
 import com.oywb.weixin.activities.config.minio.Minio;
 import com.oywb.weixin.activities.config.minio.MinioConfig;
 import com.oywb.weixin.activities.dao.ProjectRepository;
+import com.oywb.weixin.activities.dao.ResumeDeliveryRepository;
 import com.oywb.weixin.activities.dao.ResumeRepository;
 import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.CommonResponse;

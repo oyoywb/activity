@@ -1,5 +1,6 @@
-package com.oywb.weixin.activities.entity;
+package com.oywb.weixin.activities.dao;
 
+import com.oywb.weixin.activities.entity.ResumeDeliveryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

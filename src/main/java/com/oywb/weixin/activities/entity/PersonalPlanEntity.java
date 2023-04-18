@@ -156,10 +156,10 @@ public class PersonalPlanEntity {
         planResponseDto.setUserId(this.userId);
         planResponseDto.setName(this.name);
         planResponseDto.setMode(this.mode);
-        planResponseDto.setAllDay(this.isAllDay == 1 ? true : false);
-        planResponseDto.setMind(this.isMind == 1 ? true : false);
+        planResponseDto.setAllDay(this.isAllDay == 1);
+        planResponseDto.setMind(this.isMind == 1);
         planResponseDto.setRemarks(this.remarks);
-        planResponseDto.setTop(this.isTop == 1 ? true : false);
+        planResponseDto.setTop(this.isTop == 1);
 
         return planResponseDto;
 

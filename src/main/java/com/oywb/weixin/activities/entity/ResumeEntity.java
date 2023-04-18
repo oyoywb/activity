@@ -202,7 +202,7 @@ public class ResumeEntity {
         resumeResponseDto.setSkill(this.skill);
         resumeResponseDto.setExperience(this.experience);
         resumeResponseDto.setIntroduction(this.selfIntroduction);
-        resumeResponseDto.setOnline(this.online == 1 ? true : false);
+        resumeResponseDto.setOnline(this.online == 1);
         resumeResponseDto.setSchool(this.school);
 
         return resumeResponseDto;

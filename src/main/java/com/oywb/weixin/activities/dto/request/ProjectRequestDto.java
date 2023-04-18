@@ -2,10 +2,7 @@ package com.oywb.weixin.activities.dto.request;
 
 import com.oywb.weixin.activities.entity.ProjectEntity;
 import lombok.Data;
-import org.springframework.security.core.parameters.P;
-
 import java.sql.Timestamp;
-import java.util.List;
 
 @Data
 public class ProjectRequestDto {

@@ -2,7 +2,6 @@ package com.oywb.weixin.activities.entity;
 
 import com.oywb.weixin.activities.dto.request.ActivityRequestDto;
 import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
-import org.checkerframework.checker.units.qual.A;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 

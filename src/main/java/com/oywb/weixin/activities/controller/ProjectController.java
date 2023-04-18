@@ -31,7 +31,7 @@ public class ProjectController {
     @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, #projectRequestDto.id)")
     @PatchMapping()
     public CommonResponse updateProject(@ModelAttribute ProjectRequestDto projectRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) {
-        return null;
+        return projectService.updateProject(projectRequestDto, Arrays.asList(files));
     }
 
     //如果flag是1，则获取自己发布的project

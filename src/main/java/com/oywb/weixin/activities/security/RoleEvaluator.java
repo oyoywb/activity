@@ -39,7 +39,7 @@ public class RoleEvaluator {
         return roleBinding == null ? false : true;
     }
 
-    public boolean isRegisted(Authentication authentication) {
+    public boolean isRegistered(Authentication authentication) {
         UserEntity userEntity = userRepository.findByOpenid(authentication.getName());
 
         return userEntity == null ? false : (userEntity.getRegisted() == 1 ? true : false );

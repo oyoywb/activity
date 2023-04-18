@@ -210,4 +210,20 @@ public class InformationEntity {
 
         return informationRequestDto;
     }
+
+    public void update(InformationRequestDto informationRequestDto) {
+        this.title = informationRequestDto.getTitle();
+        this.welcomeMessage = informationRequestDto.getWelcomeMessage();
+        this.needName = (byte) (informationRequestDto.isNeedName() ? 1 : 0);
+        this.needSex = (byte) (informationRequestDto.isNeedName() ? 1 : 0);
+        this.needAge = (byte) (informationRequestDto.isNeedAge() ? 1 : 0);
+        this.needSchool = (byte) (informationRequestDto.isNeedSchool() ? 1 : 0);
+        this.needSps = (byte) (informationRequestDto.isNeedSps() ? 1 : 0);
+        this.needGrade = (byte) (informationRequestDto.isNeedGrade() ? 1 : 0);
+        this.needPhone = (byte) (informationRequestDto.isNeedPhone() ? 1 : 0);
+        this.needEmail = (byte) (informationRequestDto.isNeedEmail() ? 1 : 0);
+        this.needWechat = (byte) (informationRequestDto.isNeedWechat() ? 1 : 0);
+        this.customQuestion = String.join(",", informationRequestDto.getCustomerQuestion());
+        this.conclusion = informationRequestDto.getConclusion();
+    }
 }

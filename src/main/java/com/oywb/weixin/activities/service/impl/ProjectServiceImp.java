@@ -65,6 +65,25 @@ public class ProjectServiceImp implements ProjectService {
     }
 
     @Override
+    public CommonResponse updateProject(ProjectRequestDto projectRequestDto, List<MultipartFile> files) {
+
+        List<String> fileNameList = new ArrayList<>();
+        files.forEach(file -> {
+            String fileName = file.getOriginalFilename();
+            minio.upload(fileName, PROJECT_BUCKET, file);
+            fileNameList.add(minioConfig.getEndpoint() + "/" + PROJECT_BUCKET + "/" + fileName);
+        });
+
+        ProjectEntity projectEntity = projectRepository.findById(projectRequestDto.getId()).get();
+        projectEntity.update(projectRequestDto);
+        projectEntity.setPicture(String.join(",", fileNameList));
+        projectRepository.save(projectEntity);
+
+        return CommonResponse.builder().code(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
     public CommonResponse getProjects(Pageable pageable, int flag, String openId) throws Exception {
         long userId = userRepository.getUserIdByOpenId(openId);
 

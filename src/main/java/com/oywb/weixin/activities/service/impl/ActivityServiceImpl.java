@@ -2,6 +2,7 @@ package com.oywb.weixin.activities.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oywb.weixin.activities.config.minio.Minio;
+import com.oywb.weixin.activities.config.minio.MinioConfig;
 import com.oywb.weixin.activities.dao.*;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.ActivityRequestDto;
@@ -36,11 +37,12 @@ public class ActivityServiceImpl implements ActivityService {
     private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final PlanRepository planRepository;
+    private final MinioConfig minioConfig;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final static String ACTIVITY_BUCKET = "activity";
-    public ActivityServiceImpl(Minio minio, ActivityRepository activityRepository, InformationRepository informationRepository, InformationDetailRepository informationDetailRepository, EntityManager entityManager, UserRepository userRepository, PlanRepository planRepository) {
+    public ActivityServiceImpl(Minio minio, ActivityRepository activityRepository, InformationRepository informationRepository, InformationDetailRepository informationDetailRepository, EntityManager entityManager, UserRepository userRepository, PlanRepository planRepository, MinioConfig minioConfig) {
         this.minio = minio;
         this.activityRepository = activityRepository;
         this.informationRepository = informationRepository;
@@ -48,22 +50,53 @@ public class ActivityServiceImpl implements ActivityService {
         this.entityManager = entityManager;
         this.userRepository = userRepository;
         this.planRepository = planRepository;
+        this.minioConfig = minioConfig;
     }
 
     @Transactional
     public CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception {
 
+        List<String> pictures = new ArrayList<>();
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
+            pictures.add(minioConfig.getEndpoint() + "/" + ACTIVITY_BUCKET + "/" + fileName);
             minio.upload(fileName, ACTIVITY_BUCKET, file);
         });
 
         ActivityEntity activityEntity = activityRequestDto.toActivityEntity();
         activityEntity.setUserId(userRepository.getUserIdByOpenId(openId));
+        activityEntity.setPicture(String.join(",", pictures));
 
         activityEntity = activityRepository.save(activityEntity);
         InformationEntity informationEntity = activityRequestDto.toInformationEntity();
         informationEntity.setActivityId(activityEntity.getId());
+
+        informationRepository.save(informationEntity);
+
+        return CommonResponse.builder()
+                .code(HttpStatus.OK.value())
+                .build();
+    }
+
+
+    @Override
+    public CommonResponse updateActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files) {
+
+        List<String> pictures = new ArrayList<>();
+        files.forEach(file -> {
+            String fileName = file.getOriginalFilename();
+            pictures.add(minioConfig.getEndpoint() + "/" + ACTIVITY_BUCKET + "/" + fileName);
+            minio.upload(fileName, ACTIVITY_BUCKET, file);
+        });
+
+        ActivityEntity activityEntity = activityRepository.findById(activityRequestDto.getId()).get();
+        activityEntity.update(activityRequestDto);
+        activityEntity.setVerified((byte) 0);
+        activityEntity.setPicture(String.join(",", pictures));
+
+        activityRepository.save(activityEntity);
+        InformationEntity informationEntity = informationRepository.findByActivityId(activityRequestDto.getId());
+        informationEntity.update(activityRequestDto.getInformationRequestDto());
 
         informationRepository.save(informationEntity);
 

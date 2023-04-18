@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class ProjectRequestDto {
+    private long id;
     //截止日期
     private Timestamp end;
 

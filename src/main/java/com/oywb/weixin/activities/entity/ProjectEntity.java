@@ -1,5 +1,6 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.request.ProjectRequestDto;
 import com.oywb.weixin.activities.dto.response.ProjectResponseDto;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -225,5 +226,20 @@ public class ProjectEntity {
 
         return projectResponseDto;
 
+    }
+
+    public void update(ProjectRequestDto projectRequestDto) {
+        this.name = projectRequestDto.getName();
+        this.tag = projectRequestDto.getTag();
+        this.organizer = projectRequestDto.getOrganizer();
+        this.location = projectRequestDto.getLocation();
+        this.introduction = projectRequestDto.getIntroduction();
+        this.rop = projectRequestDto.getRop();
+        this.count = projectRequestDto.getCount();
+        this.expect = projectRequestDto.getExpect();
+        this.scope = projectRequestDto.getScope();
+        this.end = projectRequestDto.getEnd();
+        this.period = projectRequestDto.getPeriod();
+        this.currentSituation = projectRequestDto.getCurrentSituation();
     }
 }

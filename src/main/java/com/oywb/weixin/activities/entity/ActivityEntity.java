@@ -1,5 +1,6 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.request.ActivityRequestDto;
 import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
 import org.checkerframework.checker.units.qual.A;
 import org.hibernate.annotations.DynamicInsert;
@@ -262,5 +263,23 @@ public class ActivityEntity {
         activityResponseDto.setCampus(this.campus);
 
         return activityResponseDto;
+    }
+
+    public void update(ActivityRequestDto activityRequestDto) {
+        this.title = activityRequestDto.getTitle();
+        this.type = activityRequestDto.getType();
+        this.start = activityRequestDto.getStart();
+        this.end = activityRequestDto.getEnd();
+        this.count = activityRequestDto.getCount();
+        this.location = activityRequestDto.getLocation();
+        this.organizer = activityRequestDto.getOrganizer();
+        this.introduction = activityRequestDto.getIntroduction();
+        this.rule = activityRequestDto.getRule();
+        this.form = activityRequestDto.getForm();
+        this.collectOrNot = (byte) (activityRequestDto.isCollectOrNot() ? 1 : 0);
+        this.recommand = activityRequestDto.getRecommand();
+        this.reaper = activityRequestDto.getReaper();
+        this.school = activityRequestDto.getSchool();
+        this.campus = activityRequestDto.getCampus();
     }
 }

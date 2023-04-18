@@ -29,4 +29,6 @@ public interface ActivityService {
     CommonResponse activePass(List<Long> ids, long activityId);
 
     CommonResponse getSelfSignActivity(String openId);
+
+    CommonResponse updateActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files);
 }

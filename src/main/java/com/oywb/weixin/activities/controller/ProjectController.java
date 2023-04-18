@@ -28,6 +28,12 @@ public class ProjectController {
         return projectService.createProject(projectRequestDto, Arrays.asList(files), authentication.getName());
     }
 
+    @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, #projectRequestDto.id)")
+    @PatchMapping()
+    public CommonResponse updateProject(@ModelAttribute ProjectRequestDto projectRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+        return null;
+    }
+
     //如果flag是1，则获取自己发布的project
     @GetMapping()
     public CommonResponse getProjects(Pageable pageable, int flag, Authentication authentication) throws Exception {

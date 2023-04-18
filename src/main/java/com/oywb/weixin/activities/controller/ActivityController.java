@@ -28,6 +28,12 @@ public class ActivityController {
         return activityService.createActivity(activityRequestDto, Arrays.asList(files), authentication.getName());
     }
 
+    @PreAuthorize("@roleEvaluator.activityBelongToUser(authentication, #activityRequestDto.id)")
+    @PatchMapping
+    public CommonResponse updateActivity(@ModelAttribute ActivityRequestDto activityRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+        return activityService.updateActivity(activityRequestDto, Arrays.asList(files));
+    }
+
     @GetMapping()
     public CommonResponse getActivitiesSimple(@RequestParam String school, @RequestParam String campus, @RequestParam Timestamp start, @RequestParam Timestamp end, int flag, Authentication authentication) throws Exception {
         return activityService.getActivitiesSimple(school, campus, start, end, flag, authentication.getName());

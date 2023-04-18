@@ -27,4 +27,6 @@ public interface ProjectService {
     CommonResponse resumePass(List<Long> userIds, long projectId);
 
     CommonResponse getSelfSignProject(String openId);
+
+    CommonResponse updateProject(ProjectRequestDto projectRequestDto, List<MultipartFile> files);
 }

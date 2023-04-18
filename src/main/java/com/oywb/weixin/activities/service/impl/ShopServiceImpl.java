@@ -51,6 +51,10 @@ public class ShopServiceImpl implements ShopService {
 
     private final MinioConfig minioConfig;
 
+    private static final String SHOP_BUCKET = "shop";
+    private static final String SELLER_BUCKET = "seller";
+    private static final String SC_BUCKET = "shop-comment";
+
     public ShopServiceImpl(ShopRepository shopRepository, SellerRepository sellerRepository, ShopCommentRepository shopCommentRepository, UserRepository userRepository, EntityManager entityManager, Minio minio, MinioConfig minioConfig) {
         this.shopRepository = shopRepository;
         this.sellerRepository = sellerRepository;
@@ -69,14 +73,14 @@ public class ShopServiceImpl implements ShopService {
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
             if (shopRequestDto.getPicture().contains(fileName)) {
-                minio.upload(fileName, "shop", file);
+                minio.upload(fileName, SHOP_BUCKET, file);
             } else {
-                minio.upload(fileName, "seller", file);
+                minio.upload(fileName, SELLER_BUCKET, file);
             }
         });
 
         shopRequestDto.getPicture().forEach(picture -> {
-            picture = minioConfig.getEndpoint() + "/" + "shop/" + picture;
+            picture = minioConfig.getEndpoint() + "/" + SHOP_BUCKET + "/" + picture;
         });
         shopEntity.setPicture(String.join(",", shopRequestDto.getPicture()));
 
@@ -91,7 +95,7 @@ public class ShopServiceImpl implements ShopService {
             sellerEntity.setShopId(shopEntity.getId());
 
             sellerRequestDto.getPicture().forEach( picture -> {
-                picture = minioConfig.getEndpoint() + "/" + "seller/" + picture;
+                picture = minioConfig.getEndpoint() + "/" + SELLER_BUCKET + "/" + picture;
             });
             sellerEntity.setPicture(String.join(",", sellerRequestDto.getPicture()));
 
@@ -117,14 +121,14 @@ public class ShopServiceImpl implements ShopService {
                 files.forEach(file -> {
                     String fileName = file.getOriginalFilename();
                     if (shopRequestDto.getPicture().contains(fileName)) {
-                        minio.upload(fileName, "shop", file);
+                        minio.upload(fileName, SHOP_BUCKET, file);
                     } else {
-                        minio.upload(fileName, "seller", file);
+                        minio.upload(fileName, SELLER_BUCKET, file);
                     }
                 });
 
                 shopRequestDto.getPicture().forEach(picture -> {
-                    picture = minioConfig.getEndpoint() + "/" + "shop/" + picture;
+                    picture = minioConfig.getEndpoint() + "/" + SHOP_BUCKET + "/" + picture;
                 });
                 shopEntity.setPicture(String.join(",", shopRequestDto.getPicture()));
                 shopEntity.setUpdateTs(new Timestamp(System.currentTimeMillis()));
@@ -152,7 +156,7 @@ public class ShopServiceImpl implements ShopService {
                     sellerEntity.setShopId(shopEntity.getId());
 
                     sellerRequestDto.getPicture().forEach( picture -> {
-                        picture = minioConfig.getEndpoint() + "/" + "seller/" + picture;
+                        picture = minioConfig.getEndpoint() + "/" + SELLER_BUCKET + "/" + picture;
                     });
                     sellerEntity.setPicture(String.join(",", sellerRequestDto.getPicture()));
 
@@ -176,11 +180,11 @@ public class ShopServiceImpl implements ShopService {
 
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
-            minio.upload(fileName, "shopComment", file);
+            minio.upload(fileName, SC_BUCKET, file);
         });
 
         shopCommentRequestDto.getPicture().forEach( picture -> {
-            picture = minioConfig.getEndpoint() + "/" + "shopComment/" + picture;
+            picture = minioConfig.getEndpoint() + "/" + SC_BUCKET + "/" + picture;
         });
 
         shopCommentEntity.setPicture(String.join(",", shopCommentRequestDto.getPicture()));

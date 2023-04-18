@@ -12,11 +12,21 @@ import java.util.List;
 public interface ActivityService {
     CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception;
 
-    CommonResponse getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end) throws Exception;
+    CommonResponse getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId) throws Exception;
 
     CommonResponse getActivityDetail(long id) throws Exception;
 
     CommonResponse signup(InformationDetailRequestDto informationDetailRequestDto, Authentication authentication) throws Exception;
 
     CommonResponse addToPlan(long activityId, String openId) throws Exception;
+
+    CommonResponse getSelfActivity(String openId, byte flag);
+
+    CommonResponse signDown(String openId, long activityId);
+
+    CommonResponse getInformationDetails(long activityId, byte flag);
+
+    CommonResponse activePass(List<Long> ids, long activityId);
+
+    CommonResponse getSelfSignActivity(String openId);
 }

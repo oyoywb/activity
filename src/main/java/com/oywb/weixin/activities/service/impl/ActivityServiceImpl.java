@@ -73,17 +73,23 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public CommonResponse getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end) throws Exception {
+    public CommonResponse getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId) throws Exception {
+        long userId = userRepository.getUserIdByOpenId(openId);
         List<ActivitySimpleDto> activitySimpleDtoS = new ArrayList<>();
 
         String sql = "select a.id, a.location, a.title, a.introduction, a.reaper, a.count, u.id as user_id, u.profile from activity a, information_detail ind,user u WHERE a.school = :school " +
-                "and a.campus = :campus and a.start BETWEEN :start and :end and a.id = ind.activity_id and ind.user_id = u.id;";
+                "and a.campus = :campus and a.start BETWEEN :start and :end and a.id = ind.activity_id and ind.user_id = u.id";
+
+        if (flag == 1) {
+            sql += " and a.user_id =:userId";
+        }
 
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter("school", school);
         query.setParameter("campus", campus);
         query.setParameter("start", start);
         query.setParameter("end", end);
+        query.setParameter("userId", userId);
 
         List<ActivitySimpleEntity> activitySimpleEntities = query.getResultList();
 
@@ -175,5 +181,74 @@ public class ActivityServiceImpl implements ActivityService {
         return CommonResponse.builder().code(HttpStatus.OK.value())
                 .build();
 
+    }
+
+    @Override
+    public CommonResponse getSelfActivity(String openId, byte flag) {
+        long userId = userRepository.getUserIdByOpenId(openId);
+        List<ActivityEntity> activityEntities = activityRepository.getSelfActivity(userId, flag);
+
+        return CommonResponse.builder()
+                .code(HttpStatus.OK.value())
+                .data(activityEntities)
+                .build();
+    }
+
+    @Override
+    public CommonResponse signDown(String openId, long activityId) {
+        long userId = userRepository.getUserIdByOpenId(openId);
+        informationDetailRepository.deleteByUserIdActivityId(activityId, userId);
+
+        return CommonResponse.builder()
+                .code(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
+    public CommonResponse getInformationDetails(long activityId, byte flag) {
+        List<InformationDetailEntity> informationDetailEntities = informationDetailRepository.getInformationDetailEntitiesByActivityIdAndPassed(activityId, flag);
+
+        return CommonResponse.builder()
+                .code(HttpStatus.OK.value())
+                .data(informationDetailEntities)
+                .build();
+    }
+
+    @Override
+    public CommonResponse activePass(List<Long> ids, long activityId) {
+        long passCount = informationDetailRepository.countPassedByActivityId(activityId);
+
+        Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
+
+        if (activityEntityOpt.isPresent()) {
+            ActivityEntity activityEntity = activityEntityOpt.get();
+
+            if (activityEntity.getCount() - passCount < ids.size()) {
+                return CommonResponse.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("已通过人数超额")
+                        .build();
+            }
+            informationDetailRepository.pass(ids);
+            return CommonResponse.builder()
+                    .code(HttpStatus.OK.value())
+                    .build();
+        } else {
+            return CommonResponse.builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message("活动不存在")
+                    .build();
+        }
+    }
+
+    @Override
+    public CommonResponse getSelfSignActivity(String openId) {
+        long userId = userRepository.getUserIdByOpenId(openId);
+        List<ActivityEntity> activityEntities = activityRepository.getSelfSignActivity(userId);
+
+        return CommonResponse.builder()
+                .code(HttpStatus.OK.value())
+                .data(activityEntities)
+                .build();
     }
 }

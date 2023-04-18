@@ -61,6 +61,10 @@ public class ProjectEntity {
     @Column(name = "pass")
     private Byte pass;
 
+    @Basic
+    @Column(name = "user_id")
+    private long userId;
+
     public long getId() {
         return id;
     }
@@ -179,6 +183,14 @@ public class ProjectEntity {
 
     public void setPass(Byte pass) {
         this.pass = pass;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     @Override

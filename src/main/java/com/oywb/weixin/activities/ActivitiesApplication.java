@@ -8,11 +8,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 @SpringBootApplication
 @EnableScheduling
 @EnableConfigurationProperties({MinioConfig.class, WeChatProperties.class})
 @EnableTransactionManagement
+@EnableWebSocket
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class ActivitiesApplication {
 

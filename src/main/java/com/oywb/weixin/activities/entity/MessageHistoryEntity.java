@@ -1,11 +1,16 @@
 package com.oywb.weixin.activities.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "message_history", schema = "oywb_test", catalog = "")
+@Table(name = "message_history")
+@DynamicUpdate
+@DynamicInsert
 public class MessageHistoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

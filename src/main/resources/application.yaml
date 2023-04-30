@@ -55,7 +55,7 @@ sai:
       app-secret: 964fd7e004f4d0330ad9ebe8e319e201
 
 minio:
-  endpoint: http://localhost:9000
+  endpoint: http://${MINIO:localhost}:9000
   accessKey: admin
   secretKey: admin123
   bucket:

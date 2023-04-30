@@ -1,8 +1,8 @@
 datasource:
-  url: jdbc:mysql://localhost:3306/oywb_test
-  jdbcUrl: jdbc:mysql://localhost:3306/oywb_test
-  username: root
-  password: casa
+  url: jdbc:mysql://${EN_DB_ADDRESSES:localhost}:3306/oywb_test
+  jdbcUrl: jdbc:mysql://${EN_DB_ADDRESSES:localhost}:3306/oywb_test
+  username: ${EN_MARIADB_USER:root}
+  password: ${EN_MARIADB_PASSWORD:casa}
   driverClassName: com.mysql.jdbc.Driver
   testOnBorrow: true
   #validationQuery: "select 1"

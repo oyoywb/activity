@@ -38,7 +38,7 @@ public class DynamicsCommentEntity {
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
     @Basic
-    @Column(name = "is_approved")
+    @Column(name = "is_approved", columnDefinition = "tinyint default 1")
     private byte isApproved;
     @Basic
     @Column(name = "dy_id")

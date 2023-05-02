@@ -25,7 +25,6 @@ public class ShopCommentRequestDto {
     public ShopCommentEntity toShopCommentEntity() {
         ShopCommentEntity shopCommentEntity = new ShopCommentEntity();
 
-        shopCommentEntity.setUserId(this.userId);
         shopCommentEntity.setShopId(this.shopId);
         shopCommentEntity.setSellerId(this.sellerId);
         shopCommentEntity.setScore(this.score);

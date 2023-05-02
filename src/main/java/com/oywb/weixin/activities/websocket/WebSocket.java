@@ -2,10 +2,11 @@ package com.oywb.weixin.activities.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.oywb.weixin.activities.dao.MessageHistoryDao;
+import com.oywb.weixin.activities.dao.MessageHistoryRepository;
 import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.entity.MessageHistoryEntity;
 import com.oywb.weixin.activities.event.MessageEventPublisher;
+import com.oywb.weixin.activities.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,13 +35,13 @@ public class WebSocket {
     /** 存放所有在线的客户端 */
     private static Map<String, Session> clients = new ConcurrentHashMap<>();
 
-    private static UserRepository userRepository;
+    private static UserService userService;
     private static MessageEventPublisher messageEventPublisher;
-    private static MessageHistoryDao messageHistoryDao;
+    private static MessageHistoryRepository messageHistoryDao;
 
     @Autowired
-    public void  setUserRepository(UserRepository userRepository) {
-        WebSocket.userRepository = userRepository;
+    public void  setUserRepository(UserService userService) {
+        WebSocket.userService = userService;
     }
     @Autowired
     public void setMessageEventPublisher(MessageEventPublisher messageEventPublisher) {
@@ -48,7 +49,7 @@ public class WebSocket {
     }
 
     @Autowired
-    public void setMessageHistoryDao(MessageHistoryDao messageHistoryDao) {
+    public void setMessageHistoryDao(MessageHistoryRepository messageHistoryDao) {
         WebSocket.messageHistoryDao = messageHistoryDao;
     }
 
@@ -62,7 +63,7 @@ public class WebSocket {
         if (authentication == null) {
             log.error("用户未认证");
         } else {
-            long userId = userRepository.getUserIdByOpenId(authentication.getName());
+            long userId = userService.getUserId(authentication.getName());
             session.getUserProperties().put("userId", userId);
             onlineCount.incrementAndGet(); // 在线数加1
             clients.put(authentication.getName(), session);
@@ -92,6 +93,7 @@ public class WebSocket {
      * 客户端发送过来的消息
      * 这里能过地址获取用户userId与ws session关联至map中
      */
+    //{"message": "test2", "toOpenId": "oBxyZ1KBsZ88_MsOgSanrKcrFqFE", "toUserId": 2}
     @OnMessage
     public void onMessage(String message, Session session) {
         Authentication authentication = (Authentication) session.getUserPrincipal();

@@ -2,11 +2,9 @@ package com.oywb.weixin.activities.security;
 
 import com.oywb.weixin.activities.Enum.Role;
 import com.oywb.weixin.activities.dao.*;
-import com.oywb.weixin.activities.entity.ActivityEntity;
-import com.oywb.weixin.activities.entity.ProjectEntity;
-import com.oywb.weixin.activities.entity.RoleBinding;
-import com.oywb.weixin.activities.entity.UserEntity;
+import com.oywb.weixin.activities.entity.*;
 import com.oywb.weixin.activities.service.RoleBindingService;
+import com.oywb.weixin.activities.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -17,20 +15,24 @@ public class RoleEvaluator {
 
     private final RoleBindingService roleBindingService;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final PlanRepository planRepository;
     private final ShopRepository shopRepository;
     private final ActivityRepository activityRepository;
     private final ProjectRepository projectRepository;
+    private final DynamicsRepository dynamicsRepository;
+    private final DynamicsCommentRepository dynamicsCommentRepository;
 
-    public RoleEvaluator(RoleBindingService roleBindingService, UserRepository userRepository, PlanRepository planRepository, ShopRepository shopRepository, ActivityRepository activityRepository, ProjectRepository projectRepository) {
+    public RoleEvaluator(RoleBindingService roleBindingService, UserService userService, PlanRepository planRepository, ShopRepository shopRepository, ActivityRepository activityRepository, ProjectRepository projectRepository, DynamicsRepository dynamicsRepository, DynamicsCommentRepository dynamicsCommentRepository) {
         this.roleBindingService = roleBindingService;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.planRepository = planRepository;
         this.shopRepository = shopRepository;
         this.activityRepository = activityRepository;
         this.projectRepository = projectRepository;
+        this.dynamicsRepository = dynamicsRepository;
+        this.dynamicsCommentRepository = dynamicsCommentRepository;
     }
 
     public boolean isAdmin(Authentication authentication) {
@@ -40,28 +42,23 @@ public class RoleEvaluator {
     }
 
     public boolean isRegistered(Authentication authentication) {
-        UserEntity userEntity = userRepository.findByOpenid(authentication.getName());
+        UserEntity userEntity = userService.findByOpenid(authentication.getName());
 
         return userEntity == null ? false : (userEntity.getRegisted() == 1);
     }
 
     public boolean sameUser(Authentication authentication, long userId) {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
+        long authUserId = userService.getUserId(authentication.getName());
 
-        if (!userEntityOptional.isPresent()) {
-            return false;
-        }
-        UserEntity userEntity = userEntityOptional.get();
-
-        return userEntity.getId() == userId;
+        return authUserId == userId;
     }
 
-    public boolean planBelongToUser(Authentication authentication, long id, long userId) {
-        boolean sameUser = this.sameUser(authentication, userId);
+    public boolean planBelongToUser(Authentication authentication, long id) {
+        long userId = userService.getUserId(authentication.getName());
 
         boolean exist = planRepository.existsByIdAndUserId(id, userId);
 
-        return sameUser && exist;
+        return exist;
 
     }
 
@@ -74,7 +71,7 @@ public class RoleEvaluator {
     }
 
     public boolean activityBelongToUser(Authentication authentication, long activityId) {
-        long userId = userRepository.getUserIdByOpenId(authentication.getName());
+        long userId = userService.getUserId(authentication.getName());
 
         Optional<ActivityEntity> activityEntity = activityRepository.findById(activityId);
 
@@ -86,7 +83,7 @@ public class RoleEvaluator {
     }
 
     public boolean projectBelongToUser(Authentication authentication, long projectId) {
-        long userId = userRepository.getUserIdByOpenId(authentication.getName());
+        long userId = userService.getUserId(authentication.getName());
 
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectId);
 
@@ -95,5 +92,15 @@ public class RoleEvaluator {
         }
 
         return projectEntity.get().getUserId() == userId;
+    }
+
+    public boolean dyCommentBelongToUser(Authentication authentication, long dyId, long dyCommentId) {
+        long userId = userService.getUserId(authentication.getName());
+
+        DynamicsEntity dynamicsEntity = dynamicsRepository.findByIdAndUserId(dyId, userId);
+
+        DynamicsCommentEntity dynamicsCommentEntity = dynamicsCommentRepository.getDynamicsCommentEntitiesByIdAndUserId(dyCommentId, userId);
+
+        return dynamicsEntity != null || dynamicsCommentEntity !=null;
     }
 }

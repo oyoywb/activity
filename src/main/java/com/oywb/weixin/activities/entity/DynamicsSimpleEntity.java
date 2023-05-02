@@ -2,12 +2,11 @@ package com.oywb.weixin.activities.entity;
 
 import lombok.Data;
 
-import javax.persistence.EntityResult;
-import javax.persistence.FieldResult;
-import javax.persistence.SqlResultSetMapping;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
+@Entity
 @SqlResultSetMapping(name = "DynamicsSimpleEntity",
         entities = @EntityResult(entityClass = DynamicsSimpleEntity.class,
                 fields = {
@@ -26,6 +25,7 @@ import java.sql.Timestamp;
                 })
 )
 public class DynamicsSimpleEntity {
+    @Id
     private long id;
     private String content;
     private String picture;
@@ -39,4 +39,12 @@ public class DynamicsSimpleEntity {
     private String contact;
     private int commentCount;
     private byte isLikes;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

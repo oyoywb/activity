@@ -21,32 +21,35 @@ public class PlanController {
         this.planService = planService;
     }
 
+    //tested
     @PostMapping
-    public CommonResponse createPlan(@RequestBody PlanRequestDto planRequestDto, Authentication authentication) throws Exception {
-        return planService.createPlan(planRequestDto, authentication.getName());
+    public void createPlan(@RequestBody PlanRequestDto planRequestDto, Authentication authentication) throws Exception {
+        planService.createPlan(planRequestDto, authentication.getName());
     }
 
-    @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, #planRequestDto.id, #planRequestDto.userId)")
+    //tested
     @PatchMapping
-    public CommonResponse updatePlan(@RequestBody PlanRequestDto planRequestDto) throws Exception {
-        return planService.updatePlan(planRequestDto);
+    public void updatePlan(@RequestBody PlanRequestDto planRequestDto, Authentication authentication) throws Exception {
+        planService.updatePlan(planRequestDto, authentication.getName());
     }
 
-    //@PreAuthorize("@roleEvaluator.sameUser(authentication, userId)")
+    //tested
     @GetMapping
-    public CommonResponse<List<PlanResponseDto>> getPlans(Authentication authentication) throws Exception {
+    public List<PlanResponseDto> getPlans(Authentication authentication) throws Exception {
         return planService.getPlan(authentication.getName());
     }
 
-    @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, id, userId)")
+    //tested
+    @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, #id)")
     @DeleteMapping
-    public CommonResponse deletePlan(@RequestParam long id, @RequestParam long userId) throws Exception {
-        return planService.deletePlan(id, userId);
+    public void deletePlan(@RequestParam long id) throws Exception {
+       planService.deletePlan(id);
     }
 
-    @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, id, userId)")
+    //tested
+    @PreAuthorize("@roleEvaluator.planBelongToUser(authentication, #id)")
     @GetMapping("/top")
-    public CommonResponse topPlan(@RequestParam long userId, @RequestParam long id, @RequestParam boolean isTop) throws Exception {
-        return planService.topPlan(id, userId, isTop);
+    public void topPlan(@RequestParam long id, @RequestParam boolean isTop) throws Exception {
+        planService.topPlan(id, isTop);
     }
 }

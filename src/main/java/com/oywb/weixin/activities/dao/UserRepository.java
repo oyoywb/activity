@@ -1,6 +1,9 @@
 package com.oywb.weixin.activities.dao;
 
 import com.oywb.weixin.activities.entity.UserEntity;
+import org.apache.catalina.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +25,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "select id from user where openid = ?1", nativeQuery = true)
     long getUserIdByOpenId(String openId);
 
+    @Query(value = "select id from user where registed = ?1", nativeQuery = true)
+    Page<UserEntity> getAllByRegisted(byte registed, Pageable pageable);
 }

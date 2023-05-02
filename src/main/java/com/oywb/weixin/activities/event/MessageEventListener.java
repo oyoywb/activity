@@ -1,10 +1,9 @@
 package com.oywb.weixin.activities.event;
 
-import com.oywb.weixin.activities.dao.MessageHistoryDao;
+import com.oywb.weixin.activities.dao.MessageHistoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
@@ -13,9 +12,9 @@ import javax.transaction.Transactional;
 @Transactional
 public class MessageEventListener implements ApplicationListener<MessageEvent> {
 
-    private final MessageHistoryDao messageHistoryDao;
+    private final MessageHistoryRepository messageHistoryDao;
 
-    public MessageEventListener(MessageHistoryDao messageHistoryDao) {
+    public MessageEventListener(MessageHistoryRepository messageHistoryDao) {
         this.messageHistoryDao = messageHistoryDao;
     }
 

@@ -8,7 +8,7 @@ public class UserRequestDto {
 
     private int sex;
 
-    private int birthday;
+    private long birthday;
 
     private String sign;
 }

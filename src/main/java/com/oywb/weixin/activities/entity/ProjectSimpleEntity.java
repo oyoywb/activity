@@ -2,12 +2,11 @@ package com.oywb.weixin.activities.entity;
 
 import lombok.Data;
 
-import javax.persistence.EntityResult;
-import javax.persistence.FieldResult;
-import javax.persistence.SqlResultSetMapping;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
+@Entity
 @SqlResultSetMapping(name = "ProjectSimpleEntity",
         entities = @EntityResult(entityClass = ProjectSimpleEntity.class,
                 fields = {
@@ -20,6 +19,7 @@ import java.sql.Timestamp;
                 })
 )
 public class ProjectSimpleEntity {
+    @Id
     private long id;
     private String name;
     private String location;
@@ -27,4 +27,12 @@ public class ProjectSimpleEntity {
     private String signCount;
     private String tag;
     private Timestamp end;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

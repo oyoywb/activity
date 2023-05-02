@@ -30,7 +30,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mariadb://${EN_DB_ADDRESSES:localhost:3306}/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
+              URL: jdbc:mariadb://${EN_DB_ADDRESSES:localhost}:3306/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
               user: ${EN_MARIADB_USER:root}
               password: ${EN_MARIADB_PASSWORD:casa}
               driver: com.mysql.jdbc.Driver

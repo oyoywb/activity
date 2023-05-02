@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
         log.error("服务器异常", e);
         return CommonResponse.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message("服务器异常,调用接口失败，请联系管理员处理")
+                .message("服务器异常,调用接口失败,请联系管理员处理")
                 .build();
     }
 }

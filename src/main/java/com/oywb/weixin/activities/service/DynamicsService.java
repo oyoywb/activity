@@ -3,19 +3,31 @@ package com.oywb.weixin.activities.service;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.DyCommentReqDto;
 import com.oywb.weixin.activities.dto.request.DynamicsRequestDto;
+import com.oywb.weixin.activities.entity.DyCommentSimple;
+import com.oywb.weixin.activities.entity.DynamicsCommentEntity;
+import com.oywb.weixin.activities.entity.DynamicsSimpleEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface DynamicsService {
-    CommonResponse createDynamics(DynamicsRequestDto dynamicsRequestDto, List<MultipartFile> files, String openId);
+    void createDynamics(DynamicsRequestDto dynamicsRequestDto, List<MultipartFile> files, String openId);
 
-    CommonResponse getDynamics(Pageable pageable, String tag, String openId);
+    Page<DynamicsSimpleEntity> getDynamics(Pageable pageable, String tag, String openId, boolean personal);
 
-    CommonResponse likes(String openId, boolean likes, long id);
+    void likes(String openId, boolean likes, long id);
 
-    CommonResponse getComment(long id);
+    List<DyCommentSimple> getComment(long id);
 
-    CommonResponse createComment(String openId, DyCommentReqDto dyCommentReqDto);
+    void createComment(String openId, DyCommentReqDto dyCommentReqDto);
+
+    void deleteDynamics(String openId, long id);
+
+    void deleteDynamicsComment(long dyCommentId);
+
+    List<DynamicsCommentEntity> getCommentReceive(String openId);
+
+    List<DynamicsCommentEntity> getCommentMyself(String openId);
 }

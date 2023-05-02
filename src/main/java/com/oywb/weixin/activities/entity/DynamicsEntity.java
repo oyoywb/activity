@@ -5,12 +5,12 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "dynamics", schema = "oywb_test", catalog = "")
+@Table(name = "dynamics")
 public class DynamicsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private Long id;
+    private long id;
     @Basic
     @Column(name = "content")
     private String content;
@@ -29,9 +29,6 @@ public class DynamicsEntity {
     @Basic
     @Column(name = "pass")
     private byte pass;
-    @Basic
-    @Column(name = "likes")
-    private long likes;
     @Basic
     @Column(name = "create_ts")
     private Timestamp createTs;
@@ -99,14 +96,6 @@ public class DynamicsEntity {
         this.pass = pass;
     }
 
-    public long getLikes() {
-        return likes;
-    }
-
-    public void setLikes(long likes) {
-        this.likes = likes;
-    }
-
     public Timestamp getCreateTs() {
         return createTs;
     }
@@ -136,11 +125,11 @@ public class DynamicsEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DynamicsEntity that = (DynamicsEntity) o;
-        return id == that.id && anonymous == that.anonymous && provided == that.provided && pass == that.pass && likes == that.likes && Objects.equals(content, that.content) && Objects.equals(picture, that.picture) && Objects.equals(keyword, that.keyword) && Objects.equals(createTs, that.createTs) && Objects.equals(userId, that.userId);
+        return id == that.id && anonymous == that.anonymous && provided == that.provided && pass == that.pass && Objects.equals(content, that.content) && Objects.equals(picture, that.picture) && Objects.equals(keyword, that.keyword) && Objects.equals(createTs, that.createTs) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, picture, keyword, anonymous, provided, pass, likes, createTs, userId);
+        return Objects.hash(id, content, picture, keyword, anonymous, provided, pass, createTs, userId);
     }
 }

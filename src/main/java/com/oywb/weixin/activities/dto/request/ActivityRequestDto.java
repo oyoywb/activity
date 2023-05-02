@@ -12,8 +12,6 @@ import java.util.List;
 public class ActivityRequestDto {
     private long id;
 
-    private List<String> picture;
-
     private String title;
 
     private String type;

@@ -2,7 +2,12 @@ package com.oywb.weixin.activities.controller;
 
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.ProjectRequestDto;
+import com.oywb.weixin.activities.dto.response.ProjectResponseDto;
+import com.oywb.weixin.activities.entity.ProjectEntity;
+import com.oywb.weixin.activities.entity.ProjectSimpleEntity;
+import com.oywb.weixin.activities.entity.ResumeEntity;
 import com.oywb.weixin.activities.service.ProjectService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,57 +28,67 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    //tested
     @PostMapping()
-    public CommonResponse createProject(@ModelAttribute ProjectRequestDto projectRequestDto, Authentication authentication, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
-        return projectService.createProject(projectRequestDto, Arrays.asList(files), authentication.getName());
+    public void createProject(@ModelAttribute ProjectRequestDto projectRequestDto, Authentication authentication, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
+        projectService.createProject(projectRequestDto, Arrays.asList(files), authentication.getName());
     }
 
+    //tested
     @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, #projectRequestDto.id)")
-    @PatchMapping()
-    public CommonResponse updateProject(@ModelAttribute ProjectRequestDto projectRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) {
-        return projectService.updateProject(projectRequestDto, Arrays.asList(files));
+    @PutMapping()
+    public void updateProject(@ModelAttribute ProjectRequestDto projectRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) {
+        projectService.updateProject(projectRequestDto, Arrays.asList(files));
     }
 
+    //tested
     //如果flag是1，则获取自己发布的project
     @GetMapping()
-    public CommonResponse getProjects(Pageable pageable, int flag, Authentication authentication) throws Exception {
+    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, Authentication authentication) throws Exception {
         return projectService.getProjects(pageable, flag, authentication.getName());
     }
 
+    //tested
     @GetMapping("/detail")
-    public CommonResponse getProjectDetail(Long id) throws Exception {
+    public ProjectResponseDto getProjectDetail(Long id) throws Exception {
         return projectService.getProjectDetail(id);
     }
 
+    //tested
     @PostMapping("/signup")
-    public CommonResponse signup(long projectId, Authentication authentication) {
-        return projectService.signup(projectId, authentication.getName());
+    public void signup(long projectId, Authentication authentication) {
+        projectService.signup(projectId, authentication.getName());
     }
 
+    //tested
     @GetMapping("/self")
-    public CommonResponse getSelfProject(Authentication authentication, byte passed) {
+    public List<ProjectEntity> getSelfProject(Authentication authentication, byte passed) {
         return projectService.getSelfProject(authentication.getName(), passed);
     }
 
+    //tested
     @GetMapping("/self/sign")
-    public CommonResponse getSelfSignProject(Authentication authentication) {
+    public List<ProjectEntity> getSelfSignProject(Authentication authentication) {
         return projectService.getSelfSignProject(authentication.getName());
     }
 
+    //tested
     @PostMapping("/signDown")
-    public CommonResponse signDown(Authentication authentication, long projectId) {
-        return projectService.signDown(authentication.getName(), projectId);
+    public void signDown(Authentication authentication, long projectId) {
+        projectService.signDown(authentication.getName(), projectId);
     }
 
-    @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, projectId)")
+    //tested
+    @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, #projectId)")
     @GetMapping("/resume")
-    public CommonResponse getResume(long projectId, byte pass) {
+    public List<ResumeEntity> getResume(long projectId, byte pass) {
         return projectService.getResumes(projectId, pass);
     }
 
-    @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, projectId)")
+    //tested
+    @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, #projectId)")
     @PatchMapping("/resume")
-    public CommonResponse resumePass(List<Long> userIds, long projectId) {
+    public CommonResponse resumePass(@RequestParam("userIds") List<Long> userIds, long projectId) {
         return projectService.resumePass(userIds, projectId);
     }
 }

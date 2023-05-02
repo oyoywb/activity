@@ -1,12 +1,12 @@
 package com.oywb.weixin.activities.service.impl;
 
 import com.oywb.weixin.activities.dao.PlanRepository;
-import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.PlanRequestDto;
 import com.oywb.weixin.activities.dto.response.PlanResponseDto;
 import com.oywb.weixin.activities.entity.PersonalPlanEntity;
 import com.oywb.weixin.activities.service.PlanService;
+import com.oywb.weixin.activities.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronExpression;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,30 +25,24 @@ public class PlanServiceImpl implements PlanService {
     private final static long THREE_DAY_AFTER = 3 * 24 * 60 * 60 * 1000;
 
     private final PlanRepository planRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public PlanServiceImpl(PlanRepository planRepository, UserRepository userRepository) {
+    public PlanServiceImpl(PlanRepository planRepository, UserService userService) {
         this.planRepository = planRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
-    public CommonResponse createPlan(PlanRequestDto planRequestDto, String openId) throws Exception {
+    public void createPlan(PlanRequestDto planRequestDto, String openId) throws Exception {
         PersonalPlanEntity personalPlanEntity = planRequestDto.toPersonalPlanEntity();
-        personalPlanEntity.setUserId(userRepository.getUserIdByOpenId(openId));
+        personalPlanEntity.setUserId(userService.getUserId(openId));
 
         planRepository.save(personalPlanEntity);
-
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .message("")
-                .build();
-
     }
 
     @Override
-    public CommonResponse getPlan(String openId) throws Exception {
-        List<PersonalPlanEntity> personalPlanEntityList = planRepository.findPersonalPlanEntitiesByUserId(userRepository.getUserIdByOpenId(openId));
+    public List<PlanResponseDto> getPlan(String openId) throws Exception {
+        List<PersonalPlanEntity> personalPlanEntityList = planRepository.findPersonalPlanEntitiesByUserId(userService.getUserId(openId));
 
         List<PlanResponseDto> planResponseDtoList = new ArrayList<>();
 
@@ -72,47 +67,33 @@ public class PlanServiceImpl implements PlanService {
             }
         });
 
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("")
-                .data(planResponseDtoList)
-                .build();
+        return planResponseDtoList;
     }
 
     @Override
-    public CommonResponse updatePlan(PlanRequestDto planRequestDto) throws Exception {
-
-        PersonalPlanEntity personalPlanEntity = planRequestDto.toPersonalPlanEntity();
-
-        planRepository.save(personalPlanEntity);
-
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .message("")
-                .build();
-    }
-
-    @Override
-    public CommonResponse deletePlan(long id, long userId) throws Exception {
-
-        planRepository.deleteById(id);
-
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .build();
-    }
-
-    @Override
-    public CommonResponse topPlan(long id, long userId, boolean isTop) throws Exception {
-        PersonalPlanEntity personalPlanEntity = planRepository.findPersonalPlanEntityByIdAndUserId(id, userId);
+    public void updatePlan(PlanRequestDto planRequestDto, String openId) throws Exception {
+        long userId = userService.getUserId(openId);
+        PersonalPlanEntity personalPlanEntity = planRepository.findPersonalPlanEntityByIdAndUserId(planRequestDto.getId(), userId);
 
         if (personalPlanEntity != null) {
-            personalPlanEntity.setIsTop((byte) (isTop ? 1 : 0));
+            planRequestDto.updatePersonalPlanEntity(personalPlanEntity);
             planRepository.save(personalPlanEntity);
         }
+    }
 
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .build();
+    @Override
+    public void deletePlan(long id) throws Exception {
+        planRepository.deleteById(id);
+    }
+
+    @Override
+    public void topPlan(long id, boolean isTop) throws Exception {
+        Optional<PersonalPlanEntity> personalPlanEntity = planRepository.findById(id);
+
+        if (personalPlanEntity.isPresent())  {
+            personalPlanEntity.get().setIsTop((byte) (isTop ? 1 : 0));
+            planRepository.save(personalPlanEntity.get());
+        }
     }
 
 }

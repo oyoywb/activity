@@ -18,6 +18,7 @@ import com.oywb.weixin.activities.entity.ShopCommentEntity;
 import com.oywb.weixin.activities.entity.ShopEntity;
 import com.oywb.weixin.activities.entity.UserEntity;
 import com.oywb.weixin.activities.service.ShopService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,8 +67,10 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Transactional
-    public CommonResponse createShop(ShopRequestDto shopRequestDto, List<MultipartFile> files) throws Exception {
+    public void createShop(ShopRequestDto shopRequestDto, List<MultipartFile> files, String openId) throws Exception {
+        long userId = userRepository.getUserIdByOpenId(openId);
         ShopEntity shopEntity =shopRequestDto.toShopEntity();
+        shopEntity.setUserId(userId);
 
         //TODO picture重名驗證
         files.forEach(file -> {
@@ -79,10 +82,11 @@ public class ShopServiceImpl implements ShopService {
             }
         });
 
-        shopRequestDto.getPicture().forEach(picture -> {
-            picture = minioConfig.getEndpoint() + "/" + SHOP_BUCKET + "/" + picture;
-        });
-        shopEntity.setPicture(String.join(",", shopRequestDto.getPicture()));
+        List<String> shopPictures = new ArrayList<>();
+        for (String picture: shopRequestDto.getPicture()) {
+            shopPictures.add(minioConfig.getEndpoint() + "/" + SHOP_BUCKET + "/" + picture);
+        }
+        shopEntity.setPicture(String.join(",", shopPictures));
 
         shopEntity.setCreateTs(new Timestamp(System.currentTimeMillis()));
         shopEntity.setUpdateTs(new Timestamp(System.currentTimeMillis()));
@@ -94,23 +98,19 @@ public class ShopServiceImpl implements ShopService {
             sellerEntity.setUpdateTs(new Timestamp(System.currentTimeMillis()));
             sellerEntity.setShopId(shopEntity.getId());
 
+            List<String> sellPictures = new ArrayList<>();
             sellerRequestDto.getPicture().forEach( picture -> {
-                picture = minioConfig.getEndpoint() + "/" + SELLER_BUCKET + "/" + picture;
+                sellPictures.add(minioConfig.getEndpoint() + "/" + SELLER_BUCKET + "/" + picture);
             });
-            sellerEntity.setPicture(String.join(",", sellerRequestDto.getPicture()));
+            sellerEntity.setPicture(String.join(",", sellPictures));
 
             sellerRepository.save(sellerEntity);
         }
-
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("create shop success")
-                .data(shopEntity)
-                .build();
     }
 
     @Override
     @Transactional
-    public CommonResponse updateShop(ShopRequestDto shopRequestDto, List<MultipartFile> files) throws Exception {
+    public void updateShop(ShopRequestDto shopRequestDto, List<MultipartFile> files) throws Exception {
         if (shopRequestDto.getId() != 0) {
             Optional<ShopEntity> shopEntityOptional = shopRepository.findById(shopRequestDto.getId());
 
@@ -162,48 +162,37 @@ public class ShopServiceImpl implements ShopService {
 
                     sellerRepository.save(sellerEntity);
                 }
-
-                return CommonResponse.builder().code(HttpStatus.OK.value())
-                        .message("create shop success")
-                        .data(shopEntity)
-                        .build();
             } else {
                 throw new Exception("shop do not exist");
             }
         }
-        throw new Exception("shop do not exist");
     }
 
     @Override
-    public CommonResponse createComment(ShopCommentRequestDto shopCommentRequestDto, List<MultipartFile> files) throws Exception {
+    public void createComment(ShopCommentRequestDto shopCommentRequestDto, List<MultipartFile> files, String openId) throws Exception {
+        long userId = userRepository.getUserIdByOpenId(openId);
         ShopCommentEntity shopCommentEntity = shopCommentRequestDto.toShopCommentEntity();
+        shopCommentEntity.setUserId(userId);
 
+        List<String> commentPictures = new ArrayList<>();
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, SC_BUCKET, file);
+            commentPictures.add(minioConfig.getEndpoint() + "/" + SC_BUCKET + "/" + fileName);
         });
 
-        shopCommentRequestDto.getPicture().forEach( picture -> {
-            picture = minioConfig.getEndpoint() + "/" + SC_BUCKET + "/" + picture;
-        });
-
-        shopCommentEntity.setPicture(String.join(",", shopCommentRequestDto.getPicture()));
+        shopCommentEntity.setPicture(String.join(",", commentPictures));
         shopCommentRepository.save(shopCommentEntity);
-
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("create shop comment success")
-                .data(shopCommentEntity)
-                .build();
     }
 
-    public CommonResponse getShopSimple(Long userId, String school, String zone
-            , String type, Pageable pageable) throws Exception {
+    public Page<ShopSimpleDto> getShopSimple(String openId, String school, String zone
+            , String type, Pageable pageable, int flag) throws Exception {
+        long userId = userRepository.getUserIdByOpenId(openId);
 
         StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
-        Optional.ofNullable(userId)
-                .ifPresent(value -> {
-                    sql.append(" and shop.user_id = ").append(value);
-                });
+        if (flag == 1) {
+            sql.append(" and shop.user_id = ").append(userId);
+        }
 
         Optional.ofNullable(school)
                 .ifPresent(value -> {
@@ -227,27 +216,23 @@ public class ShopServiceImpl implements ShopService {
 
         List<ShopSimpleDto> simpleDtoS = query.getResultList();
 
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("")
-                .data(new PageImpl<>(simpleDtoS, PageRequest.of(pageable.getPageNumber(), pageable.getPageNumber()), simpleDtoS.size())).build();
+        return new PageImpl<>(simpleDtoS, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), simpleDtoS.size());
 
     }
 
     @Override
-    public CommonResponse getSeller(Long shopId) throws Exception {
+    public List<SellerResponseDto> getSeller(Long shopId) throws Exception {
         List<SellerEntity> sellerEntities = sellerRepository.findAllByShopId(shopId);
 
         List<SellerResponseDto> sellerResponseDtos = sellerEntities.stream().map(sellerEntity -> sellerEntity.toSellerResponseDto())
                 .collect(Collectors.toList());
 
 
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("")
-                .data(sellerResponseDtos).build();
+        return sellerResponseDtos;
     }
 
     @Override
-    public CommonResponse getComments(Long shopId) throws Exception {
+    public List<ShopCommentResponseDto> getComments(Long shopId) throws Exception {
         List<ShopCommentEntity> shopCommentEntities = shopCommentRepository.getShopCommentEntitiesByShopId(shopId);
 
         List<ShopCommentResponseDto> shopCommentResponseDtoS = new ArrayList<>();
@@ -268,11 +253,7 @@ public class ShopServiceImpl implements ShopService {
             }
         });
 
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .message("")
-                .data(shopCommentResponseDtoS)
-                .build();
+        return shopCommentResponseDtoS;
     }
 
 }

@@ -14,7 +14,7 @@ public class InformationDetailEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private Long id;
+    private long id;
     @Basic
     @Column(name = "name")
     private String name;

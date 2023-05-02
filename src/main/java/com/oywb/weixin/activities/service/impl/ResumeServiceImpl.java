@@ -3,12 +3,12 @@ package com.oywb.weixin.activities.service.impl;
 import com.oywb.weixin.activities.config.minio.Minio;
 import com.oywb.weixin.activities.config.minio.MinioConfig;
 import com.oywb.weixin.activities.dao.ResumeRepository;
-import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.ResumeRequestDto;
 import com.oywb.weixin.activities.dto.response.ResumeResponseDto;
 import com.oywb.weixin.activities.entity.ResumeEntity;
 import com.oywb.weixin.activities.service.ResumeService;
+import com.oywb.weixin.activities.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,55 +25,43 @@ public class ResumeServiceImpl implements ResumeService {
     private static final String RESUME_BUCKET = "resume";
     private final Minio minio;
     private final MinioConfig minioConfig;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public ResumeServiceImpl(ResumeRepository resumeRepository, Minio minio, MinioConfig minioConfig, UserRepository userRepository) {
+    public ResumeServiceImpl(ResumeRepository resumeRepository, Minio minio, MinioConfig minioConfig, UserService userService) {
         this.resumeRepository = resumeRepository;
         this.minio = minio;
         this.minioConfig = minioConfig;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
 
     @Override
-    public CommonResponse getResumeByUserId(String openId) throws Exception {
-        List<ResumeEntity> resumeEntities = resumeRepository.getAllByUserId(userRepository.getUserIdByOpenId(openId));
+    public List<ResumeResponseDto> getResumeByUserId(String openId) throws Exception {
+        List<ResumeEntity> resumeEntities = resumeRepository.getAllByUserId(userService.getUserId(openId));
 
         List<ResumeResponseDto> resumeResponseDtoS = resumeEntities.stream().map(ResumeEntity :: toResumeResponseDto)
                 .collect(Collectors.toList());
 
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("")
-                .data(resumeResponseDtoS)
-                .build();
+        return resumeResponseDtoS;
     }
 
     @Override
-    public CommonResponse save(ResumeRequestDto resumeRequestDto, MultipartFile file, String openId) throws Exception {
+    public void save(ResumeRequestDto resumeRequestDto, MultipartFile file, String openId) throws Exception {
 
         String fileName = file.getOriginalFilename();
         minio.upload(fileName, RESUME_BUCKET, file);
 
         ResumeEntity resumeEntity = resumeRequestDto.toResumeEntity();
         resumeEntity.setAvatar(minioConfig.getEndpoint() + "/" + RESUME_BUCKET + "/" + fileName);
-        resumeEntity.setUserId(userRepository.getUserIdByOpenId(openId));
+        resumeEntity.setUserId(userService.getUserId(openId));
         resumeRepository.save(resumeEntity);
-
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("创建简历成功")
-                .data(resumeEntity)
-                .build();
-
     }
 
     @Override
-    public CommonResponse getResumesByFilter(String school, String college, String subject, String grade, Pageable pageable) throws Exception {
+    public Page<ResumeEntity> getResumesByFilter(String school, String college, String subject, String grade, Pageable pageable) throws Exception {
         Page<ResumeEntity> resumeEntities =  resumeRepository.getByFilter(school, college, subject, grade, pageable);
 
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .message("")
-                .data(resumeEntities)
-                .build();
+        return resumeEntities;
     }
 
 

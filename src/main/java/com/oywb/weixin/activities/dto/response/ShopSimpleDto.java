@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.print.DocFlavor;
 
+@Entity
 @Data
 @SqlResultSetMapping(name = "ShopSimpleDto",
         entities = @EntityResult(entityClass = ShopSimpleDto.class,
@@ -22,6 +23,7 @@ import javax.print.DocFlavor;
         })
 )
 public class ShopSimpleDto {
+    @Id
     private long id;
 
     private long userId;
@@ -41,4 +43,12 @@ public class ShopSimpleDto {
     private int status;
 
     private String location;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

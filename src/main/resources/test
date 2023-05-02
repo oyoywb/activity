@@ -1,0 +1,46 @@
+WITH RECURSIVE comment_tree AS ( 
+                  SELECT 
+                    id, 
+                    user_id, 
+                    content, 
+                    parent_id, 
+                    created_at, 
+                    updated_at, 
+                    is_deleted, 
+                    deleted_at, 
+                    is_approved, 
+                    dy_id, 
+                    1 AS level 
+                  FROM dynamics_comment 
+                  WHERE parent_id IS NULL AND is_deleted = FALSE AND is_approved = TRUE 
+                  UNION ALL 
+                  SELECT 
+                    dynamics_comment.id, 
+                    dynamics_comment.user_id, 
+                    dynamics_comment.content, 
+                    dynamics_comment.parent_id, 
+                    dynamics_comment.created_at, 
+                    dynamics_comment.updated_at, 
+                    dynamics_comment.is_deleted, 
+                    dynamics_comment.deleted_at, 
+                    dynamics_comment.is_approved, 
+                    dynamics_comment.dy_id, 
+                    comment_tree.level  1 AS level 
+                  FROM dynamics_comment 
+                  JOIN comment_tree ON dynamics_comment.parent_id = comment_tree.id 
+                  WHERE dynamics_comment.is_deleted = FALSE AND dynamics_comment.is_approved = TRUE 
+                ) 
+                 SELECT 
+                  id, 
+                  user_id, 
+                  content, 
+                  parent_id, 
+                  created_at, 
+                  updated_at, 
+                  is_deleted, 
+                  deleted_at, 
+                  is_approved, 
+                  dy_id, 
+                  level 
+                FROM comment_tree where dy_id=:dyId 
+                 ORDER BY level, created_at

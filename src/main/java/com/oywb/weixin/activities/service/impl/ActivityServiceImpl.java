@@ -11,23 +11,23 @@ import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
 import com.oywb.weixin.activities.dto.response.ActivitySimpleDto;
 import com.oywb.weixin.activities.entity.*;
 import com.oywb.weixin.activities.service.ActivityService;
+import com.oywb.weixin.activities.service.UserService;
 import com.oywb.weixin.activities.util.CronUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ActivityServiceImpl implements ActivityService {
 
     private final Minio minio;
@@ -35,26 +35,26 @@ public class ActivityServiceImpl implements ActivityService {
     private final InformationRepository informationRepository;
     private final InformationDetailRepository informationDetailRepository;
     private final EntityManager entityManager;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PlanRepository planRepository;
     private final MinioConfig minioConfig;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final static String ACTIVITY_BUCKET = "activity";
-    public ActivityServiceImpl(Minio minio, ActivityRepository activityRepository, InformationRepository informationRepository, InformationDetailRepository informationDetailRepository, EntityManager entityManager, UserRepository userRepository, PlanRepository planRepository, MinioConfig minioConfig) {
+    public ActivityServiceImpl(Minio minio, ActivityRepository activityRepository, InformationRepository informationRepository, InformationDetailRepository informationDetailRepository, EntityManager entityManager, UserService userService, PlanRepository planRepository, MinioConfig minioConfig) {
         this.minio = minio;
         this.activityRepository = activityRepository;
         this.informationRepository = informationRepository;
         this.informationDetailRepository = informationDetailRepository;
         this.entityManager = entityManager;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.planRepository = planRepository;
         this.minioConfig = minioConfig;
     }
 
     @Transactional
-    public CommonResponse createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception {
+    public void createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception {
 
         List<String> pictures = new ArrayList<>();
         files.forEach(file -> {
@@ -64,7 +64,7 @@ public class ActivityServiceImpl implements ActivityService {
         });
 
         ActivityEntity activityEntity = activityRequestDto.toActivityEntity();
-        activityEntity.setUserId(userRepository.getUserIdByOpenId(openId));
+        activityEntity.setUserId(userService.getUserId(openId));
         activityEntity.setPicture(String.join(",", pictures));
 
         activityEntity = activityRepository.save(activityEntity);
@@ -72,15 +72,11 @@ public class ActivityServiceImpl implements ActivityService {
         informationEntity.setActivityId(activityEntity.getId());
 
         informationRepository.save(informationEntity);
-
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .build();
     }
 
 
     @Override
-    public CommonResponse updateActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files) {
+    public void updateActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files) {
 
         List<String> pictures = new ArrayList<>();
         files.forEach(file -> {
@@ -99,30 +95,36 @@ public class ActivityServiceImpl implements ActivityService {
         informationEntity.update(activityRequestDto.getInformationRequestDto());
 
         informationRepository.save(informationEntity);
-
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .build();
     }
 
     @Override
-    public CommonResponse getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId) throws Exception {
-        long userId = userRepository.getUserIdByOpenId(openId);
+    public List<ActivitySimpleDto> getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId) throws Exception {
+        long userId = userService.getUserId(openId);
         List<ActivitySimpleDto> activitySimpleDtoS = new ArrayList<>();
 
-        String sql = "select a.id, a.location, a.title, a.introduction, a.reaper, a.count, u.id as user_id, u.profile from activity a, information_detail ind,user u WHERE a.school = :school " +
-                "and a.campus = :campus and a.start BETWEEN :start and :end and a.id = ind.activity_id and ind.user_id = u.id";
+        String sql = "SELECT a.id as id , a.location as location, a.title as title, a.introduction as introduction, a.recommand as recommand, a.reaper as reaper, a.count as count, u.id AS user_id, u.profile as profile " +
+                " FROM information_detail ind " +
+                " RIGHT JOIN activity a ON a.id = ind.activity_id " +
+                " LEFT JOIN user u ON ind.user_id = u.id " +
+                " WHERE a.school = :school " +
+                "  AND a.campus = :campus " +
+                "  AND a.start BETWEEN :start AND :end ";
 
         if (flag == 1) {
             sql += " and a.user_id =:userId";
         }
 
-        Query query = entityManager.createNativeQuery(sql);
+
+        Query query = entityManager.createNativeQuery(sql, "ActivitySimpleEntity");
+
+        if (flag == 1) {
+            query.setParameter("userId", userId);
+        }
+
         query.setParameter("school", school);
         query.setParameter("campus", campus);
         query.setParameter("start", start);
         query.setParameter("end", end);
-        query.setParameter("userId", userId);
 
         List<ActivitySimpleEntity> activitySimpleEntities = query.getResultList();
 
@@ -136,9 +138,10 @@ public class ActivityServiceImpl implements ActivityService {
             activitySimpleDto.setId(v.get(0).getId());
             activitySimpleDto.setLocation(v.get(0).getLocation());
             activitySimpleDto.setTitle(v.get(0).getTitle());
-            activitySimpleDto.setContent(v.get(0).getContent());
+            activitySimpleDto.setContent(v.get(0).getIntroduction());
             activitySimpleDto.setReaper(v.get(0).getReaper());
             activitySimpleDto.setCount(v.get(0).getCount());
+            activitySimpleDto.setUserSimpleInfos(userSimpleInfos);
 
             v.forEach(v1 -> {
                 ActivitySimpleDto.UserSimpleInfo userSimpleInfo = activitySimpleDto.new UserSimpleInfo();
@@ -149,15 +152,12 @@ public class ActivityServiceImpl implements ActivityService {
             activitySimpleDtoS.add(activitySimpleDto);
         });
 
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .data(activitySimpleDtoS)
-                .build();
+        return activitySimpleDtoS;
 
     }
 
     @Override
-    public CommonResponse getActivityDetail(long id) throws Exception {
+    public ActivityResponseDto getActivityDetail(long id) throws Exception {
         ActivityResponseDto activityResponseDto = new ActivityResponseDto();
 
         Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(id);
@@ -169,18 +169,18 @@ public class ActivityServiceImpl implements ActivityService {
             InformationEntity informationEntity = informationRepository.findByActivityId(activityEntity.getId());
             activityResponseDto.setInformationRequestDto(informationEntity.toInformationRequestDto());
 
-            activityResponseDto.setPassCount(informationDetailRepository.countPassedByActivityId(activityEntity.getId()));
+            Long passCount = informationDetailRepository.countPassedByActivityId(activityEntity.getId());
+
+            activityResponseDto.setPassCount(passCount == null ? 0 : passCount);
         }
 
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .data(activityResponseDto)
-                .build();
+        return activityResponseDto;
 
     }
 
     @Override
-    public CommonResponse signup(InformationDetailRequestDto informationDetailRequestDto, Authentication authentication) throws Exception {
-        long userId = userRepository.getUserIdByOpenId(authentication.getName());
+    public void signup(InformationDetailRequestDto informationDetailRequestDto, String openId) throws Exception {
+        long userId = userService.getUserId(openId);
         informationDetailRequestDto.setUserId(userId);
 
 
@@ -188,14 +188,11 @@ public class ActivityServiceImpl implements ActivityService {
         informationDetailEntity.setCustomQuestion(objectMapper.writeValueAsString(informationDetailRequestDto.getCustom_question()));
 
         informationDetailRepository.save(informationDetailEntity);
-
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .build();
     }
 
     @Override
-    public CommonResponse addToPlan(long activityId, String openId) throws Exception {
-        long userId = userRepository.getUserIdByOpenId(openId);
+    public void addToPlan(long activityId, String openId) throws Exception {
+        long userId = userService.getUserId(openId);
         Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
         if (activityEntityOpt.isPresent()) {
             ActivityEntity activityEntity = activityEntityOpt.get();
@@ -209,54 +206,41 @@ public class ActivityServiceImpl implements ActivityService {
             personalPlanEntity.setCron(CronUtils.timestampToCron(activityEntity.getStart()));
             planRepository.save(personalPlanEntity);
         }
-
-
-        return CommonResponse.builder().code(HttpStatus.OK.value())
-                .build();
-
     }
 
     @Override
-    public CommonResponse getSelfActivity(String openId, byte flag) {
-        long userId = userRepository.getUserIdByOpenId(openId);
+    public List<ActivityEntity> getSelfActivity(String openId, byte flag) {
+        long userId = userService.getUserId(openId);
         List<ActivityEntity> activityEntities = activityRepository.getSelfActivity(userId, flag);
 
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .data(activityEntities)
-                .build();
+        return activityEntities;
     }
 
+    @Transactional
     @Override
-    public CommonResponse signDown(String openId, long activityId) {
-        long userId = userRepository.getUserIdByOpenId(openId);
+    public void signDown(String openId, long activityId) {
+        long userId = userService.getUserId(openId);
         informationDetailRepository.deleteByUserIdActivityId(activityId, userId);
-
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .build();
     }
 
     @Override
-    public CommonResponse getInformationDetails(long activityId, byte flag) {
+    public List<InformationDetailEntity> getInformationDetails(long activityId, byte flag) {
         List<InformationDetailEntity> informationDetailEntities = informationDetailRepository.getInformationDetailEntitiesByActivityIdAndPassed(activityId, flag);
 
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .data(informationDetailEntities)
-                .build();
+        return informationDetailEntities;
     }
 
+    @Transactional
     @Override
     public CommonResponse activePass(List<Long> ids, long activityId) {
-        long passCount = informationDetailRepository.countPassedByActivityId(activityId);
+        Long passCount = informationDetailRepository.countPassedByActivityId(activityId);
 
         Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
 
         if (activityEntityOpt.isPresent()) {
             ActivityEntity activityEntity = activityEntityOpt.get();
 
-            if (activityEntity.getCount() - passCount < ids.size()) {
+            if (activityEntity.getCount() - (passCount == null ? 0 : passCount) < ids.size()) {
                 return CommonResponse.builder()
                         .code(HttpStatus.BAD_REQUEST.value())
                         .message("已通过人数超额")
@@ -275,13 +259,10 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public CommonResponse getSelfSignActivity(String openId) {
-        long userId = userRepository.getUserIdByOpenId(openId);
+    public List<ActivityEntity> getSelfSignActivity(String openId) {
+        long userId = userService.getUserId(openId);
         List<ActivityEntity> activityEntities = activityRepository.getSelfSignActivity(userId);
 
-        return CommonResponse.builder()
-                .code(HttpStatus.OK.value())
-                .data(activityEntities)
-                .build();
+        return activityEntities;
     }
 }

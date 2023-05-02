@@ -2,12 +2,11 @@ package com.oywb.weixin.activities.entity;
 
 import lombok.Data;
 
-import javax.persistence.EntityResult;
-import javax.persistence.FieldResult;
-import javax.persistence.SqlResultSetMapping;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
+@Entity
 @SqlResultSetMapping(name = "DyCommentSimple",
         entities = @EntityResult(entityClass = DyCommentSimple.class,
                 fields = {
@@ -25,6 +24,7 @@ import java.sql.Timestamp;
                 })
 )
 public class DyCommentSimple {
+    @Id
     private long id;
     private long userId;
     private String content;
@@ -36,4 +36,12 @@ public class DyCommentSimple {
     private boolean isApproved;
     private long dyId;
     private long level;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

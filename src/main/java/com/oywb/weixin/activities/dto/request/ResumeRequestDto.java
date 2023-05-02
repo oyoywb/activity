@@ -6,9 +6,9 @@ import lombok.Data;
 //簡歷
 @Data
 public class ResumeRequestDto {
-    private int id;
+    private long id;
 
-    private int userId;
+    private long userId;
 
     private String name;
 

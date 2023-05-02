@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class DyCommentReqDto {
     private String content;
-    private long parentId;
+    private Long parentId;
     private long dyId;
 
     public DynamicsCommentEntity toDynamicsCommentEntity() {

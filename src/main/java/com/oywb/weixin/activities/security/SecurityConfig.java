@@ -31,7 +31,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity()
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 /*    @Bean

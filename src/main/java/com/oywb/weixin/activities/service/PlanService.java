@@ -2,15 +2,18 @@ package com.oywb.weixin.activities.service;
 
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.PlanRequestDto;
+import com.oywb.weixin.activities.dto.response.PlanResponseDto;
+
+import java.util.List;
 
 public interface PlanService {
-    CommonResponse createPlan(PlanRequestDto planRequestDto, String openId) throws Exception;
+    void createPlan(PlanRequestDto planRequestDto, String openId) throws Exception;
 
-    CommonResponse getPlan(String openId) throws Exception;
+    List<PlanResponseDto> getPlan(String openId) throws Exception;
 
-    CommonResponse updatePlan(PlanRequestDto planRequestDto) throws Exception;
+    void updatePlan(PlanRequestDto planRequestDto, String openId) throws Exception;
 
-    CommonResponse deletePlan(long id, long userId) throws Exception;
+    void deletePlan(long id) throws Exception;
 
-    CommonResponse topPlan(long id, long userId, boolean isTop) throws Exception;
+    void topPlan(long id, boolean isTop) throws Exception;
 }

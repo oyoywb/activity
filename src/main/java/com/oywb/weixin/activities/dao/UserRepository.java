@@ -25,6 +25,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "select id from user where openid = ?1", nativeQuery = true)
     long getUserIdByOpenId(String openId);
 
-    @Query(value = "select id from user where registed = ?1", nativeQuery = true)
+    @Query(value = "select * from user where registed = ?1", nativeQuery = true)
     Page<UserEntity> getAllByRegisted(byte registed, Pageable pageable);
 }

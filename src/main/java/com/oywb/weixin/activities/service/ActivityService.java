@@ -17,7 +17,7 @@ import java.util.List;
 public interface ActivityService {
     void createActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files, String openId) throws Exception;
 
-    List<ActivitySimpleDto> getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId) throws Exception;
+    List<ActivitySimpleDto> getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId, byte verified) throws Exception;
 
     ActivityResponseDto getActivityDetail(long id) throws Exception;
 
@@ -36,4 +36,6 @@ public interface ActivityService {
     List<ActivityEntity> getSelfSignActivity(String openId);
 
     void updateActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files);
+
+    void verifiedActivity(List<Long> ids, byte verified);
 }

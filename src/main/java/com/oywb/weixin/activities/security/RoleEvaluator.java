@@ -62,6 +62,10 @@ public class RoleEvaluator {
 
     }
 
+    public boolean canGetNoPass(Authentication authentication, byte pass) {
+        return pass == 1 || isAdmin(authentication);
+    }
+
     public boolean shopBelongToUser(Authentication authentication, long id, long userId) {
         boolean sameUser = this.sameUser(authentication, userId);
 

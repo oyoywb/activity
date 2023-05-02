@@ -81,11 +81,17 @@ public class ProjectServiceImp implements ProjectService {
         projectRepository.save(projectEntity);
     }
 
+    @Transactional
     @Override
-    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId) throws Exception {
+    public void passProject(List<Long> ids, byte pass) {
+        projectRepository.passProject(ids, pass);
+    }
+
+    @Override
+    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass) throws Exception {
         long userId = userService.getUserId(openId);
 
-        String sql = "select p.id,p.name,p.location,p.count,p.tag,p.end,(select count(*) from resume_delivery rd where rd.project_id = p.id and rd.pass = 1) as sign_count from project p ";
+        String sql = "select p.id,p.name,p.location,p.count,p.tag,p.end,(select count(*) from resume_delivery rd where rd.project_id = p.id and rd.pass = 1) as sign_count from project p where p.pass = :pass ";
 
         if (flag == 1) {
             sql += " where p.user_id = :userId";
@@ -96,6 +102,7 @@ public class ProjectServiceImp implements ProjectService {
             query.setParameter("userId", userId);
         }
 
+        query.setParameter("pass", pass);
         query.setFirstResult(pageable.getPageSize() * pageable.getPageNumber());
         query.setMaxResults(pageable.getPageSize());
 

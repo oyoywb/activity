@@ -15,7 +15,7 @@ import java.util.List;
 public interface ProjectService {
     void createProject(ProjectRequestDto projectRequestDto, List<MultipartFile> files, String openId) throws Exception;
 
-    Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId) throws Exception;
+    Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass) throws Exception;
 
     ProjectResponseDto getProjectDetail(Long id) throws Exception;
 
@@ -33,4 +33,6 @@ public interface ProjectService {
     List<ProjectEntity> getSelfSignProject(String openId);
 
     void updateProject(ProjectRequestDto projectRequestDto, List<MultipartFile> files);
+
+    void passProject(List<Long> ids, byte pass);
 }

@@ -97,8 +97,14 @@ public class ActivityServiceImpl implements ActivityService {
         informationRepository.save(informationEntity);
     }
 
+    @Transactional
     @Override
-    public List<ActivitySimpleDto> getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId) throws Exception {
+    public void verifiedActivity(List<Long> ids, byte verified) {
+        activityRepository.verifiedActivity(ids, verified);
+    }
+
+    @Override
+    public List<ActivitySimpleDto> getActivitiesSimple(String school, String campus, Timestamp start, Timestamp end, int flag, String openId, byte verified) throws Exception {
         long userId = userService.getUserId(openId);
         List<ActivitySimpleDto> activitySimpleDtoS = new ArrayList<>();
 
@@ -108,7 +114,8 @@ public class ActivityServiceImpl implements ActivityService {
                 " LEFT JOIN user u ON ind.user_id = u.id " +
                 " WHERE a.school = :school " +
                 "  AND a.campus = :campus " +
-                "  AND a.start BETWEEN :start AND :end ";
+                "  AND a.start BETWEEN :start AND :end "+
+                "  AND a.verified = :verified ";
 
         if (flag == 1) {
             sql += " and a.user_id =:userId";
@@ -125,6 +132,7 @@ public class ActivityServiceImpl implements ActivityService {
         query.setParameter("campus", campus);
         query.setParameter("start", start);
         query.setParameter("end", end);
+        query.setParameter("verified", verified);
 
         List<ActivitySimpleEntity> activitySimpleEntities = query.getResultList();
 

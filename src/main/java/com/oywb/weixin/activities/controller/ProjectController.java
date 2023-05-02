@@ -43,9 +43,10 @@ public class ProjectController {
 
     //tested
     //如果flag是1，则获取自己发布的project
+    @PreAuthorize("@roleEvaluator.canGetNoPass(authentication, #pass)")
     @GetMapping()
-    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, Authentication authentication) throws Exception {
-        return projectService.getProjects(pageable, flag, authentication.getName());
+    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, Authentication authentication, byte pass) throws Exception {
+        return projectService.getProjects(pageable, flag, authentication.getName(), pass);
     }
 
     //tested
@@ -90,5 +91,11 @@ public class ProjectController {
     @PatchMapping("/resume")
     public CommonResponse resumePass(@RequestParam("userIds") List<Long> userIds, long projectId) {
         return projectService.resumePass(userIds, projectId);
+    }
+
+    @PreAuthorize("@roleEvaluator.isRegistered(authentication)")
+    @PatchMapping("/auth")
+    public void passProject(@RequestParam("ids") List<Long> ids, byte pass) {
+        projectService.passProject(ids, pass);
     }
 }

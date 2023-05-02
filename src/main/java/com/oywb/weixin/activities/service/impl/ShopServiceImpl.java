@@ -186,10 +186,12 @@ public class ShopServiceImpl implements ShopService {
     }
 
     public Page<ShopSimpleDto> getShopSimple(String openId, String school, String zone
-            , String type, Pageable pageable, int flag) throws Exception {
+            , String type, Pageable pageable, int flag, byte pass) throws Exception {
         long userId = userRepository.getUserIdByOpenId(openId);
 
         StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
+
+        //if flag == 1 ,获取用户自己创建的店铺
         if (flag == 1) {
             sql.append(" and shop.user_id = ").append(userId);
         }
@@ -208,6 +210,8 @@ public class ShopServiceImpl implements ShopService {
                 .ifPresent(value -> {
                     sql.append(" and shop.type = ").append(value);
                 });
+
+        sql.append(" and shop.pass = ").append(pass);
 
         sql.append(" GROUP BY shop.id");
         Query query = entityManager.createNativeQuery(sql.toString());
@@ -254,6 +258,12 @@ public class ShopServiceImpl implements ShopService {
         });
 
         return shopCommentResponseDtoS;
+    }
+
+    @Transactional
+    @Override
+    public void passShop(List<Long> ids, byte pass) {
+        shopRepository.passShop(ids, pass);
     }
 
 }

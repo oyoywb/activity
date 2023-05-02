@@ -41,9 +41,10 @@ public class ActivityController {
     }
 
     //tested
+    @PreAuthorize("@roleEvaluator.canGetNoPass(authentication, #verified)")
     @GetMapping()
-    public List<ActivitySimpleDto> getActivitiesSimple(@RequestParam String school, @RequestParam String campus, @RequestParam Timestamp start, @RequestParam Timestamp end, int flag, Authentication authentication) throws Exception {
-        return activityService.getActivitiesSimple(school, campus, start, end, flag, authentication.getName());
+    public List<ActivitySimpleDto> getActivitiesSimple(@RequestParam String school, @RequestParam String campus, @RequestParam Timestamp start, @RequestParam Timestamp end, int flag, Authentication authentication, byte verified) throws Exception {
+        return activityService.getActivitiesSimple(school, campus, start, end, flag, authentication.getName(), verified);
     }
 
     //tested
@@ -96,5 +97,11 @@ public class ActivityController {
     @PatchMapping("/information")
     public CommonResponse activityPass(@RequestParam("ids") List<Long> ids, long activityId) {
         return activityService.activePass(ids, activityId);
+    }
+
+    @PutMapping("/auth")
+    @PreAuthorize("@roleEvaluator.isAdmin(authentication)")
+    public void verifiedActivity(@RequestParam ("ids") List<Long> ids, byte verified) {
+        activityService.verifiedActivity(ids, verified);
     }
 }

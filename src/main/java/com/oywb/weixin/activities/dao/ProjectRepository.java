@@ -2,6 +2,7 @@ package com.oywb.weixin.activities.dao;
 
 import com.oywb.weixin.activities.entity.ProjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -13,4 +14,8 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
 
     @Query(value = "select p.* from project p,resume_delivery rd WHERE p.id = rd.project_id and rd.user_id = ?1", nativeQuery = true)
     List<ProjectEntity> getSelfSignProject(long userId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update project set pass = ?2 where id in (?1)")
+    void passProject(List<Long> ids, byte pass);
 }

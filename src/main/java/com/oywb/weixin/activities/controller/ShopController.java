@@ -53,10 +53,11 @@ public class ShopController {
     }
 
     //tested
+    @PreAuthorize("@roleEvaluator.canGetNoPass(authentication, #pass)")
     @GetMapping
     public Page<ShopSimpleDto> getShops(Authentication authentication, @RequestParam (required = false) String school, @RequestParam (required = false) String zone
-            , @RequestParam (required = false) String type, Pageable pageable, int flag) throws Exception {
-        return shopService.getShopSimple(authentication.getName(), school, zone, type, pageable, flag);
+            , @RequestParam (required = false) String type, Pageable pageable, int flag, byte pass) throws Exception {
+        return shopService.getShopSimple(authentication.getName(), school, zone, type, pageable, flag, pass);
     }
 
     //tested
@@ -69,5 +70,11 @@ public class ShopController {
     @GetMapping("/comment")
     public List<ShopCommentResponseDto> getComment(@RequestParam Long shopId) throws Exception {
         return shopService.getComments(shopId);
+    }
+
+    @PostMapping("/auth")
+    @PreAuthorize("@roleEvaluator.isAdmin(authentication)")
+    public void passShop(@RequestParam("ids") List<Long> ids, byte pass) {
+        shopService.passShop(ids, pass);
     }
 }

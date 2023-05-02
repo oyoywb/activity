@@ -20,9 +20,11 @@ public interface ShopService {
     void createComment(ShopCommentRequestDto shopCommentRequestDto, List<MultipartFile> files, String openId) throws Exception;
 
     Page<ShopSimpleDto> getShopSimple(String openId, String school, String zone
-            , String type, Pageable pageable, int flag) throws Exception;
+            , String type, Pageable pageable, int flag, byte pass) throws Exception;
 
     List<SellerResponseDto> getSeller(Long shopId) throws Exception;
 
     List<ShopCommentResponseDto> getComments(Long shopId) throws Exception;
+
+    void passShop(List<Long> ids, byte pass);
 }

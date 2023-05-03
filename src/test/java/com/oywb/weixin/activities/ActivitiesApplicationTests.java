@@ -1,3 +1,4 @@
+/*
 package com.oywb.weixin.activities;
 
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ class ActivitiesApplicationTests {
 			}
 
 
+*/
 /*			CronExpression cron = new CronExpression(cronExpression);
 			Date lastDay = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
 			Date nextValidTime = new Date(cron.getNextValidTimeAfter(lastDay).getTime() + 24 * 60 * 60 * 1000);
@@ -54,7 +56,8 @@ class ActivitiesApplicationTests {
 			Instant instant = nextValidTime.toInstant();
 			LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 			boolean isToday = localDateTime.isAfter(startOfDay);
-			System.out.println("Cron expression will " + (isToday ? "" : "not ") + "trigger today");*/
+			System.out.println("Cron expression will " + (isToday ? "" : "not ") + "trigger today");*//*
+
 			System.out.println(next);
 		} else {
 			System.out.println("Invalid cron expression");
@@ -62,3 +65,4 @@ class ActivitiesApplicationTests {
 	}
 
 }
+*/

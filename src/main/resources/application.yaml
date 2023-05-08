@@ -30,7 +30,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mariadb://${EN_DB_ADDRESSES:120.79.70.221}:3306/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
+              URL: jdbc:mariadb://${EN_DB_ADDRESSES:120.79.70.221:3306}/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
               user: ${EN_MARIADB_USER:root}
               password: ${EN_MARIADB_PASSWORD:casa}
               driver: com.mysql.jdbc.Driver
@@ -51,8 +51,8 @@ server:
 sai:
   wechat:
     mini-program:
-      app-id: wx4d45764acb3348c7
-      app-secret: 964fd7e004f4d0330ad9ebe8e319e201
+      app-id: ${APP_ID:wx4d45764acb3348c7$}
+      app-secret: ${APP_SECRET:964fd7e004f4d0330ad9ebe8e319e201}
 
 minio:
   endpoint: http://${MINIO:120.79.70.221}:9000

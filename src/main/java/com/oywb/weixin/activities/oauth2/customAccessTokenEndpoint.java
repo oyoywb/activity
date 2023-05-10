@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,7 +39,7 @@ public class customAccessTokenEndpoint {
     }
 
     @PostMapping("/accesstoken")
-    public Object createAccessToken(String code) {
+    public Object createAccessToken(@RequestParam(value = "code") String code) {
         return createJwt(getSession(weChatProperties.getMiniProgram().getAppId(), weChatProperties.getMiniProgram().getAppSecret(), code));
     }
 

@@ -68,10 +68,12 @@ public class ActivityServiceImpl implements ActivityService {
         activityEntity.setPicture(String.join(",", pictures));
 
         activityEntity = activityRepository.save(activityEntity);
-        InformationEntity informationEntity = activityRequestDto.toInformationEntity();
-        informationEntity.setActivityId(activityEntity.getId());
+        if (activityRequestDto.isCollectOrNot()) {
+            InformationEntity informationEntity = activityRequestDto.toInformationEntity();
+            informationEntity.setActivityId(activityEntity.getId());
 
-        informationRepository.save(informationEntity);
+            informationRepository.save(informationEntity);
+        }
     }
 
 

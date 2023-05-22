@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,19 +52,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void auth(PersonalInfoDto personalInfoDto, MultipartFile file, String openId) throws Exception {
+    public void auth(PersonalInfoDto personalInfoDto, List<MultipartFile> files, String openId) throws Exception {
         Optional<UserEntity> userEntityOptional = Optional.ofNullable(userRepository.findByOpenid(openId));
         if (userEntityOptional.isPresent()) {
 
-            String fileName = file.getOriginalFilename();
-            minio.upload(fileName, AUTH_BUCKET, file);
+            List<String> fileNames = new ArrayList<>();
+            for (MultipartFile file : files) {
+                String fileName = file.getOriginalFilename();
+                minio.upload(fileName, AUTH_BUCKET, file);
+                fileNames.add(minioConfig.getEndpoint() + "/" + AUTH_BUCKET + "/" + fileName);
+            }
 
             UserEntity userEntity = userEntityOptional.get();
             userEntity.setName(personalInfoDto.getName());
             userEntity.setSchool(personalInfoDto.getSchool());
             userEntity.setSubject(personalInfoDto.getOg());
             userEntity.setGrade(personalInfoDto.getSubject());
-            userEntity.setScp(minioConfig.getEndpoint() + "/" + AUTH_BUCKET + "/" + fileName);
+            userEntity.setScp(String.join(",", fileNames));
             userRepository.save(userEntity);
         }
     }

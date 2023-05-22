@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -41,8 +42,8 @@ public class UserController {
 
     //tested
     @PostMapping("/auth")
-    public void auth (@ModelAttribute PersonalInfoDto personalInfoDto, @RequestParam(value = "file", required = false) MultipartFile file, Authentication authentication) throws Exception {
-        userService.auth(personalInfoDto, file, authentication.getName());
+    public void auth (@ModelAttribute PersonalInfoDto personalInfoDto, @RequestParam(value = "file", required = false) MultipartFile[] files, Authentication authentication) throws Exception {
+        userService.auth(personalInfoDto, Arrays.asList(files), authentication.getName());
     }
 
     //tested

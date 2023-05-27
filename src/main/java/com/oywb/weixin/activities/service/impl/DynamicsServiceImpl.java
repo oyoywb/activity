@@ -67,7 +67,7 @@ public class DynamicsServiceImpl implements DynamicsService {
     public Page<DynamicsSimpleEntity> getDynamics(Pageable pageable, String tag, String openId, boolean personal) {
         long userId = userService.getUserId(openId);
 
-        StringBuffer sql = new StringBuffer("select dy.*, (select count(*) from dynamics_comment dc where dc.dy_id = dy.id) as count, COALESCE(lk.likes, 0) as is_likes , (select count(*) from likes where lk.dy_id = dy.id) as likes from dynamics dy LEFT \n" +
+        StringBuffer sql = new StringBuffer("select dy.*, (select count(*) from dynamics_comment dc where dc.dy_id = dy.id) as count, COALESCE(lk.likes, 0) as is_likes , (select count(*) from likes where lk.dy_id = dy.id) as likes from dynamics dy LEFT " +
                 "JOIN likes lk ON dy.id = lk.dy_id where dy.pass = 1 ");
         if (personal) {
             sql.append(" and dy.user_id = :userId");
@@ -78,7 +78,9 @@ public class DynamicsServiceImpl implements DynamicsService {
         sql.append(" ORDER BY dy.create_ts");
 
         Query query = entityManager.createNativeQuery(sql.toString());
-        query.setParameter("userId", userId);
+        if (personal) {
+            query.setParameter("userId", userId);
+        }
         query.setFirstResult(pageable.getPageSize() * pageable.getPageNumber());
         query.setMaxResults(pageable.getPageSize());
 

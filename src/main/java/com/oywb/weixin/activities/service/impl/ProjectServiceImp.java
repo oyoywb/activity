@@ -19,11 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,15 +51,23 @@ public class ProjectServiceImp implements ProjectService {
     }
 
     @Override
-    public void createProject(ProjectRequestDto projectRequestDto, List<MultipartFile> files, String openId) throws Exception {
+    public void createProject(ProjectRequestDto projectRequestDto, StandardMultipartHttpServletRequest req, String openId) throws Exception {
         long userId = userService.getUserId(openId);
 
         List<String> fileNameList = new ArrayList<>();
-        files.forEach(file -> {
+
+        Iterator<String> iterator = req.getFileNames();
+        while (iterator.hasNext()) {
+            MultipartFile file = req.getFile(iterator.next());
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, PROJECT_BUCKET, file);
             fileNameList.add(minioConfig.getEndpoint() + "/" + PROJECT_BUCKET + "/" + fileName);
-        });
+        }
+/*        files.forEach(file -> {
+            String fileName = file.getOriginalFilename();
+            minio.upload(fileName, PROJECT_BUCKET, file);
+            fileNameList.add(minioConfig.getEndpoint() + "/" + PROJECT_BUCKET + "/" + fileName);
+        });*/
 
         ProjectEntity projectEntity = projectRequestDto.toProjectEntity();
         projectEntity.setPicture(String.join(",", fileNameList));

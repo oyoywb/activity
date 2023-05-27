@@ -13,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,8 +32,8 @@ public class ProjectController {
 
     //tested
     @PostMapping()
-    public void createProject(@ModelAttribute ProjectRequestDto projectRequestDto, Authentication authentication, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
-        projectService.createProject(projectRequestDto, Arrays.asList(files), authentication.getName());
+    public void createProject(@ModelAttribute ProjectRequestDto projectRequestDto, Authentication authentication, HttpServletRequest request) throws Exception {
+        projectService.createProject(projectRequestDto, (StandardMultipartHttpServletRequest) request, authentication.getName());
     }
 
     //tested

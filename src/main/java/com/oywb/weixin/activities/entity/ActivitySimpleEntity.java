@@ -33,7 +33,7 @@ public class ActivitySimpleEntity {
 
     private int count;
 
-    private long userId;
+    private Long userId;
 
     private String profile;
 

@@ -154,10 +154,12 @@ public class ActivityServiceImpl implements ActivityService {
             activitySimpleDto.setUserSimpleInfos(userSimpleInfos);
 
             v.forEach(v1 -> {
-                ActivitySimpleDto.UserSimpleInfo userSimpleInfo = activitySimpleDto.new UserSimpleInfo();
-                userSimpleInfo.setId(v1.getUserId());
-                userSimpleInfo.setProfile(v1.getProfile());
-                userSimpleInfos.add(userSimpleInfo);
+                if (v1.getUserId() != null && v1.getProfile()!= null) {
+                    ActivitySimpleDto.UserSimpleInfo userSimpleInfo = activitySimpleDto.new UserSimpleInfo();
+                    userSimpleInfo.setId(v1.getUserId());
+                    userSimpleInfo.setProfile(v1.getProfile());
+                    userSimpleInfos.add(userSimpleInfo);
+                }
             });
             activitySimpleDtoS.add(activitySimpleDto);
         });

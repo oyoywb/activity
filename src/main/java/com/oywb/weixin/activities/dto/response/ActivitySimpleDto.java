@@ -20,7 +20,7 @@ public class ActivitySimpleDto {
 
     @Data
     public class UserSimpleInfo {
-        private long id;
+        private Long id;
         private String profile;
     }
 }

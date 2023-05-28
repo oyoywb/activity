@@ -33,7 +33,7 @@ public class WebSocket {
     private static AtomicInteger onlineCount = new AtomicInteger(0);
 
     /** 存放所有在线的客户端 */
-    private static Map<String, Session> clients = new ConcurrentHashMap<>();
+    private static Map<Long, Session> clients = new ConcurrentHashMap<>();
 
     private static UserService userService;
     private static MessageEventPublisher messageEventPublisher;
@@ -66,7 +66,7 @@ public class WebSocket {
             long userId = userService.getUserId(authentication.getName());
             session.getUserProperties().put("userId", userId);
             onlineCount.incrementAndGet(); // 在线数加1
-            clients.put(authentication.getName(), session);
+            clients.put(userId, session);
             log.info("有新连接加入:{}，当前在线人数为:{},用户id:{}", session.getId(), onlineCount.get(),userId);
         }
     }
@@ -80,8 +80,9 @@ public class WebSocket {
         if (authentication == null) {
             log.error("用户未认证");
         } else {
+            long userId = userService.getUserId(authentication.getName());
             onlineCount.decrementAndGet(); // 在线数减1
-            clients.remove(authentication.getName());
+            clients.remove(userId);
             log.info("有一连接关闭:{}，当前在线人数为:{}", session.getId(), onlineCount.get());
         }
     }
@@ -93,7 +94,7 @@ public class WebSocket {
      * 客户端发送过来的消息
      * 这里能过地址获取用户userId与ws session关联至map中
      */
-    //{"message": "test2", "toOpenId": "oBxyZ1KBsZ88_MsOgSanrKcrFqFE", "toUserId": 2}
+    //{"message": "test2", "toUserId": 2}
     @OnMessage
     public void onMessage(String message, Session session) {
         Authentication authentication = (Authentication) session.getUserPrincipal();
@@ -106,9 +107,10 @@ public class WebSocket {
             try {
                 JSONObject myMessage = JSON.parseObject(message);
                 if (myMessage != null) {
+                    Long toUserId = myMessage.getLong("toUserId");
                     Session toSession = null;
-                    if(myMessage.getString("toOpenId") != null){
-                        toSession = clients.get(myMessage.getString("toOpenId")); //取到接收userId session
+                    if(toUserId != null){
+                        toSession = clients.get(toUserId); //取到接收userId session
                     }
                     if (toSession != null) {
                         this.sendMessage(myMessage.get("message").toString(), toSession);
@@ -124,7 +126,7 @@ public class WebSocket {
                         //}
 
                     //}
-                    long toUserId = myMessage.getLong("toUserId");
+
                     MessageHistoryEntity messageHistoryEntity = new MessageHistoryEntity();
                     messageHistoryEntity.setContext(myMessage.get("message").toString());
                     messageHistoryEntity.setReceiver(toUserId);
@@ -161,7 +163,7 @@ public class WebSocket {
      * @param message
      * 消息内容
      */
-    private void sendMessageAll(String message, String userId) {
+/*    private void sendMessageAll(String message, String userId) {
         for (Map.Entry<String, Session> sessionEntry : clients.entrySet()) {
             Session toSession = sessionEntry.getValue();
             // 排除掉自己
@@ -171,7 +173,7 @@ public class WebSocket {
                 toSession.getAsyncRemote().sendText(message);
             }
         }
-    }
+    }*/
 
 
 }

@@ -9,11 +9,12 @@ import com.oywb.weixin.activities.entity.ResumeEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import java.util.List;
 
 public interface ProjectService {
-    void createProject(ProjectRequestDto projectRequestDto, List<MultipartFile> files, String openId) throws Exception;
+    void createProject(ProjectRequestDto projectRequestDto, StandardMultipartHttpServletRequest req, String openId) throws Exception;
 
     Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass) throws Exception;
 

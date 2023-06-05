@@ -73,7 +73,7 @@ public class DynamicsServiceImpl implements DynamicsService {
             sql.append(" and dy.user_id = :userId");
         }
         if (tag != null) {
-            sql.append(" and dy.keyword like %" + tag + "%");
+            sql.append(" and dy.keyword like '%" + tag + "%'");
         }
         sql.append(" ORDER BY dy.create_ts");
 

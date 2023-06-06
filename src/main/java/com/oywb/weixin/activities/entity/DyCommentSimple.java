@@ -28,7 +28,7 @@ public class DyCommentSimple {
     private long id;
     private long userId;
     private String content;
-    private long parentId;
+    private Long parentId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private boolean isDeleted;

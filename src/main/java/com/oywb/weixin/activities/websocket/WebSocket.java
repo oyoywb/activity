@@ -33,7 +33,7 @@ public class WebSocket {
     private static AtomicInteger onlineCount = new AtomicInteger(0);
 
     /** 存放所有在线的客户端 */
-    private static Map<Long, Session> clients = new ConcurrentHashMap<>();
+    private static Map<String, Session> clients = new ConcurrentHashMap<>();
 
     private static UserService userService;
     private static MessageEventPublisher messageEventPublisher;
@@ -66,7 +66,7 @@ public class WebSocket {
             long userId = userService.getUserId(authentication.getName());
             session.getUserProperties().put("userId", userId);
             onlineCount.incrementAndGet(); // 在线数加1
-            clients.put(userId, session);
+            clients.put(authentication.getName(), session);
             log.info("有新连接加入:{}，当前在线人数为:{},用户id:{}", session.getId(), onlineCount.get(),userId);
         }
     }
@@ -80,9 +80,9 @@ public class WebSocket {
         if (authentication == null) {
             log.error("用户未认证");
         } else {
-            long userId = userService.getUserId(authentication.getName());
+            //long userId = userService.getUserId(authentication.getName());
             onlineCount.decrementAndGet(); // 在线数减1
-            clients.remove(userId);
+            clients.remove(authentication.getName());
             log.info("有一连接关闭:{}，当前在线人数为:{}", session.getId(), onlineCount.get());
         }
     }

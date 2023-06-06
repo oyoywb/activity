@@ -198,17 +198,17 @@ public class ShopServiceImpl implements ShopService {
 
         Optional.ofNullable(school)
                 .ifPresent(value -> {
-                    sql.append(" and shop.school = ").append(value);
+                    sql.append(" and shop.school = '").append(value).append("'");
                 });
 
         Optional.ofNullable(zone)
                 .ifPresent(value -> {
-                    sql.append(" and shop.zone = ").append(value);
+                    sql.append(" and shop.zone = '").append(value).append("'");
                 });
 
         Optional.ofNullable(type)
                 .ifPresent(value -> {
-                    sql.append(" and shop.type = ").append(value);
+                    sql.append(" and shop.type = '").append(value).append("'");
                 });
 
         sql.append(" and shop.pass = ").append(pass);

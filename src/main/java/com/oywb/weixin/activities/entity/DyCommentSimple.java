@@ -17,7 +17,7 @@ import java.sql.Timestamp;
                         @FieldResult(name = "createdAt", column = "created_at"),
                         @FieldResult(name = "updatedAt", column = "updated_at"),
                         @FieldResult(name = "isDeleted", column = "is_deleted"),
-                        @FieldResult(name = "deleteAt", column = "delete_at"),
+                        @FieldResult(name = "deleteAt", column = "deleted_at"),
                         @FieldResult(name = "isApproved", column = "is_approved"),
                         @FieldResult(name = "dyId", column = "dy_id"),
                         @FieldResult(name = "level", column = "level")

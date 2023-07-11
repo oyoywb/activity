@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             userEntity = new UserEntity();
             userEntity.setOpenid(openid);
+            userEntity.setRegisted(-1);
             userRepository.save(userEntity);
         }
         return userEntity;

@@ -3,6 +3,7 @@ package com.oywb.weixin.activities.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 @Data
@@ -18,7 +19,9 @@ import javax.persistence.*;
             @FieldResult(name = "profile", column = "profile"),
             @FieldResult(name = "location", column = "location"),
             @FieldResult(name = "recommand", column = "recommand"),
-            @FieldResult(name = "reaper", column = "reaper")
+            @FieldResult(name = "reaper", column = "reaper"),
+            @FieldResult(name = "start", column = "start"),
+            @FieldResult(name = "end", column = "end")
     })
 )
 public class ActivitySimpleEntity {
@@ -40,6 +43,10 @@ public class ActivitySimpleEntity {
     private String location;
 
     private String recommand;
+
+    private Timestamp start;
+
+    private Timestamp end;
 
     public void setId(Long id) {
         this.id = id;

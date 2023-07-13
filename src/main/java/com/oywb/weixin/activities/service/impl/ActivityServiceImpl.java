@@ -151,6 +151,8 @@ public class ActivityServiceImpl implements ActivityService {
             activitySimpleDto.setContent(v.get(0).getIntroduction());
             activitySimpleDto.setReaper(v.get(0).getReaper());
             activitySimpleDto.setCount(v.get(0).getCount());
+            activitySimpleDto.setStart(v.get(0).getStart());
+            activitySimpleDto.setEnd(v.get(0).getEnd());
             activitySimpleDto.setUserSimpleInfos(userSimpleInfos);
 
             v.forEach(v1 -> {

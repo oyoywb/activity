@@ -36,7 +36,14 @@ public class MessageHistoryServiceImpl implements MessageHistoryService {
                 "    END AS other_user_id," +
                 "    MAX(ts) AS last_chat_time," +
                 "    context" +
+                "    u.profile" +
+                "    u.name" +
                 " FROM message_history" +
+                " LEFT JOIN user u ON " +
+                "    u.id = CASE " +
+                "               WHEN mh.sender = :userId THEN mh.receiver " +
+                "               ELSE mh.sender " +
+                "           END" +
                 " WHERE sender = :userId OR receiver = :userId" +
                 " GROUP BY other_user_id" +
                 " ORDER BY last_chat_time DESC";

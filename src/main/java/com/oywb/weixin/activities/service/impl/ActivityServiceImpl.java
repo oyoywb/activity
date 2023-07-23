@@ -110,7 +110,7 @@ public class ActivityServiceImpl implements ActivityService {
         long userId = userService.getUserId(openId);
         List<ActivitySimpleDto> activitySimpleDtoS = new ArrayList<>();
 
-        String sql = "SELECT a.id as id , a.location as location, a.title as title, a.introduction as introduction, a.recommand as recommand, a.reaper as reaper, a.count as count, a.start as start , a.end as end , u.id AS user_id, u.profile as profile " +
+        String sql = "SELECT a.id as id , a.location as location, a.title as title, a.introduction as introduction, a.recommand as recommand, a.reaper as reaper, a.count as count, a.start as start , a.end as end, a.tpye as type, u.id AS user_id, u.profile as profile " +
                 " FROM information_detail ind " +
                 " RIGHT JOIN activity a ON a.id = ind.activity_id " +
                 " LEFT JOIN user u ON ind.user_id = u.id " +
@@ -154,6 +154,7 @@ public class ActivityServiceImpl implements ActivityService {
             activitySimpleDto.setStart(v.get(0).getStart());
             activitySimpleDto.setEnd(v.get(0).getEnd());
             activitySimpleDto.setUserSimpleInfos(userSimpleInfos);
+            activitySimpleDto.setType(v.get(0).getType());
 
             v.forEach(v1 -> {
                 if (v1.getUserId() != null && v1.getProfile()!= null) {

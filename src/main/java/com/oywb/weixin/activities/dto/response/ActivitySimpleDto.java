@@ -19,6 +19,7 @@ public class ActivitySimpleDto {
 
     private Timestamp start;
     private Timestamp end;
+    private String type;
 
     private List<UserSimpleInfo> userSimpleInfos;
 

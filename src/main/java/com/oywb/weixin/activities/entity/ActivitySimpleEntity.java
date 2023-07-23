@@ -21,7 +21,8 @@ import java.sql.Timestamp;
             @FieldResult(name = "recommand", column = "recommand"),
             @FieldResult(name = "reaper", column = "reaper"),
             @FieldResult(name = "start", column = "start"),
-            @FieldResult(name = "end", column = "end")
+            @FieldResult(name = "end", column = "end"),
+            @FieldResult(name = "type", column = "type")
     })
 )
 public class ActivitySimpleEntity {
@@ -47,6 +48,8 @@ public class ActivitySimpleEntity {
     private Timestamp start;
 
     private Timestamp end;
+
+    private String type;
 
     public void setId(Long id) {
         this.id = id;

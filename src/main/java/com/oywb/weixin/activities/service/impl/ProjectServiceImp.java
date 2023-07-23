@@ -98,13 +98,17 @@ public class ProjectServiceImp implements ProjectService {
     }
 
     @Override
-    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass) throws Exception {
+    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass, String name) throws Exception {
         long userId = userService.getUserId(openId);
 
         String sql = "select p.id,p.name,p.location,p.count,p.tag,p.end,(select count(*) from resume_delivery rd where rd.project_id = p.id and rd.pass = 1) as sign_count from project p where p.pass = :pass ";
 
         if (flag == 1) {
-            sql += " where p.user_id = :userId";
+            sql += " and p.user_id = :userId ";
+        }
+
+        if (name == null && name != "") {
+            sql += " and p.name like '%:" + name + "%'";
         }
 
         Query query = entityManager.createNativeQuery(sql);

@@ -16,7 +16,7 @@ import java.util.List;
 public interface ProjectService {
     void createProject(ProjectRequestDto projectRequestDto, StandardMultipartHttpServletRequest req, String openId) throws Exception;
 
-    Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass) throws Exception;
+    Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, String openId, byte pass, String name) throws Exception;
 
     ProjectResponseDto getProjectDetail(Long id) throws Exception;
 

@@ -23,6 +23,7 @@ public class ProjectRequestDto {
     //項目進度
     private String rop;
 
+    //项目周期
     private String period;
 
     private int count;

@@ -47,8 +47,8 @@ public class ProjectController {
     //如果flag是1，则获取自己发布的project
     @PreAuthorize("@roleEvaluator.canGetNoPass(authentication, #pass)")
     @GetMapping()
-    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, Authentication authentication, byte pass) throws Exception {
-        return projectService.getProjects(pageable, flag, authentication.getName(), pass);
+    public Page<ProjectSimpleEntity> getProjects(Pageable pageable, int flag, Authentication authentication, byte pass, String name) throws Exception {
+        return projectService.getProjects(pageable, flag, authentication.getName(), pass, name);
     }
 
     //tested

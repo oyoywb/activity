@@ -49,4 +49,7 @@ public class ActivityResponseDto {
 
     //已報名人數
     private long passCount;
+
+    //你将获得
+    private String reaper;
 }

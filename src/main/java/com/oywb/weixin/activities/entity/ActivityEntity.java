@@ -260,6 +260,7 @@ public class ActivityEntity {
         activityResponseDto.setUserId(this.userId);
         activityResponseDto.setSchool(this.school);
         activityResponseDto.setCampus(this.campus);
+        activityResponseDto.setReaper(this.getReaper());
 
         return activityResponseDto;
     }

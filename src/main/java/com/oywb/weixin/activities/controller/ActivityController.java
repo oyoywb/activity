@@ -85,7 +85,7 @@ public class ActivityController {
         activityService.addToPlan(activityId, authentication.getName());
     }
 
-    //tested
+    //1 pass, 0 no vertify, -1 no pass
     @PreAuthorize("@roleEvaluator.activityBelongToUser(authentication, #activityId)")
     @GetMapping("/information")
     public List<InformationDetailEntity> getInformationDetails(long activityId, byte flag) {
@@ -95,8 +95,8 @@ public class ActivityController {
     //tested
     @PreAuthorize("@roleEvaluator.activityBelongToUser(authentication, #activityId)")
     @PatchMapping("/information")
-    public CommonResponse activityPass(@RequestParam("ids") List<Long> ids, long activityId) {
-        return activityService.activePass(ids, activityId);
+    public CommonResponse activityPass(@RequestParam("ids") List<Long> ids, long activityId, byte flag) {
+        return activityService.activePass(ids, activityId, flag);
     }
 
     @PutMapping("/auth")

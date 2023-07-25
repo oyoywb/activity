@@ -173,22 +173,23 @@ public class ProjectServiceImp implements ProjectService {
 
     @Transactional
     @Override
-    public CommonResponse resumePass(List<Long> userIds, long projectId) {
+    public CommonResponse resumePass(List<Long> userIds, long projectId, byte flag) {
 
         Optional<ProjectEntity> projectEntityOpt = projectRepository.findById(projectId);
 
         if (projectEntityOpt.isPresent()) {
-            ProjectEntity projectEntity = projectEntityOpt.get();
-            Integer passCount = resumeDeliveryRepository.countByProjectId(projectId);
+            if (flag == 1) {
+                ProjectEntity projectEntity = projectEntityOpt.get();
+                Integer passCount = resumeDeliveryRepository.countByProjectId(projectId);
 
-            if (projectEntity.getCount() - (passCount == null ? 0 : passCount) < userIds.size()) {
-                return CommonResponse.builder()
-                        .code(HttpStatus.BAD_REQUEST.value())
-                        .message("报名人数超过配置")
-                        .build();
+                if (projectEntity.getCount() - (passCount == null ? 0 : passCount) < userIds.size()) {
+                    return CommonResponse.builder()
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .message("报名人数超过配置")
+                            .build();
+                }
             }
-
-            resumeDeliveryRepository.updateByProjectIdAndUserId(projectId, userIds);
+            resumeDeliveryRepository.updateByProjectIdAndUserId(projectId, userIds, flag);
         } else {
             return CommonResponse.builder()
                     .code(HttpStatus.BAD_REQUEST.value())

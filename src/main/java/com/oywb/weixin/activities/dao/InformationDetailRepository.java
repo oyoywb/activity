@@ -19,6 +19,10 @@ public interface InformationDetailRepository extends JpaRepository<InformationDe
     List<InformationDetailEntity> getInformationDetailEntitiesByActivityIdAndPassed(long activityId, byte passed);
 
     @Modifying
-    @Query(value = "update information_detail set passed=1 where id in (?1)", nativeQuery = true)
-    void pass(List<Long> ids);
+    @Query(value = "update information_detail set passed=1 where id in (?1) and activity_id=?2", nativeQuery = true)
+    void pass(List<Long> ids, long activityId);
+
+    @Modifying
+    @Query(value = "update information_detail set passed=-1 where id in (?1) and activity_id=?2", nativeQuery = true)
+    void noPass(List<Long> ids, long activityId);
 }

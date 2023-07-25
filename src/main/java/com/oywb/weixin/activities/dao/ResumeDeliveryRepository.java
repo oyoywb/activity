@@ -16,6 +16,6 @@ public interface ResumeDeliveryRepository extends JpaRepository<ResumeDeliveryEn
     void deleteByUserIdAndProjectId(long userId, long projectId);
 
     @Modifying
-    @Query(value = "update resume_delivery set pass = 1 where project_id = ?1 and user_id in (?2)", nativeQuery = true)
-    void updateByProjectIdAndUserId(long projectId, List<Long> userIds);
+    @Query(value = "update resume_delivery set pass = ?3 where project_id = ?1 and user_id in (?2)", nativeQuery = true)
+    void updateByProjectIdAndUserId(long projectId, List<Long> userIds, byte flag);
 }

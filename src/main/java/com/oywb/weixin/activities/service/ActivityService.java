@@ -31,7 +31,7 @@ public interface ActivityService {
 
     List<InformationDetailEntity> getInformationDetails(long activityId, byte flag);
 
-    CommonResponse activePass(List<Long> ids, long activityId);
+    CommonResponse activePass(List<Long> ids, long activityId, byte flag);
 
     List<ActivityEntity> getSelfSignActivity(String openId);
 

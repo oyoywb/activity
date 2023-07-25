@@ -247,24 +247,28 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Transactional
     @Override
-    public CommonResponse activePass(List<Long> ids, long activityId) {
-        Long passCount = informationDetailRepository.countPassedByActivityId(activityId);
-
+    public CommonResponse activePass(List<Long> ids, long activityId, byte flag) {
         Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
 
         if (activityEntityOpt.isPresent()) {
-            ActivityEntity activityEntity = activityEntityOpt.get();
+            if (flag == 1) {
+                ActivityEntity activityEntity = activityEntityOpt.get();
+                Long passCount = informationDetailRepository.countPassedByActivityId(activityId);
 
-            if (activityEntity.getCount() - (passCount == null ? 0 : passCount) < ids.size()) {
-                return CommonResponse.builder()
-                        .code(HttpStatus.BAD_REQUEST.value())
-                        .message("已通过人数超额")
-                        .build();
+                if (activityEntity.getCount() - (passCount == null ? 0 : passCount) < ids.size()) {
+                    return CommonResponse.builder()
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .message("已通过人数超额")
+                            .build();
+                }
+                informationDetailRepository.pass(ids, activityEntity.getId());
+            } else if (flag == -1) {
+                informationDetailRepository.noPass(ids, activityId);
             }
-            informationDetailRepository.pass(ids);
             return CommonResponse.builder()
                     .code(HttpStatus.OK.value())
                     .build();
+
         } else {
             return CommonResponse.builder()
                     .code(HttpStatus.BAD_REQUEST.value())

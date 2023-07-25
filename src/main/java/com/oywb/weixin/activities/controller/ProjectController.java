@@ -91,8 +91,8 @@ public class ProjectController {
     //tested
     @PreAuthorize("@roleEvaluator.projectBelongToUser(authentication, #projectId)")
     @PatchMapping("/resume")
-    public CommonResponse resumePass(@RequestParam("userIds") List<Long> userIds, long projectId) {
-        return projectService.resumePass(userIds, projectId);
+    public CommonResponse resumePass(@RequestParam("userIds") List<Long> userIds, long projectId, byte flag) {
+        return projectService.resumePass(userIds, projectId, flag);
     }
 
     @PreAuthorize("@roleEvaluator.isRegistered(authentication)")

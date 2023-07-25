@@ -29,7 +29,7 @@ public interface ProjectService {
 
     List<ResumeEntity> getResumes(long projectId, byte pass);
 
-    CommonResponse resumePass(List<Long> userIds, long projectId);
+    CommonResponse resumePass(List<Long> userIds, long projectId, byte flag);
 
     List<ProjectEntity> getSelfSignProject(String openId);
 

@@ -21,7 +21,7 @@ public interface ActivityService {
 
     ActivityResponseDto getActivityDetail(long id) throws Exception;
 
-    void signup(InformationDetailRequestDto informationDetailRequestDto, String openId) throws Exception;
+    CommonResponse signup(InformationDetailRequestDto informationDetailRequestDto, String openId) throws Exception;
 
     void addToPlan(long activityId, String openId) throws Exception;
 

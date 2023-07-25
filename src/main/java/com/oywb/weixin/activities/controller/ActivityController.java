@@ -75,8 +75,8 @@ public class ActivityController {
     //tested
     //報名
     @PostMapping("/signup")
-    public void signup(@RequestBody InformationDetailRequestDto informationDetailRequestDto, Authentication authentication) throws Exception {
-        activityService.signup(informationDetailRequestDto, authentication.getName());
+    public CommonResponse signup(@RequestBody InformationDetailRequestDto informationDetailRequestDto, Authentication authentication) throws Exception {
+        return activityService.signup(informationDetailRequestDto, authentication.getName());
     }
 
     //tested

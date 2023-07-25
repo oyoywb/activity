@@ -194,15 +194,38 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void signup(InformationDetailRequestDto informationDetailRequestDto, String openId) throws Exception {
-        long userId = userService.getUserId(openId);
-        informationDetailRequestDto.setUserId(userId);
+    public CommonResponse signup(InformationDetailRequestDto informationDetailRequestDto, String openId) throws Exception {
+
+        long activityId = informationDetailRequestDto.getActivityId();
+        Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
+        if (activityEntityOpt.isPresent()) {
+            ActivityEntity activityEntity = activityEntityOpt.get();
+
+            if (activityEntity.getStart().after(new Timestamp(System.currentTimeMillis()))) {
+                long userId = userService.getUserId(openId);
+                informationDetailRequestDto.setUserId(userId);
 
 
-        InformationDetailEntity informationDetailEntity = informationDetailRequestDto.toInformationDetailEntity();
-        informationDetailEntity.setCustomQuestion(objectMapper.writeValueAsString(informationDetailRequestDto.getCustom_question()));
+                InformationDetailEntity informationDetailEntity = informationDetailRequestDto.toInformationDetailEntity();
+                informationDetailEntity.setCustomQuestion(objectMapper.writeValueAsString(informationDetailRequestDto.getCustom_question()));
 
-        informationDetailRepository.save(informationDetailEntity);
+                informationDetailRepository.save(informationDetailEntity);
+                return CommonResponse.builder()
+                        .code(HttpStatus.OK.value())
+                        .message("报名提交")
+                        .build();
+            } else {
+                return CommonResponse.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("活动以开始，不可报名")
+                        .build();
+            }
+        } else {
+            return CommonResponse.builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message("活动不存在")
+                    .build();
+        }
     }
 
     @Override

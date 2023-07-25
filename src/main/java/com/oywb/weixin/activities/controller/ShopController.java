@@ -39,10 +39,16 @@ public class ShopController {
     }
 
     //tested
-    @PreAuthorize("@roleEvaluator.shopBelongToUser(authentication, #shopRequestDto.id, #shopRequestDto.userId)")
+    @PreAuthorize("@roleEvaluator.shopBelongToUser(authentication, #shopRequestDto.id)")
     @PatchMapping
     public void updateShop(@ModelAttribute ShopRequestDto shopRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
         shopService.updateShop(shopRequestDto, Arrays.asList(files));
+    }
+
+    @PreAuthorize("@roleEvaluator.shopBelongToUser(authentication, #shopId)")
+    @PatchMapping("/status")
+    public void updateShopStatus(Long shopId, Authentication authentication, int status) {
+        shopService.updateShopStatus(shopId, status);
     }
 
     //tested

@@ -66,12 +66,12 @@ public class RoleEvaluator {
         return pass == 1 || isAdmin(authentication);
     }
 
-    public boolean shopBelongToUser(Authentication authentication, long id, long userId) {
-        boolean sameUser = this.sameUser(authentication, userId);
+    public boolean shopBelongToUser(Authentication authentication, long id) {
+        long userId = userService.getUserId(authentication.getName());
 
         boolean exist = shopRepository.existsByIdAndUserId(id, userId);
 
-        return sameUser && exist;
+        return exist;
     }
 
     public boolean activityBelongToUser(Authentication authentication, long activityId) {

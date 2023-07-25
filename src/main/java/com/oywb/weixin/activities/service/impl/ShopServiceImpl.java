@@ -266,4 +266,12 @@ public class ShopServiceImpl implements ShopService {
         shopRepository.passShop(ids, pass);
     }
 
+    @Override
+    public void updateShopStatus(Long shopId, int status) {
+        Optional<ShopEntity> shopEntityOptional = shopRepository.findById(shopId);
+        if (shopEntityOptional.isPresent()) {
+            shopRepository.updataStatus(shopId, status);
+        }
+    }
+
 }

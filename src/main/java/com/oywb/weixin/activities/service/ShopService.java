@@ -27,4 +27,6 @@ public interface ShopService {
     List<ShopCommentResponseDto> getComments(Long shopId) throws Exception;
 
     void passShop(List<Long> ids, byte pass);
+
+    void updateShopStatus(Long shopId, int status);
 }

@@ -17,4 +17,8 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "update shop set pass = ?2 where id in (?1)")
     void passShop(List<Long> ids, byte pass);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update shop set status = ?2 where id = ?1")
+    void updataStatus(Long shopId, int status);
 }

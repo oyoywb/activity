@@ -21,7 +21,7 @@ public interface ProjectService {
     ProjectResponseDto getProjectDetail(Long id) throws Exception;
 
 
-    void signup(long projectId, String openId);
+    CommonResponse signup(long projectId, String openId);
 
     List<ProjectEntity> getSelfProject(String openId, byte passed);
 

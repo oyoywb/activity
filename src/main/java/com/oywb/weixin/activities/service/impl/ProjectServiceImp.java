@@ -24,6 +24,7 @@ import org.springframework.web.multipart.support.StandardMultipartHttpServletReq
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -142,11 +143,31 @@ public class ProjectServiceImp implements ProjectService {
     }
 
     @Override
-    public void signup(long projectId, String openId) {
-        ResumeDeliveryEntity deliveryEntity = new ResumeDeliveryEntity();
-        deliveryEntity.setProjectId(projectId);
-        deliveryEntity.setUserId(userService.getUserId(openId));
-        resumeDeliveryRepository.save(deliveryEntity);
+    public CommonResponse signup(long projectId, String openId) {
+        Optional<ProjectEntity> projectEntityOptional = projectRepository.findById(projectId);
+        if (projectEntityOptional.isPresent()) {
+            if (projectEntityOptional.get().getEnd().after(new Timestamp(System.currentTimeMillis()))) {
+                ResumeDeliveryEntity deliveryEntity = new ResumeDeliveryEntity();
+                deliveryEntity.setProjectId(projectId);
+                deliveryEntity.setUserId(userService.getUserId(openId));
+                resumeDeliveryRepository.save(deliveryEntity);
+
+                return CommonResponse.builder()
+                        .code(HttpStatus.OK.value())
+                        .message("報名提交")
+                        .build();
+            } else {
+                return CommonResponse.builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .message("項目已結束 不可報名")
+                        .build();
+            }
+        } else {
+            return CommonResponse.builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message("項目不存在")
+                    .build();
+        }
     }
 
     @Override

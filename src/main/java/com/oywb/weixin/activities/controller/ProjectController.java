@@ -59,8 +59,8 @@ public class ProjectController {
 
     //tested
     @PostMapping("/signup")
-    public void signup(long projectId, Authentication authentication) {
-        projectService.signup(projectId, authentication.getName());
+    public CommonResponse signup(long projectId, Authentication authentication) {
+        return projectService.signup(projectId, authentication.getName());
     }
 
     //tested

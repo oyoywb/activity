@@ -21,7 +21,9 @@ import java.sql.Timestamp;
                         @FieldResult(name = "userId", column = "user_id"),
                         @FieldResult(name = "contact", column = "contact"),
                         @FieldResult(name = "commentCount", column = "count"),
-                        @FieldResult(name = "isLikes", column = "is_likes")
+                        @FieldResult(name = "isLikes", column = "is_likes"),
+                        @FieldResult(name = "name", column = "name"),
+                        @FieldResult(name = "profile", column = "profile")
                 })
 )
 public class DynamicsSimpleEntity {
@@ -39,6 +41,9 @@ public class DynamicsSimpleEntity {
     private String contact;
     private int commentCount;
     private byte isLikes;
+    private String name;
+    private String profile;
+    private int sex;
 
     public void setId(Long id) {
         this.id = id;

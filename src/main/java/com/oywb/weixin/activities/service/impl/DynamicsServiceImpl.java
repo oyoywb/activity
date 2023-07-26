@@ -67,8 +67,8 @@ public class DynamicsServiceImpl implements DynamicsService {
     public Page<DynamicsSimpleEntity> getDynamics(Pageable pageable, String tag, String openId, boolean personal) {
         long userId = userService.getUserId(openId);
 
-        StringBuffer sql = new StringBuffer("select dy.*, (select count(*) from dynamics_comment dc where dc.dy_id = dy.id) as count, COALESCE(lk.likes, 0) as is_likes , (select count(*) from likes where lk.dy_id = dy.id) as likes from dynamics dy LEFT " +
-                "JOIN likes lk ON dy.id = lk.dy_id where dy.pass = 1 ");
+        StringBuffer sql = new StringBuffer("select dy.*,u.name, u.profile,u.sex,(select count(*) from dynamics_comment dc where dc.dy_id = dy.id) as count, COALESCE(lk.likes, 0) as is_likes , (select count(*) from likes where lk.dy_id = dy.id) as likes from dynamics dy LEFT " +
+                "JOIN likes lk ON dy.id = lk.dy_id LEFT JOIN user u ON dy.user_id = u.id where dy.pass = 1 ");
         if (personal) {
             sql.append(" and dy.user_id = :userId");
         }

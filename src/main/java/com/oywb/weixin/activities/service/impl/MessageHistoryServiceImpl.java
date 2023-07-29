@@ -35,8 +35,8 @@ public class MessageHistoryServiceImpl implements MessageHistoryService {
                 "        ELSE sender" +
                 "    END AS other_user_id," +
                 "    MAX(ts) AS last_chat_time," +
-                "    context" +
-                "    u.profile" +
+                "    context," +
+                "    u.profile," +
                 "    u.name" +
                 " FROM message_history" +
                 " LEFT JOIN user u ON " +

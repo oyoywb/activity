@@ -38,7 +38,7 @@ public class MessageHistoryServiceImpl implements MessageHistoryService {
                 "    context," +
                 "    u.profile," +
                 "    u.name" +
-                " FROM message_history" +
+                " FROM message_history mh" +
                 " LEFT JOIN user u ON " +
                 "    u.id = CASE " +
                 "               WHEN mh.sender = :userId THEN mh.receiver " +

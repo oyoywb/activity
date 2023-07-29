@@ -75,7 +75,6 @@ public class UserController {
     }
 
     @PatchMapping ("/resume")
-
     public void updateResumeById (@ModelAttribute ResumeRequestDto resumeRequestDto, @RequestParam(value = "file") MultipartFile file, Authentication authentication) throws Exception {
         resumeService.updateResumeByUserId(resumeRequestDto, file, authentication.getName());
     }
@@ -92,8 +91,8 @@ public class UserController {
     @GetMapping("/resumes")
     @PreAuthorize("@roleEvaluator.isRegistered(authentication)")
     public Page<ResumeEntity> getResumes (@RequestParam(required = false) String school, @RequestParam(required = false) String college
-            , @RequestParam(required = false) String subject, @RequestParam(required = false) String grade, Pageable pageable) throws Exception {
-        return resumeService.getResumesByFilter(school, college, subject, grade, pageable);
+            , @RequestParam(required = false) String subject, @RequestParam(required = false) String grade, Pageable pageable, String name) throws Exception {
+        return resumeService.getResumesByFilter(school, college, subject, grade, pageable, name);
     }
 
     //tested

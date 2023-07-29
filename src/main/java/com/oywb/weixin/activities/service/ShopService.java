@@ -1,6 +1,5 @@
 package com.oywb.weixin.activities.service;
 
-import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.ShopCommentRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopRequestDto;
 import com.oywb.weixin.activities.dto.response.SellerResponseDto;
@@ -20,7 +19,7 @@ public interface ShopService {
     void createComment(ShopCommentRequestDto shopCommentRequestDto, List<MultipartFile> files, String openId) throws Exception;
 
     Page<ShopSimpleDto> getShopSimple(String openId, String school, String zone
-            , String type, Pageable pageable, int flag, byte pass) throws Exception;
+            , String type, Pageable pageable, int flag, byte pass, String name) throws Exception;
 
     List<SellerResponseDto> getSeller(Long shopId) throws Exception;
 

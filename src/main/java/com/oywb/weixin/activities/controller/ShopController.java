@@ -62,8 +62,8 @@ public class ShopController {
     @PreAuthorize("@roleEvaluator.canGetNoPass(authentication, #pass)")
     @GetMapping
     public Page<ShopSimpleDto> getShops(Authentication authentication, @RequestParam (required = false) String school, @RequestParam (required = false) String zone
-            , @RequestParam (required = false) String type, Pageable pageable, int flag, byte pass) throws Exception {
-        return shopService.getShopSimple(authentication.getName(), school, zone, type, pageable, flag, pass);
+            , @RequestParam (required = false) String type, Pageable pageable, int flag, byte pass, String name) throws Exception {
+        return shopService.getShopSimple(authentication.getName(), school, zone, type, pageable, flag, pass, name);
     }
 
     //tested

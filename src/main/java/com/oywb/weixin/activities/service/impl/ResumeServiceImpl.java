@@ -3,7 +3,6 @@ package com.oywb.weixin.activities.service.impl;
 import com.oywb.weixin.activities.config.minio.Minio;
 import com.oywb.weixin.activities.config.minio.MinioConfig;
 import com.oywb.weixin.activities.dao.ResumeRepository;
-import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.ResumeRequestDto;
 import com.oywb.weixin.activities.dto.response.ResumeResponseDto;
 import com.oywb.weixin.activities.entity.ResumeEntity;
@@ -11,7 +10,6 @@ import com.oywb.weixin.activities.service.ResumeService;
 import com.oywb.weixin.activities.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,8 +58,8 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public Page<ResumeEntity> getResumesByFilter(String school, String college, String subject, String grade, Pageable pageable) throws Exception {
-        Page<ResumeEntity> resumeEntities =  resumeRepository.getByFilter(school, college, subject, grade, pageable);
+    public Page<ResumeEntity> getResumesByFilter(String school, String college, String subject, String grade, Pageable pageable, String name) throws Exception {
+        Page<ResumeEntity> resumeEntities =  resumeRepository.getByFilter(school, college, subject, grade, name, pageable);
 
         return resumeEntities;
     }

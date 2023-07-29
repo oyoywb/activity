@@ -6,7 +6,6 @@ import com.oywb.weixin.activities.dao.SellerRepository;
 import com.oywb.weixin.activities.dao.ShopCommentRepository;
 import com.oywb.weixin.activities.dao.ShopRepository;
 import com.oywb.weixin.activities.dao.UserRepository;
-import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.SellerRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopCommentRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopRequestDto;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -186,7 +184,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     public Page<ShopSimpleDto> getShopSimple(String openId, String school, String zone
-            , String type, Pageable pageable, int flag, byte pass) throws Exception {
+            , String type, Pageable pageable, int flag, byte pass, String name) throws Exception {
         long userId = userRepository.getUserIdByOpenId(openId);
 
         StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
@@ -209,6 +207,11 @@ public class ShopServiceImpl implements ShopService {
         Optional.ofNullable(type)
                 .ifPresent(value -> {
                     sql.append(" and shop.type = '").append(value).append("'");
+                });
+
+        Optional.ofNullable(name)
+                .ifPresent(value -> {
+                    sql.append(" and shop.name like '%").append(name).append("%'");
                 });
 
         sql.append(" and shop.pass = ").append(pass);

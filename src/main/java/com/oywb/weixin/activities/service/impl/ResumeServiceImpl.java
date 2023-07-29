@@ -12,10 +12,12 @@ import com.oywb.weixin.activities.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +64,33 @@ public class ResumeServiceImpl implements ResumeService {
         Page<ResumeEntity> resumeEntities =  resumeRepository.getByFilter(school, college, subject, grade, pageable);
 
         return resumeEntities;
+    }
+
+    @Override
+    public void updateResumeByUserId(ResumeRequestDto resumeRequestDto, MultipartFile file, String name) throws Exception {
+        Optional<ResumeEntity> resumeEntityOpt = resumeRepository.findById(resumeRequestDto.getId());
+
+        if (resumeEntityOpt.isPresent()) {
+            String fileName = file.getOriginalFilename();
+            minio.upload(fileName, RESUME_BUCKET, file);
+
+            ResumeEntity resumeEntity = resumeEntityOpt.get();
+            resumeEntity.update(resumeRequestDto);
+            resumeEntity.setAvatar(minioConfig.getEndpoint() + "/" + RESUME_BUCKET + "/" + fileName);
+            resumeRepository.save(resumeEntity);
+        }
+
+    }
+
+    @Override
+    public void updateResumeStatus(Long resumeId, Authentication authentication, int online) {
+        Optional<ResumeEntity> resumeEntityOpt = resumeRepository.findById(resumeId);
+
+        if (resumeEntityOpt.isPresent()) {
+            ResumeEntity resumeEntity = resumeEntityOpt.get();
+            resumeEntity.setOnline(online);
+            resumeRepository.save(resumeEntity);
+        }
     }
 
 

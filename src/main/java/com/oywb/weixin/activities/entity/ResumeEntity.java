@@ -1,5 +1,6 @@
 package com.oywb.weixin.activities.entity;
 
+import com.oywb.weixin.activities.dto.request.ResumeRequestDto;
 import com.oywb.weixin.activities.dto.response.ResumeResponseDto;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -210,5 +211,17 @@ public class ResumeEntity {
         resumeResponseDto.setSchool(this.school);
 
         return resumeResponseDto;
+    }
+
+    public void update(ResumeRequestDto resumeRequestDto) {
+        this.name=resumeRequestDto.getName();
+        this.grade=resumeRequestDto.getGrade();
+        this.college=resumeRequestDto.getCollege();
+        this.subject=resumeRequestDto.getOg();
+        this.skill=resumeRequestDto.getSkill();
+        this.experience=resumeRequestDto.getExperience();
+        this.interest=resumeRequestDto.getInterest();
+        this.selfIntroduction=resumeRequestDto.getIntroduction();
+        this.school=resumeRequestDto.getSchool();
     }
 }

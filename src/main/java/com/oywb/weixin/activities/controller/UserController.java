@@ -74,6 +74,19 @@ public class UserController {
         return resumeService.getResumeByUserId(authentication.getName());
     }
 
+    @PatchMapping ("/resume")
+
+    public void updateResumeById (@ModelAttribute ResumeRequestDto resumeRequestDto, @RequestParam(value = "file") MultipartFile file, Authentication authentication) throws Exception {
+        resumeService.updateResumeByUserId(resumeRequestDto, file, authentication.getName());
+    }
+
+    @PatchMapping("/resume/update")
+    @PreAuthorize("@roleEvaluator.resumeBelongToUser(authentication, resumeId)")
+    public void updateResumeStatus (Long resumeId, Authentication authentication, int online) {
+        resumeService.updateResumeStatus(resumeId, authentication, online);
+    }
+
+
     //tested
     //todo 原型圖中沒畫出篩選條件
     @GetMapping("/resumes")

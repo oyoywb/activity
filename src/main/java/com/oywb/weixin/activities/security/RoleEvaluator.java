@@ -23,8 +23,9 @@ public class RoleEvaluator {
     private final ProjectRepository projectRepository;
     private final DynamicsRepository dynamicsRepository;
     private final DynamicsCommentRepository dynamicsCommentRepository;
+    private final ResumeRepository resumeRepository;
 
-    public RoleEvaluator(RoleBindingService roleBindingService, UserService userService, PlanRepository planRepository, ShopRepository shopRepository, ActivityRepository activityRepository, ProjectRepository projectRepository, DynamicsRepository dynamicsRepository, DynamicsCommentRepository dynamicsCommentRepository) {
+    public RoleEvaluator(RoleBindingService roleBindingService, UserService userService, PlanRepository planRepository, ShopRepository shopRepository, ActivityRepository activityRepository, ProjectRepository projectRepository, DynamicsRepository dynamicsRepository, DynamicsCommentRepository dynamicsCommentRepository, ResumeRepository resumeRepository) {
         this.roleBindingService = roleBindingService;
         this.userService = userService;
         this.planRepository = planRepository;
@@ -33,6 +34,7 @@ public class RoleEvaluator {
         this.projectRepository = projectRepository;
         this.dynamicsRepository = dynamicsRepository;
         this.dynamicsCommentRepository = dynamicsCommentRepository;
+        this.resumeRepository = resumeRepository;
     }
 
     public boolean isAdmin(Authentication authentication) {
@@ -106,5 +108,12 @@ public class RoleEvaluator {
         DynamicsCommentEntity dynamicsCommentEntity = dynamicsCommentRepository.getDynamicsCommentEntitiesByIdAndUserId(dyCommentId, userId);
 
         return dynamicsEntity != null || dynamicsCommentEntity !=null;
+    }
+
+    public boolean resumeBelongToUser(Authentication authentication, Long resumeId) {
+        long userId = userService.getUserId(authentication.getName());
+        ResumeEntity resumeEntity = resumeRepository.findById(resumeId).get();
+
+        return userId == resumeEntity.getUserId();
     }
 }

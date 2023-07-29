@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ResumeRepository extends JpaRepository<ResumeEntity, Integer> {
+public interface ResumeRepository extends JpaRepository<ResumeEntity, Long> {
     List<ResumeEntity> getAllByUserId(long userId);
 
     @Query(value = "select * from resume where online = 1 and if(?1 is not null, school=?1 ,1=1) " +

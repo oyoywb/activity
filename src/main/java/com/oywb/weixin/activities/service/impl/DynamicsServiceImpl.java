@@ -52,6 +52,7 @@ public class DynamicsServiceImpl implements DynamicsService {
         DynamicsEntity dynamicsEntity = dynamicsRequestDto.toDynamicsEntity();
         dynamicsEntity.setUserId(userService.getUserId(openId));
         dynamicsEntity.setCreateTs(new Timestamp(System.currentTimeMillis()));
+        dynamicsEntity.setPass((byte)1);
 
         List<String> fileNames = new ArrayList<>();
         files.forEach(file -> {

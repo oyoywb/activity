@@ -70,7 +70,9 @@ public class UserServiceImpl implements UserService {
             userEntity.setSubject(personalInfoDto.getOg());
             userEntity.setGrade(personalInfoDto.getSubject());
             userEntity.setScp(String.join(",", fileNames));
-            userEntity.setRegisted(1);
+            if (userEntity.getRegisted() == -1) {
+                userEntity.setRegisted(1);
+            }
             userRepository.save(userEntity);
         }
     }

@@ -138,20 +138,20 @@ public class DynamicsServiceImpl implements DynamicsService {
                 "  WHERE dynamics_comment.is_deleted = FALSE AND dynamics_comment.is_approved = TRUE\n" +
                 ")\n" +
                 "SELECT\n" +
-                "  ct.id,\n" +
-                "  ct.user_id,\n" +
-                "  ct.content,\n" +
-                "  ct.parent_id,\n" +
-                "  ct.created_at,\n" +
-                "  ct.updated_at,\n" +
-                "  ct.is_deleted,\n" +
-                "  ct.deleted_at,\n" +
-                "  ct.is_approved,\n" +
-                "  ct.dy_id,\n" +
-                "  u.name,\n" +
-                "  u.profile,\n" +
+                "  ct.id as id ,\n" +
+                "  ct.user_id as user_id ,\n" +
+                "  ct.content as content ,\n" +
+                "  ct.parent_id as parent_id ,\n" +
+                "  ct.created_at as created_at ,\n" +
+                "  ct.updated_at as updated_at ,\n" +
+                "  ct.is_deleted as is_deleted,\n" +
+                "  ct.deleted_at as deleted_at,\n" +
+                "  ct.is_approved as is_approved,\n" +
+                "  ct.dy_id as dy_id ,\n" +
+                "  u.name as name ,\n" +
+                "  u.profile as profile ,\n" +
                 "  level\n" +
-                "FROM comment_tree ct JOIN user u ON ct.user_id = u.id where dy_id=:dyId\n" +
+                "FROM comment_tree ct JOIN user u ON ct.user_id = u.id where ct.dy_id=:dyId\n" +
                 "ORDER BY level, created_at";
 ;
         Query query = entityManager.createNativeQuery(sql, "DyCommentSimple");

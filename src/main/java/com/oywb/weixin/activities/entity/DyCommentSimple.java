@@ -20,6 +20,8 @@ import java.sql.Timestamp;
                         @FieldResult(name = "deleteAt", column = "deleted_at"),
                         @FieldResult(name = "isApproved", column = "is_approved"),
                         @FieldResult(name = "dyId", column = "dy_id"),
+                        @FieldResult(name = "name", column = "name"),
+                        @FieldResult(name = "profile", column = "profile"),
                         @FieldResult(name = "level", column = "level")
                 })
 )
@@ -36,6 +38,8 @@ public class DyCommentSimple {
     private boolean isApproved;
     private long dyId;
     private long level;
+    private String name;
+    private String profile;
 
     public void setId(Long id) {
         this.id = id;

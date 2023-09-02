@@ -56,7 +56,7 @@ public class PlanServiceImpl implements PlanService {
                     CronExpression cron = new CronExpression(personalPlanEntity.getCron());
                     Date next = cron.getNextValidTimeAfter(now);
 
-                    if (next.getTime() - now.getTime() < THREE_DAY_AFTER) {
+                    if ( next != null && next.getTime() - now.getTime() < THREE_DAY_AFTER) {
                         PlanResponseDto planResponseDto = personalPlanEntity.toPlanResponseDto();
                         planResponseDto.setTs(new Timestamp(next.getTime()));
                         planResponseDtoList.add(planResponseDto);

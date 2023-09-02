@@ -76,7 +76,7 @@ public class DynamicsServiceImpl implements DynamicsService {
         if (tag != null) {
             sql.append(" and dy.keyword like '%" + tag + "%'");
         }
-        sql.append(" ORDER BY dy.create_ts");
+        sql.append(" ORDER BY dy.create_ts DESC");
 
         Query query = entityManager.createNativeQuery(sql.toString());
         if (personal) {

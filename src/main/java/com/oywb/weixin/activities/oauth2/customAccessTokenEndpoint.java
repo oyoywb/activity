@@ -3,6 +3,7 @@ package com.oywb.weixin.activities.oauth2;
 import com.oywb.weixin.activities.config.WeChatProperties;
 import com.oywb.weixin.activities.dao.UserRepository;
 import com.oywb.weixin.activities.dto.SessionDto;
+import com.oywb.weixin.activities.entity.UserEntity;
 import com.oywb.weixin.activities.service.impl.UserServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -41,6 +42,29 @@ public class customAccessTokenEndpoint {
     @PostMapping("/accesstoken")
     public Object createAccessToken(@RequestParam(value = "code") String code) {
         return createJwt(getSession(weChatProperties.getMiniProgram().getAppId(), weChatProperties.getMiniProgram().getAppSecret(), code));
+    }
+
+    @PostMapping("/accesstoken/admin")
+    public Object createAccessTokenAdmin(@RequestParam(value = "code") String code) {
+
+        UserEntity ue = userRepository.findByOpenid(code);
+        if (ue != null) {
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("openid", code);
+
+            String  accesstoken = Jwts.builder()
+                    .setClaims(claims)
+                    .setSubject(code)
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)))// 有效期 1 天。
+                    .signWith(keyPair.getPrivate(), SignatureAlgorithm.RS256)
+                    .compact();
+            // @formatter:on
+            return Map.of("accesstoken", accesstoken, "user", ue);
+        }
+
+        return null;
+
     }
 
     public Map createJwt(SessionDto sessionDto) {

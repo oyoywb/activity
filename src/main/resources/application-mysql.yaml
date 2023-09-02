@@ -1,6 +1,6 @@
 datasource:
-  url: jdbc:mysql://${EN_DB_ADDRESSES:120.79.70.221}:3306/oywb_test
-  jdbcUrl: jdbc:mysql://${EN_DB_ADDRESSES:120.79.70.221}:3306/oywb_test
+  url: jdbc:mysql://${EN_DB_ADDRESSES:43.139.80.61}:3306/oywb_test
+  jdbcUrl: jdbc:mysql://${EN_DB_ADDRESSES:43.139.80.61}:3306/oywb_test
   username: ${EN_MARIADB_USER:root}
   password: ${EN_MARIADB_PASSWORD:casa}
   driverClassName: com.mysql.jdbc.Driver

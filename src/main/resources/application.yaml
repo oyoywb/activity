@@ -30,7 +30,7 @@ spring:
             threadsInheritContextClassLoaderOfInitializingThread: true
           dataSource:
             default:
-              URL: jdbc:mariadb://${EN_DB_ADDRESSES:120.79.70.221:3306}/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
+              URL: jdbc:mariadb://${EN_DB_ADDRESSES:43.139.80.61:3306}/${EN_MARIADB_NAME:oywb_test}?serverTimezone=UTC&useLegacyDatetimeCode=false
               user: ${EN_MARIADB_USER:root}
               password: ${EN_MARIADB_PASSWORD:casa}
               driver: com.mysql.jdbc.Driver
@@ -42,7 +42,7 @@ spring:
     active: mysql
   #datasource:
   #  driver-class-name: com.mysql.jdbc.Driver
-  #  url: jdbc:mysql://120.79.70.221:3306/activities
+  #  url: jdbc:mysql://43.139.80.61:3306/activities
   #  username: root
   #  password: casa
 server:
@@ -57,7 +57,7 @@ sai:
       app-secret: ${APP_SECRET:964fd7e004f4d0330ad9ebe8e319e201}
 
 minio:
-  endpoint: http://${MINIO:120.79.70.221}:9000
+  endpoint: http://${MINIO:43.139.80.61}:9000
   accessKey: admin
   secretKey: admin123
   bucket:
@@ -69,7 +69,7 @@ minio:
     - activity #活动图片
     - resume #简历
     - dynamics
-logging:
-  level:
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-    org.hibernate.sql: debug
+#logging:
+#  level:
+#    org.hibernate.type.descriptor.sql.BasicBinder: trace
+#    org.hibernate.sql: debug

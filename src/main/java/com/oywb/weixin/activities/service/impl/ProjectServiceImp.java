@@ -62,12 +62,12 @@ public class ProjectServiceImp implements ProjectService {
             MultipartFile file = req.getFile(iterator.next());
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, PROJECT_BUCKET, file);
-            fileNameList.add(minioConfig.getEndpoint() + "/" + PROJECT_BUCKET + "/" + fileName);
+            fileNameList.add(minioConfig.getDisplay() + "/" + PROJECT_BUCKET + "/" + fileName);
         }
 /*        files.forEach(file -> {
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, PROJECT_BUCKET, file);
-            fileNameList.add(minioConfig.getEndpoint() + "/" + PROJECT_BUCKET + "/" + fileName);
+            fileNameList.add(minioConfig.getDisplay() + "/" + PROJECT_BUCKET + "/" + fileName);
         });*/
 
         ProjectEntity projectEntity = projectRequestDto.toProjectEntity();
@@ -83,7 +83,7 @@ public class ProjectServiceImp implements ProjectService {
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, PROJECT_BUCKET, file);
-            fileNameList.add(minioConfig.getEndpoint() + "/" + PROJECT_BUCKET + "/" + fileName);
+            fileNameList.add(minioConfig.getDisplay() + "/" + PROJECT_BUCKET + "/" + fileName);
         });
 
         ProjectEntity projectEntity = projectRepository.findById(projectRequestDto.getId()).get();

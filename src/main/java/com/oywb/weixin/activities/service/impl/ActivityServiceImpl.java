@@ -59,7 +59,7 @@ public class ActivityServiceImpl implements ActivityService {
         List<String> pictures = new ArrayList<>();
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
-            pictures.add(minioConfig.getEndpoint() + "/" + ACTIVITY_BUCKET + "/" + fileName);
+            pictures.add(minioConfig.getDisplay() + "/" + ACTIVITY_BUCKET + "/" + fileName);
             minio.upload(fileName, ACTIVITY_BUCKET, file);
         });
 
@@ -83,7 +83,7 @@ public class ActivityServiceImpl implements ActivityService {
         List<String> pictures = new ArrayList<>();
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
-            pictures.add(minioConfig.getEndpoint() + "/" + ACTIVITY_BUCKET + "/" + fileName);
+            pictures.add(minioConfig.getDisplay() + "/" + ACTIVITY_BUCKET + "/" + fileName);
             minio.upload(fileName, ACTIVITY_BUCKET, file);
         });
 

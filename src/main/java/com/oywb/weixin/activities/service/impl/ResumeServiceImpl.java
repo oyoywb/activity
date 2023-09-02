@@ -52,7 +52,7 @@ public class ResumeServiceImpl implements ResumeService {
         minio.upload(fileName, RESUME_BUCKET, file);
 
         ResumeEntity resumeEntity = resumeRequestDto.toResumeEntity();
-        resumeEntity.setAvatar(minioConfig.getEndpoint() + "/" + RESUME_BUCKET + "/" + fileName);
+        resumeEntity.setAvatar(minioConfig.getDisplay() + "/" + RESUME_BUCKET + "/" + fileName);
         resumeEntity.setUserId(userService.getUserId(openId));
         resumeRepository.save(resumeEntity);
     }
@@ -74,7 +74,7 @@ public class ResumeServiceImpl implements ResumeService {
 
             ResumeEntity resumeEntity = resumeEntityOpt.get();
             resumeEntity.update(resumeRequestDto);
-            resumeEntity.setAvatar(minioConfig.getEndpoint() + "/" + RESUME_BUCKET + "/" + fileName);
+            resumeEntity.setAvatar(minioConfig.getDisplay() + "/" + RESUME_BUCKET + "/" + fileName);
             resumeRepository.save(resumeEntity);
         }
 

@@ -58,7 +58,7 @@ public class DynamicsServiceImpl implements DynamicsService {
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, DY_BUCKET, file);
-            fileNames.add(minioConfig.getEndpoint() + "/" + DY_BUCKET + "/" + fileName);
+            fileNames.add(minioConfig.getDisplay() + "/" + DY_BUCKET + "/" + fileName);
         });
         dynamicsEntity.setPicture(String.join(",", fileNames));
         dynamicsRepository.save(dynamicsEntity);

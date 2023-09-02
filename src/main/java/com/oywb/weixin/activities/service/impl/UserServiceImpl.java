@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             for (MultipartFile file : files) {
                 String fileName = file.getOriginalFilename();
                 minio.upload(fileName, AUTH_BUCKET, file);
-                fileNames.add(minioConfig.getEndpoint() + "/" + AUTH_BUCKET + "/" + fileName);
+                fileNames.add(minioConfig.getDisplay() + "/" + AUTH_BUCKET + "/" + fileName);
             }
 
             UserEntity userEntity = userEntityOptional.get();
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
             minio.upload(fileName, PROFILE_BUCKET, file);
 
             UserEntity userEntity = userEntityOptional.get();
-            userEntity.setProfile(minioConfig.getEndpoint() + "/" + PROFILE_BUCKET + "/" + fileName);
+            userEntity.setProfile(minioConfig.getDisplay() + "/" + PROFILE_BUCKET + "/" + fileName);
             userEntity.setNameFake(userRequestDto.getName());
             userEntity.setSex(userRequestDto.getSex());
             userEntity.setBirthday(new Timestamp(userRequestDto.getBirthday()));

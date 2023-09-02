@@ -21,4 +21,6 @@ public class MinioConfig {
 
     private List<String> bucket;
 
+    private String display;
+
 }

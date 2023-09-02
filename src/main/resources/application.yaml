@@ -57,6 +57,7 @@ sai:
       app-secret: ${APP_SECRET:964fd7e004f4d0330ad9ebe8e319e201}
 
 minio:
+  display: https://www.oyvvbdev.top
   endpoint: http://${MINIO:43.139.80.61}:9000
   accessKey: admin
   secretKey: admin123

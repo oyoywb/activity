@@ -82,7 +82,7 @@ public class ShopServiceImpl implements ShopService {
 
         List<String> shopPictures = new ArrayList<>();
         for (String picture: shopRequestDto.getPicture()) {
-            shopPictures.add(minioConfig.getEndpoint() + "/" + SHOP_BUCKET + "/" + picture);
+            shopPictures.add(minioConfig.getDisplay() + "/" + SHOP_BUCKET + "/" + picture);
         }
         shopEntity.setPicture(String.join(",", shopPictures));
 
@@ -98,7 +98,7 @@ public class ShopServiceImpl implements ShopService {
 
             List<String> sellPictures = new ArrayList<>();
             sellerRequestDto.getPicture().forEach( picture -> {
-                sellPictures.add(minioConfig.getEndpoint() + "/" + SELLER_BUCKET + "/" + picture);
+                sellPictures.add(minioConfig.getDisplay() + "/" + SELLER_BUCKET + "/" + picture);
             });
             sellerEntity.setPicture(String.join(",", sellPictures));
 
@@ -126,7 +126,7 @@ public class ShopServiceImpl implements ShopService {
                 });
 
                 shopRequestDto.getPicture().forEach(picture -> {
-                    picture = minioConfig.getEndpoint() + "/" + SHOP_BUCKET + "/" + picture;
+                    picture = minioConfig.getDisplay() + "/" + SHOP_BUCKET + "/" + picture;
                 });
                 shopEntity.setPicture(String.join(",", shopRequestDto.getPicture()));
                 shopEntity.setUpdateTs(new Timestamp(System.currentTimeMillis()));
@@ -154,7 +154,7 @@ public class ShopServiceImpl implements ShopService {
                     sellerEntity.setShopId(shopEntity.getId());
 
                     sellerRequestDto.getPicture().forEach( picture -> {
-                        picture = minioConfig.getEndpoint() + "/" + SELLER_BUCKET + "/" + picture;
+                        picture = minioConfig.getDisplay() + "/" + SELLER_BUCKET + "/" + picture;
                     });
                     sellerEntity.setPicture(String.join(",", sellerRequestDto.getPicture()));
 
@@ -176,7 +176,7 @@ public class ShopServiceImpl implements ShopService {
         files.forEach(file -> {
             String fileName = file.getOriginalFilename();
             minio.upload(fileName, SC_BUCKET, file);
-            commentPictures.add(minioConfig.getEndpoint() + "/" + SC_BUCKET + "/" + fileName);
+            commentPictures.add(minioConfig.getDisplay() + "/" + SC_BUCKET + "/" + fileName);
         });
 
         shopCommentEntity.setPicture(String.join(",", commentPictures));

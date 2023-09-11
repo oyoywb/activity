@@ -47,7 +47,7 @@ public class DynamicsController {
     }
 
     @PreAuthorize("@roleEvaluator.isAdmin(authentication)")
-    @DeleteMapping
+    @DeleteMapping("/admin")
     public void deleteDynamicsByAdmin(List<Long> ids) {
         dynamicsService.deleteDynamicsByAdmin(ids);
     }

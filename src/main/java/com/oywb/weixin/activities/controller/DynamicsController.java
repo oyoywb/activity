@@ -46,6 +46,12 @@ public class DynamicsController {
         dynamicsService.deleteDynamics(authentication.getName(), id);
     }
 
+    @PreAuthorize("@roleEvaluator.isAdmin(authentication)")
+    @DeleteMapping
+    public void deleteDynamicsByAdmin(List<Long> ids) {
+        dynamicsService.deleteDynamicsByAdmin(ids);
+    }
+
     //tested
     @PatchMapping("/likes")
     public void likes(Authentication authentication, boolean like, long id) {

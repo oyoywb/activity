@@ -203,4 +203,12 @@ public class DynamicsServiceImpl implements DynamicsService {
 
         return dynamicsCommentEntities;
     }
+
+    @Transactional
+    @Override
+    public void deleteDynamicsByAdmin(List<Long> ids) {
+        dynamicsCommentRepository.batchDeleteDynamicsComment(ids);
+        dynamicsRepository.batchDeleteDynamicsLikes(ids);
+        dynamicsRepository.batchDeleteDynamics(ids);
+    }
 }

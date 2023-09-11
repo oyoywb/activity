@@ -30,4 +30,6 @@ public interface DynamicsService {
     List<DynamicsCommentEntity> getCommentReceive(String openId);
 
     List<DynamicsCommentEntity> getCommentMyself(String openId);
+
+    void deleteDynamicsByAdmin(List<Long> ids);
 }

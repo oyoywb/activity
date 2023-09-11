@@ -23,4 +23,8 @@ public interface DynamicsCommentRepository extends JpaRepository<DynamicsComment
     @Modifying
     @Query(nativeQuery = true, value = "delete from dynamics_comment where dy_id = ?1")
     void deleteDynamicsComment(long id);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "delete from dynamics_comment where dy_id in (?1)")
+    void batchDeleteDynamicsComment(List<Long> ids);
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ShopCommentRepository extends JpaRepository<ShopCommentEntity, Long> {
 
-    @Query(value = "select * from shop_comment where shop_id =:shopId", nativeQuery = true)
+    @Query(value = "select * from shop_comment where shop_id =:shopId order by ts desc", nativeQuery = true)
     public List<ShopCommentEntity> getShopCommentEntitiesByShopId(@Param("shopId") Long shopId);
 }

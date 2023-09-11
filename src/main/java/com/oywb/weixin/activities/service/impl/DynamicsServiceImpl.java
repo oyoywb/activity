@@ -169,6 +169,7 @@ public class DynamicsServiceImpl implements DynamicsService {
         dynamicsCommentEntity.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         dynamicsCommentEntity.setUserId(userEntity.getId());
         dynamicsCommentEntity.setUserName(userEntity.getName());
+        dynamicsCommentEntity.setIsApproved((byte)1);
         dynamicsCommentRepository.save(dynamicsCommentEntity);
     }
 

@@ -25,6 +25,6 @@ public interface DynamicsRepository extends JpaRepository<DynamicsEntity, Long> 
     void batchDeleteDynamicsLikes(List<Long> ids);
 
     @Modifying
-    @Query(nativeQuery = true, value = "delete from dynamics where dy_id in (?1)")
+    @Query(nativeQuery = true, value = "delete from dynamics where id in (?1)")
     void batchDeleteDynamics(List<Long> ids);
 }

@@ -19,8 +19,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
 
     @Modifying
-    @Query(value = "update user set registed = 1 where id in :userIds", nativeQuery = true)
-    List<UserEntity> authByAdmin(@Param("userIds") List<String> userIds);
+    @Query(value = "update user set registed = :pass where id in :userIds", nativeQuery = true)
+    List<UserEntity> authByAdmin(@Param("userIds") List<String> userIds,@Param("pass") byte pass);
 
     @Query(value = "select id from user where openid = ?1", nativeQuery = true)
     long getUserIdByOpenId(String openId);

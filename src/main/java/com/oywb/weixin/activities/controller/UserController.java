@@ -55,8 +55,8 @@ public class UserController {
 
     @PatchMapping("/auth/admin")
     @PreAuthorize("@roleEvaluator.isAdmin(authentication)")
-    public void authByAdmin (@RequestBody List<String> userId) throws Exception {
-        userService.authByAdmin(userId);
+    public void authByAdmin (@RequestBody List<String> userId, byte pass) throws Exception {
+        userService.authByAdmin(userId, pass);
     }
 
     //tested

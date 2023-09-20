@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void authByAdmin(List<String> userIds) throws Exception {
-        userRepository.authByAdmin(userIds);
+    public void authByAdmin(List<String> userIds, byte pass) throws Exception {
+        userRepository.authByAdmin(userIds, pass);
     }
 
     @Override

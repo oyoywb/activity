@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserService {
     void auth(PersonalInfoDto personalInfoDto, List<MultipartFile> files, String openId) throws Exception;
 
-    void authByAdmin(List<String> userIds) throws Exception;
+    void authByAdmin(List<String> userIds, byte pass) throws Exception;
 
     void updateUserInfo(UserRequestDto userRequestDto, MultipartFile file, String openId) throws Exception;
 

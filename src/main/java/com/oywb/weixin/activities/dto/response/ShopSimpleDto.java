@@ -19,7 +19,10 @@ import javax.print.DocFlavor;
                 @FieldResult(name = "type", column = "type"),
                 @FieldResult(name = "condition", column = "condition"),
                 @FieldResult(name = "status", column = "status"),
-                @FieldResult(name = "location", column = "location")
+                @FieldResult(name = "location", column = "location"),
+                @FieldResult(name = "picture", column = "picture"),
+                @FieldResult(name = "start", column = "start"),
+                @FieldResult(name = "end", column = "end")
         })
 )
 public class ShopSimpleDto {
@@ -43,6 +46,12 @@ public class ShopSimpleDto {
     private int status;
 
     private String location;
+
+    private String picture;
+
+    private String start;
+
+    private String end;
 
     public void setId(Long id) {
         this.id = id;

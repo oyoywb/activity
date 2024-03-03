@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setProfile(minioConfig.getDisplay() + "/" + PROFILE_BUCKET + "/" + fileName);
             userEntity.setNameFake(userRequestDto.getName());
             userEntity.setSex(userRequestDto.getSex());
-            userEntity.setBirthday(new Timestamp(userRequestDto.getBirthday()));
+            userEntity.setBirthday(userRequestDto.getBirthday());
             userEntity.setSign(userRequestDto.getSign());
             userRepository.save(userEntity);
         }

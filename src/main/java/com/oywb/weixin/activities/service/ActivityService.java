@@ -6,6 +6,7 @@ import com.oywb.weixin.activities.dto.request.InformationDetailRequestDto;
 import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
 import com.oywb.weixin.activities.dto.response.ActivitySimpleDto;
 import com.oywb.weixin.activities.entity.ActivityEntity;
+import com.oywb.weixin.activities.entity.ActivityEntityNew;
 import com.oywb.weixin.activities.entity.ActivitySimpleEntity;
 import com.oywb.weixin.activities.entity.InformationDetailEntity;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ public interface ActivityService {
 
     CommonResponse activePass(List<Long> ids, long activityId, byte flag);
 
-    List<ActivityEntity> getSelfSignActivity(String openId);
+    List<ActivityEntityNew> getSelfSignActivity(String openId);
 
     void updateActivity(ActivityRequestDto activityRequestDto, List<MultipartFile> files);
 

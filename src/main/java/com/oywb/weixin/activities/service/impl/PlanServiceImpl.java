@@ -36,6 +36,7 @@ public class PlanServiceImpl implements PlanService {
     public void createPlan(PlanRequestDto planRequestDto, String openId) throws Exception {
         PersonalPlanEntity personalPlanEntity = planRequestDto.toPersonalPlanEntity();
         personalPlanEntity.setUserId(userService.getUserId(openId));
+        personalPlanEntity.setActivity_id(0);
 
         planRepository.save(personalPlanEntity);
     }

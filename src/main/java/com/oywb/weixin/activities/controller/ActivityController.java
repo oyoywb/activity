@@ -6,6 +6,7 @@ import com.oywb.weixin.activities.dto.request.InformationDetailRequestDto;
 import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
 import com.oywb.weixin.activities.dto.response.ActivitySimpleDto;
 import com.oywb.weixin.activities.entity.ActivityEntity;
+import com.oywb.weixin.activities.entity.ActivityEntityNew;
 import com.oywb.weixin.activities.entity.InformationDetailEntity;
 import com.oywb.weixin.activities.service.ActivityService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +63,7 @@ public class ActivityController {
 
     //tested
     @GetMapping("/self/sign")
-    public List<ActivityEntity> getSelfSignActivity(Authentication authentication) {
+    public List<ActivityEntityNew> getSelfSignActivity(Authentication authentication) {
         return activityService.getSelfSignActivity(authentication.getName());
     }
 

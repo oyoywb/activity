@@ -3,6 +3,7 @@ package com.oywb.weixin.activities.service;
 import com.oywb.weixin.activities.dto.request.ShopCommentRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopRequestDto;
 import com.oywb.weixin.activities.dto.response.SellerResponseDto;
+import com.oywb.weixin.activities.dto.response.ShopCommentResDto;
 import com.oywb.weixin.activities.dto.response.ShopCommentResponseDto;
 import com.oywb.weixin.activities.dto.response.ShopSimpleDto;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public interface ShopService {
 
     List<SellerResponseDto> getSeller(Long shopId) throws Exception;
 
-    List<ShopCommentResponseDto> getComments(Long shopId) throws Exception;
+    List<ShopCommentResDto> getComments(Long shopId) throws Exception;
 
     void passShop(List<Long> ids, byte pass);
 

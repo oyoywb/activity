@@ -49,6 +49,14 @@ public class PersonalPlanEntity {
     @Column(name = "is_top")
     private byte isTop;
 
+    @Basic
+    @Column(name = "activity_id")
+    private long activity_id;
+
+    public void setActivity_id(long activity_id) {
+        this.activity_id = activity_id;
+    }
+
     public long getId() {
         return id;
     }
@@ -160,8 +168,13 @@ public class PersonalPlanEntity {
         planResponseDto.setMind(this.isMind == 1);
         planResponseDto.setRemarks(this.remarks);
         planResponseDto.setTop(this.isTop == 1);
+        planResponseDto.setActivityId(this.activity_id);
 
         return planResponseDto;
 
+    }
+
+    public long getActivity_id() {
+        return activity_id;
     }
 }

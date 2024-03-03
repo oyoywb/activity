@@ -228,17 +228,17 @@ public class ActivityServiceImpl implements ActivityService {
         }
     }
 
+    // 只有报名成功的活动才能加入计划
     @Override
     public void addToPlan(long activityId, String openId) throws Exception {
         long userId = userService.getUserId(openId);
-        Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
-        if (activityEntityOpt.isPresent()) {
-            ActivityEntity activityEntity = activityEntityOpt.get();
+        ActivityEntity activityEntity = activityRepository.getSignActivityById(activityId);
+        if (activityEntity != null) {
 
             PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity();
             personalPlanEntity.setUserId(userId);
             personalPlanEntity.setName(activityEntity.getTitle());
-            personalPlanEntity.setMode("activity");
+            personalPlanEntity.setMode(activityEntity.getType());
             personalPlanEntity.setStart(activityEntity.getStart());
             personalPlanEntity.setEnd(activityEntity.getEnd());
             personalPlanEntity.setCron(CronUtils.timestampToCron(activityEntity.getStart()));
@@ -301,9 +301,9 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityEntity> getSelfSignActivity(String openId) {
+    public List<ActivityEntityNew> getSelfSignActivity(String openId) {
         long userId = userService.getUserId(openId);
-        List<ActivityEntity> activityEntities = activityRepository.getSelfSignActivity(userId);
+        List<ActivityEntityNew> activityEntities = activityRepository.getSelfSignActivity(userId);
 
         return activityEntities;
     }

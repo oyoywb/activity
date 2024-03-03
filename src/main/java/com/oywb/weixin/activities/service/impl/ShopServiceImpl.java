@@ -10,6 +10,7 @@ import com.oywb.weixin.activities.dto.request.SellerRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopCommentRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopRequestDto;
 import com.oywb.weixin.activities.dto.response.SellerResponseDto;
+import com.oywb.weixin.activities.dto.response.ShopCommentResDto;
 import com.oywb.weixin.activities.dto.response.ShopCommentResponseDto;
 import com.oywb.weixin.activities.dto.response.ShopSimpleDto;
 import com.oywb.weixin.activities.entity.SellerEntity;
@@ -187,7 +188,7 @@ public class ShopServiceImpl implements ShopService {
             , String type, Pageable pageable, int flag, byte pass, String name) throws Exception {
         long userId = userRepository.getUserIdByOpenId(openId);
 
-        StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
+        StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location, shop.picture, shop.start, shop.end FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
 
         //if flag == 1 ,获取用户自己创建的店铺
         if (flag == 1) {
@@ -239,26 +240,8 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopCommentResponseDto> getComments(Long shopId) throws Exception {
-        List<ShopCommentEntity> shopCommentEntities = shopCommentRepository.getShopCommentEntitiesByShopId(shopId);
-
-        List<ShopCommentResponseDto> shopCommentResponseDtoS = new ArrayList<>();
-
-        shopCommentEntities.forEach(shopCommentEntity -> {
-            Optional<UserEntity> userEntity = userRepository.findById(shopCommentEntity.getUserId());
-
-            if (userEntity.isPresent()) {
-                ShopCommentResponseDto shopCommentResponseDto = new ShopCommentResponseDto();
-                shopCommentResponseDto.setTs(shopCommentEntity.getTs());
-                shopCommentResponseDto.setScore(shopCommentEntity.getScore());
-                shopCommentResponseDto.setContent(shopCommentEntity.getContent());
-                shopCommentResponseDto.setUserId(shopCommentEntity.getUserId());
-                shopCommentResponseDto.setProfile(userEntity.get().getProfile());
-                shopCommentResponseDto.setId(shopCommentEntity.getId());
-                shopCommentResponseDto.setPicture(Arrays.asList(shopCommentEntity.getPicture().split(",")));
-                shopCommentResponseDtoS.add(shopCommentResponseDto);
-            }
-        });
+    public List<ShopCommentResDto> getComments(Long shopId) throws Exception {
+        List<ShopCommentResDto> shopCommentResponseDtoS = shopCommentRepository.getShopCommentEntitiesByShopId(shopId);
 
         return shopCommentResponseDtoS;
     }

@@ -26,4 +26,6 @@ public class PlanResponseDto {
     private boolean isTop;
 
     private Timestamp ts;
+
+    private long activityId;
 }

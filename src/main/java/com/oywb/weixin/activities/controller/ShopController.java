@@ -3,10 +3,7 @@ package com.oywb.weixin.activities.controller;
 import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.ShopCommentRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopRequestDto;
-import com.oywb.weixin.activities.dto.response.SellerResponseDto;
-import com.oywb.weixin.activities.dto.response.ShopCommentResponseDto;
-import com.oywb.weixin.activities.dto.response.ShopResponseDto;
-import com.oywb.weixin.activities.dto.response.ShopSimpleDto;
+import com.oywb.weixin.activities.dto.response.*;
 import com.oywb.weixin.activities.service.ShopService;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.data.domain.Page;
@@ -74,7 +71,7 @@ public class ShopController {
 
     //tested
     @GetMapping("/comment")
-    public List<ShopCommentResponseDto> getComment(@RequestParam Long shopId) throws Exception {
+    public List<ShopCommentResDto> getComment(@RequestParam Long shopId) throws Exception {
         return shopService.getComments(shopId);
     }
 

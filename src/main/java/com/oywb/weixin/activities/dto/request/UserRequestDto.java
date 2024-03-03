@@ -10,7 +10,7 @@ public class UserRequestDto {
 
     private int sex;
 
-    private Timestamp birthday;
+    private String birthday;
 
     private String sign;
 }

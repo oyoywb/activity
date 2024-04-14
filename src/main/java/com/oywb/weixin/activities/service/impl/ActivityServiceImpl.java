@@ -249,8 +249,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<ActivityEntity> getSelfActivity(String openId, byte flag) {
         long userId = userService.getUserId(openId);
-        System.out.println(openId);
-        System.out.println(flag);
+
         List<ActivityEntity> activityEntities = activityRepository.getSelfActivity(userId, flag);
 
         return activityEntities;

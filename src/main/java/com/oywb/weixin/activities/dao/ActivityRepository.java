@@ -17,7 +17,7 @@ public interface ActivityRepository extends JpaRepository<ActivityEntity, Long> 
 
     @Query(value = "select * from activity where user_id=?1 and verified=?2", nativeQuery = true)
     List<ActivityEntity> getSelfActivity(long userId, byte flag);
-    @Query(value = "select a.* , (SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END FROM personal_plan pp WHERE pp.activity_id = a.id AND pp.user_id = ?1) AS is_added_to_planfrom activity a,information_detail ifmd where a.id = ifmd.activity_id and ifmd.user_id = ?1", nativeQuery = true)
+    @Query(value = "select a.* , (SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END FROM personal_plan pp WHERE pp.activity_id = a.id AND pp.user_id = ?1) AS is_added_to_planfrom from activity a,information_detail ifmd where a.id = ifmd.activity_id and ifmd.user_id = ?1", nativeQuery = true)
     List<ActivityEntityNew> getSelfSignActivity(long userId);
 
     @Modifying

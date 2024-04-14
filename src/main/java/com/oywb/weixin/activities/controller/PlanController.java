@@ -4,6 +4,7 @@ import com.oywb.weixin.activities.dto.CommonResponse;
 import com.oywb.weixin.activities.dto.request.PlanRequestDto;
 import com.oywb.weixin.activities.dto.response.PlanResponseDto;
 import com.oywb.weixin.activities.service.PlanService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/plan")
+@Slf4j
 @PreAuthorize("@roleEvaluator.isRegistered(authentication)")
 public class PlanController {
 
@@ -24,6 +26,7 @@ public class PlanController {
     //tested
     @PostMapping
     public void createPlan(@RequestBody PlanRequestDto planRequestDto, Authentication authentication) throws Exception {
+        log.info("create plan {}", planRequestDto);
         planService.createPlan(planRequestDto, authentication.getName());
     }
 

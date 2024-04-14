@@ -12,6 +12,8 @@ import com.oywb.weixin.activities.entity.UserEntity;
 import com.oywb.weixin.activities.service.MessageHistoryService;
 import com.oywb.weixin.activities.service.ResumeService;
 import com.oywb.weixin.activities.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +29,7 @@ import java.util.List;
 //1. 用户只能获取自己 修改自己的信息 不能修改他人的
 @RestController()
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -63,6 +66,7 @@ public class UserController {
     @PreAuthorize("@roleEvaluator.isRegistered(authentication)")
     @PostMapping("/resume")
     public void createResume (@ModelAttribute ResumeRequestDto resumeRequestDto, @RequestParam(value = "file") MultipartFile file, Authentication authentication) throws Exception {
+        log.info("create resume {}", resumeRequestDto);
         resumeService.save(resumeRequestDto, file, authentication.getName());
     }
 

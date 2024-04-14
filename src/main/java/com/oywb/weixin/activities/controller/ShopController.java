@@ -5,6 +5,7 @@ import com.oywb.weixin.activities.dto.request.ShopCommentRequestDto;
 import com.oywb.weixin.activities.dto.request.ShopRequestDto;
 import com.oywb.weixin.activities.dto.response.*;
 import com.oywb.weixin.activities.service.ShopService;
+import lombok.extern.slf4j.Slf4j;
 import org.simpleframework.xml.core.Validate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/shop")
 @PreAuthorize("@roleEvaluator.isRegistered(authentication)")
+@Slf4j
 public class ShopController {
 
     private final ShopService shopService;
@@ -32,6 +34,7 @@ public class ShopController {
     //tested
     @PostMapping
     public void createShop(@ModelAttribute ShopRequestDto shopRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files, Authentication authentication) throws Exception {
+        log.info("create shop {}", shopRequestDto);
         shopService.createShop(shopRequestDto, Arrays.asList(files), authentication.getName());
     }
 

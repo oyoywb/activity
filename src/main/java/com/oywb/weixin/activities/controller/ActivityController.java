@@ -33,7 +33,7 @@ public class ActivityController {
     //tested
     @PostMapping()
     public void createActivity(@ModelAttribute ActivityRequestDto activityRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files, Authentication authentication) throws Exception {
-        log.debug("create activity {}", activityRequestDto);
+        log.error("create activity {}", activityRequestDto);
         activityService.createActivity(activityRequestDto, Arrays.asList(files), authentication.getName());
     }
 

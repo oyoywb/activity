@@ -9,6 +9,7 @@ import com.oywb.weixin.activities.entity.ActivityEntity;
 import com.oywb.weixin.activities.entity.ActivityEntityNew;
 import com.oywb.weixin.activities.entity.InformationDetailEntity;
 import com.oywb.weixin.activities.service.ActivityService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/activity")
 @PreAuthorize("@roleEvaluator.isRegistered(authentication)")
+@Slf4j
 public class ActivityController {
     private final ActivityService activityService;
 
@@ -31,6 +33,7 @@ public class ActivityController {
     //tested
     @PostMapping()
     public void createActivity(@ModelAttribute ActivityRequestDto activityRequestDto, @RequestParam(value = "files", required = false) MultipartFile[] files, Authentication authentication) throws Exception {
+        log.debug("create activity {}", activityRequestDto);
         activityService.createActivity(activityRequestDto, Arrays.asList(files), authentication.getName());
     }
 

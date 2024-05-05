@@ -22,7 +22,8 @@ import java.sql.Timestamp;
             @FieldResult(name = "reaper", column = "reaper"),
             @FieldResult(name = "start", column = "start"),
             @FieldResult(name = "end", column = "end"),
-            @FieldResult(name = "type", column = "type")
+            @FieldResult(name = "type", column = "type"),
+            @FieldResult(name = "isAddToPlan", column = "is_added_to_planfrom")
     })
 )
 public class ActivitySimpleEntity {
@@ -50,6 +51,8 @@ public class ActivitySimpleEntity {
     private Timestamp end;
 
     private String type;
+
+    private boolean isAddToPlan;
 
     public void setId(Long id) {
         this.id = id;

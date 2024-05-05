@@ -110,11 +110,38 @@ public class ActivityServiceImpl implements ActivityService {
         long userId = userService.getUserId(openId);
         List<ActivitySimpleDto> activitySimpleDtoS = new ArrayList<>();
 
-        String sql = "SELECT a.id as id , a.location as location, a.title as title, a.introduction as introduction, a.recommand as recommand, a.reaper as reaper, a.count as count, a.start as start , a.end as end, a.type as type, u.id AS user_id, u.profile as profile " +
-                " FROM information_detail ind " +
-                " RIGHT JOIN activity a ON a.id = ind.activity_id " +
-                " LEFT JOIN user u ON ind.user_id = u.id " +
-                " WHERE a.school = :school " +
+        //String sql = "SELECT a.id as id , a.location as location, a.title as title, a.introduction as introduction, a.recommand as recommand, a.reaper as reaper, a.count as count, a.start as start , a.end as end, a.type as type, u.id AS user_id, u.profile as profile " +
+        //        " FROM information_detail ind " +
+        //        " RIGHT JOIN activity a ON a.id = ind.activity_id " +
+        //        " LEFT JOIN user u ON ind.user_id = u.id " +
+        //        " WHERE a.school = :school " +
+        //        "  AND a.campus = :campus " +
+        //        "  AND a.start BETWEEN :start AND :end "+
+        //        "  AND a.verified = :verified ";
+
+        String sql = "SELECT " +
+                "    a.id AS id, " +
+                "    a.location AS location, " +
+                "    a.title AS title, " +
+                "    a.introduction AS introduction, " +
+                "    a.recommand AS recommand, " +
+                "    a.reaper AS reaper, " +
+                "    a.count AS count, " +
+                "    a.start AS start, " +
+                "    a.end AS end, " +
+                "    a.type AS type, " +
+                "    u.id AS user_id, " +
+                "    u.profile AS profile, " +
+                "    CASE WHEN pp.activity_id IS NOT NULL THEN true ELSE false END AS is_added_to_planfrom" +
+                "FROM " +
+                "    activity a " +
+                "LEFT JOIN " +
+                "    information_detail ind ON a.id = ind.activity_id" +
+                "LEFT JOIN " +
+                "    user u ON ind.user_id = u.id" +
+                "LEFT JOIN " +
+                "    personal_plan pp ON pp.activity_id = a.id AND pp.user_id = :userId" +
+                "  WHERE a.school = :school " +
                 "  AND a.campus = :campus " +
                 "  AND a.start BETWEEN :start AND :end "+
                 "  AND a.verified = :verified ";
@@ -126,9 +153,9 @@ public class ActivityServiceImpl implements ActivityService {
 
         Query query = entityManager.createNativeQuery(sql, "ActivitySimpleEntity");
 
-        if (flag == 1) {
-            query.setParameter("userId", userId);
-        }
+
+        query.setParameter("userId", userId);
+
 
         query.setParameter("school", school);
         query.setParameter("campus", campus);
@@ -182,7 +209,9 @@ public class ActivityServiceImpl implements ActivityService {
             activityResponseDto = activityEntity.toActivityResponseDto();
 
             InformationEntity informationEntity = informationRepository.findByActivityId(activityEntity.getId());
-            activityResponseDto.setInformationRequestDto(informationEntity.toInformationRequestDto());
+            if (informationEntity != null) {
+                activityResponseDto.setInformationRequestDto(informationEntity.toInformationRequestDto());
+            }
 
             Long passCount = informationDetailRepository.countPassedByActivityId(activityEntity.getId());
 

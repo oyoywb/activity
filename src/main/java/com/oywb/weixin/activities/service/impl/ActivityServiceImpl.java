@@ -133,13 +133,13 @@ public class ActivityServiceImpl implements ActivityService {
                 "    u.id AS user_id, " +
                 "    u.profile AS profile, " +
                 "    CASE WHEN pp.activity_id IS NOT NULL THEN true ELSE false END AS is_added_to_planfrom" +
-                "FROM " +
+                " FROM " +
                 "    activity a " +
-                "LEFT JOIN " +
+                " LEFT JOIN " +
                 "    information_detail ind ON a.id = ind.activity_id" +
-                "LEFT JOIN " +
+                " LEFT JOIN " +
                 "    user u ON ind.user_id = u.id" +
-                "LEFT JOIN " +
+                " LEFT JOIN " +
                 "    personal_plan pp ON pp.activity_id = a.id AND pp.user_id = :userId" +
                 "  WHERE a.school = :school " +
                 "  AND a.campus = :campus " +

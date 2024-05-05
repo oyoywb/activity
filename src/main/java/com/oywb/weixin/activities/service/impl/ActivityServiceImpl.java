@@ -182,6 +182,7 @@ public class ActivityServiceImpl implements ActivityService {
             activitySimpleDto.setEnd(v.get(0).getEnd());
             activitySimpleDto.setUserSimpleInfos(userSimpleInfos);
             activitySimpleDto.setType(v.get(0).getType());
+            activitySimpleDto.setIsAddToPlan(v.get(0).isAddToPlan() ? 1 : 0);
 
             v.forEach(v1 -> {
                 if (v1.getUserId() != null && v1.getProfile()!= null) {

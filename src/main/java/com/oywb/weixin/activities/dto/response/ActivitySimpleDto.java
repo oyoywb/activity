@@ -21,6 +21,8 @@ public class ActivitySimpleDto {
     private Timestamp end;
     private String type;
 
+    private int isAddToPlan;
+
     private List<UserSimpleInfo> userSimpleInfos;
 
     @Data

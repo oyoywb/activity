@@ -1,46 +1,26 @@
-WITH RECURSIVE comment_tree AS ( 
-                  SELECT 
-                    id, 
-                    user_id, 
-                    content, 
-                    parent_id, 
-                    created_at, 
-                    updated_at, 
-                    is_deleted, 
-                    deleted_at, 
-                    is_approved, 
-                    dy_id, 
-                    1 AS level 
-                  FROM dynamics_comment 
-                  WHERE parent_id IS NULL AND is_deleted = FALSE AND is_approved = TRUE 
-                  UNION ALL 
-                  SELECT 
-                    dynamics_comment.id, 
-                    dynamics_comment.user_id, 
-                    dynamics_comment.content, 
-                    dynamics_comment.parent_id, 
-                    dynamics_comment.created_at, 
-                    dynamics_comment.updated_at, 
-                    dynamics_comment.is_deleted, 
-                    dynamics_comment.deleted_at, 
-                    dynamics_comment.is_approved, 
-                    dynamics_comment.dy_id, 
-                    comment_tree.level  1 AS level 
-                  FROM dynamics_comment 
-                  JOIN comment_tree ON dynamics_comment.parent_id = comment_tree.id 
-                  WHERE dynamics_comment.is_deleted = FALSE AND dynamics_comment.is_approved = TRUE 
-                ) 
-                 SELECT 
-                  id, 
-                  user_id, 
-                  content, 
-                  parent_id, 
-                  created_at, 
-                  updated_at, 
-                  is_deleted, 
-                  deleted_at, 
-                  is_approved, 
-                  dy_id, 
-                  level 
-                FROM comment_tree where dy_id=:dyId 
-                 ORDER BY level, created_at
+SELECT  
+                    a.id AS id,  
+                    a.location AS location,  
+                    a.title AS title,  
+                    a.introduction AS introduction,  
+                    a.recommand AS recommand,  
+                    a.reaper AS reaper,  
+                    a.count AS count,  
+                    a.start AS start,  
+                    a.end AS end,  
+                    a.type AS type,  
+                    u.id AS user_id,  
+                    u.profile AS profile,  
+                    CASE WHEN pp.activity_id IS NOT NULL THEN true ELSE false END AS is_added_to_planfrom 
+                FROM  
+                    activity a  
+                LEFT JOIN  
+                    information_detail ind ON a.id = ind.activity_id 
+                LEFT JOIN  
+                    user u ON ind.user_id = u.id 
+                LEFT JOIN  
+                    personal_plan pp ON pp.activity_id = a.id AND pp.user_id = :userId 
+                W a.school = :school
+                  AND a.campus = :campus  
+                  AND a.start BETWEEN :start AND :end 
+                  AND a.verified = :verified 

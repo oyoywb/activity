@@ -3,9 +3,12 @@ package com.oywb.weixin.activities.dto.response;
 import com.oywb.weixin.activities.entity.ShopCommentEntity;
 import lombok.Data;
 
-@Data
-public class ShopCommentResDto {
-    private ShopCommentEntity shopCommentEntity;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "shop_comment", schema = "oywb_test", catalog = "")
+public class ShopCommentResDto extends ShopCommentEntity {
 
     private String profile;
 

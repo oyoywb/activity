@@ -67,7 +67,7 @@ public class PlanServiceImpl implements PlanService {
                 }
             }
         });
-
+        log.debug("test {}", planResponseDtoList);
         return planResponseDtoList;
     }
 

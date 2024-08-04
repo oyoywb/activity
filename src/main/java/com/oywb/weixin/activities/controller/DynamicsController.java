@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-    @RequestMapping("/dynamics")
+@RequestMapping("/dynamics")
 public class DynamicsController {
 
     private final DynamicsService dynamicsService;

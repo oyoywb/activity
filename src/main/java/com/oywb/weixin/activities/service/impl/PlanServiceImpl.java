@@ -60,7 +60,13 @@ public class PlanServiceImpl implements PlanService {
                     if ( next != null && next.getTime() - now.getTime() < THREE_DAY_AFTER) {
                         PlanResponseDto planResponseDto = personalPlanEntity.toPlanResponseDto();
                         planResponseDto.setTs(new Timestamp(next.getTime()));
+                        Date nextAndNext = cron.getNextValidTimeAfter(next);
+
+                        planResponseDto.setRepeatable(nextAndNext != null);
+
                         planResponseDtoList.add(planResponseDto);
+
+
                     }
                 } catch (Exception e) {
                     log.error("get plan fail", e);

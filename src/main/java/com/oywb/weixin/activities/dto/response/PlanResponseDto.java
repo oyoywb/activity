@@ -28,4 +28,6 @@ public class PlanResponseDto {
     private Timestamp ts;
 
     private long activityId;
+
+    private boolean repeatable;
 }

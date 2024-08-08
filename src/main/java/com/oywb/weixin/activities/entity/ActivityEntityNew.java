@@ -3,9 +3,10 @@ package com.oywb.weixin.activities.entity;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Data
-public class ActivityEntityNew {
-    private ActivityEntity activity;
+@Entity
+@Table(name = "activity", schema = "oywb_test", catalog = "")
+public class ActivityEntityNew extends ActivityEntity {
     private boolean isAddedToPlan;
 }

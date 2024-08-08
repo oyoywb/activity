@@ -23,7 +23,7 @@ import java.sql.Timestamp;
             @FieldResult(name = "start", column = "start"),
             @FieldResult(name = "end", column = "end"),
             @FieldResult(name = "type", column = "type"),
-            @FieldResult(name = "isAddToPlan", column = "is_added_to_planfrom")
+            @FieldResult(name = "isAddToPlan", column = "is_added_to_plan")
     })
 )
 public class ActivitySimpleEntity {

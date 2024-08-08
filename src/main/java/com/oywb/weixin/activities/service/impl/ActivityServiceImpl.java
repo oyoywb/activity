@@ -233,17 +233,27 @@ public class ActivityServiceImpl implements ActivityService {
 
             if (activityEntity.getStart().after(new Timestamp(System.currentTimeMillis()))) {
                 long userId = userService.getUserId(openId);
-                informationDetailRequestDto.setUserId(userId);
+
+                if (informationDetailRepository.getInformationDetailEntitiesByActivityIdAndUserId(informationDetailRequestDto.getActivityId(), userId) != null) {
+                    return CommonResponse.builder()
+                            .code(HttpStatus.OK.value())
+                            .message("请勿重复报名")
+                            .build();
+
+                } else {
+                    informationDetailRequestDto.setUserId(userId);
 
 
-                InformationDetailEntity informationDetailEntity = informationDetailRequestDto.toInformationDetailEntity();
-                informationDetailEntity.setCustomQuestion(objectMapper.writeValueAsString(informationDetailRequestDto.getCustom_question()));
+                    InformationDetailEntity informationDetailEntity = informationDetailRequestDto.toInformationDetailEntity();
+                    informationDetailEntity.setCustomQuestion(objectMapper.writeValueAsString(informationDetailRequestDto.getCustom_question()));
 
-                informationDetailRepository.save(informationDetailEntity);
-                return CommonResponse.builder()
-                        .code(HttpStatus.OK.value())
-                        .message("报名提交")
-                        .build();
+                    informationDetailRepository.save(informationDetailEntity);
+                    return CommonResponse.builder()
+                            .code(HttpStatus.OK.value())
+                            .message("报名提交")
+                            .build();
+                }
+
             } else {
                 return CommonResponse.builder()
                         .code(HttpStatus.BAD_REQUEST.value())

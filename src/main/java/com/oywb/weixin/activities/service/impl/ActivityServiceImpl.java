@@ -203,10 +203,9 @@ public class ActivityServiceImpl implements ActivityService {
     public ActivityResponseDto getActivityDetail(long id) throws Exception {
         ActivityResponseDto activityResponseDto = new ActivityResponseDto();
 
-        Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(id);
+        ActivityEntity activityEntity = activityRepository.getSelfActivityById(id);
 
-        if (activityEntityOpt.isPresent()) {
-            ActivityEntity activityEntity = activityEntityOpt.get();
+        if (activityEntity != null) {
             activityResponseDto = activityEntity.toActivityResponseDto();
 
             InformationEntity informationEntity = informationRepository.findByActivityId(activityEntity.getId());

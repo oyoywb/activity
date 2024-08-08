@@ -2,6 +2,8 @@ package com.oywb.weixin.activities.entity;
 
 import com.oywb.weixin.activities.dto.request.ActivityRequestDto;
 import com.oywb.weixin.activities.dto.response.ActivityResponseDto;
+import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,7 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "activity")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DynamicInsert
 @DynamicUpdate
 public class ActivityEntity {
@@ -76,152 +78,76 @@ public class ActivityEntity {
     @Column(name = "picture")
     private String picture;
 
-    public String getPicture() {
-        return picture;
-    }
-
     public void setPicture(String picture) {
         this.picture = picture;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public Timestamp getStart() {
-        return start;
-    }
-
     public void setStart(Timestamp start) {
         this.start = start;
-    }
-
-    public Timestamp getEnd() {
-        return end;
     }
 
     public void setEnd(Timestamp end) {
         this.end = end;
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public String getLocation() {
-        return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
     }
 
-    public String getOrganizer() {
-        return organizer;
-    }
-
     public void setOrganizer(String organizer) {
         this.organizer = organizer;
-    }
-
-    public String getIntroduction() {
-        return introduction;
     }
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
     }
 
-    public String getRule() {
-        return rule;
-    }
-
     public void setRule(String rule) {
         this.rule = rule;
-    }
-
-    public String getForm() {
-        return form;
     }
 
     public void setForm(String form) {
         this.form = form;
     }
 
-    public Byte getCollectOrNot() {
-        return collectOrNot;
-    }
-
     public void setCollectOrNot(Byte collectOrNot) {
         this.collectOrNot = collectOrNot;
-    }
-
-    public String getRecommand() {
-        return recommand;
     }
 
     public void setRecommand(String recommand) {
         this.recommand = recommand;
     }
 
-    public String getReaper() {
-        return reaper;
-    }
-
     public void setReaper(String reaper) {
         this.reaper = reaper;
-    }
-
-    public Byte getVerified() {
-        return verified;
     }
 
     public void setVerified(Byte verified) {
         this.verified = verified;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public String getSchool() {
-        return school;
-    }
-
     public void setSchool(String school) {
         this.school = school;
-    }
-
-    public String getCampus() {
-        return campus;
     }
 
     public void setCampus(String campus) {

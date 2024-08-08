@@ -9,10 +9,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "activity", schema = "oywb_test", catalog = "")
-@Data
 public class ActivityEntityNew extends ActivityEntity {
-
-    @Basic
-    @Column(name = "is_added_to_plan")
     private boolean isAddedToPlan;
 }

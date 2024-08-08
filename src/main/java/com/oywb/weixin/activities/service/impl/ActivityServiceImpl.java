@@ -132,7 +132,7 @@ public class ActivityServiceImpl implements ActivityService {
                 "    a.type AS type, " +
                 "    u.id AS user_id, " +
                 "    u.profile AS profile, " +
-                "    CASE WHEN pp.activity_id IS NOT NULL THEN true ELSE false END AS is_added_to_planfrom" +
+                "    CASE WHEN pp.activity_id IS NOT NULL THEN true ELSE false END AS is_added_to_plan" +
                 " FROM " +
                 "    activity a " +
                 " LEFT JOIN " +

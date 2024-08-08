@@ -16,7 +16,7 @@ public interface InformationDetailRepository extends JpaRepository<InformationDe
     void deleteByUserIdActivityId(long activityId, long openId);
 
     @Query(value = "select * from information_detail where activity_id = ?1 and user_id =?2", nativeQuery = true)
-    InformationDetailEntity getInformationDetailEntitiesByActivityIdAndUserId(long activityId, long userId);
+    List<InformationDetailEntity> getInformationDetailEntitiesByActivityIdAndUserId(long activityId, long userId);
 
     @Query(value = "select * from information_detail where activity_id =?1 and passed = ?2", nativeQuery = true)
     List<InformationDetailEntity> getInformationDetailEntitiesByActivityIdAndPassed(long activityId, byte passed);

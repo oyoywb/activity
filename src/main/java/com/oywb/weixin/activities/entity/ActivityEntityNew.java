@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "activity", schema = "oywb_test", catalog = "")
+@Data
 public class ActivityEntityNew extends ActivityEntity {
 
     @Basic

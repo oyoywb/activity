@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "activity")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DynamicInsert
 @DynamicUpdate
 public class ActivityEntity {

@@ -343,7 +343,13 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<ActivityEntityNew> getSelfSignActivity(String openId) {
         long userId = userService.getUserId(openId);
-        List<ActivityEntityNew> activityEntities = activityRepository.getSelfSignActivity(userId);
+
+        String sql = "select a.* , (SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END FROM personal_plan pp WHERE pp.activity_id = a.id AND pp.user_id = :userId) AS is_added_to_plan from activity a,information_detail ifmd where a.id = ifmd.activity_id and ifmd.user_id = :userId";
+        Query query = entityManager.createNativeQuery(sql, "ActivityEntityNew");
+
+        query.setParameter("userId", userId);
+
+        List<ActivityEntityNew> activityEntities = query.getResultList();
 
         return activityEntities;
     }

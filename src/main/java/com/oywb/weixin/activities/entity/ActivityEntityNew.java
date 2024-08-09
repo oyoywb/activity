@@ -21,7 +21,7 @@ import java.sql.Timestamp;
                         @FieldResult(name = "start", column = "start"),
                         @FieldResult(name = "end", column = "end"),
                         @FieldResult(name = "type", column = "type"),
-                        @FieldResult(name = "isAddToPlan", column = "is_added_to_plan"),
+                        @FieldResult(name = "isAddedToPlan", column = "is_added_to_plan"),
                         @FieldResult(name = "organizer", column = "organizer"),
                         @FieldResult(name = "rule", column = "rule"),
                         @FieldResult(name = "form", column = "form"),

@@ -70,13 +70,13 @@ public class DynamicsServiceImpl implements DynamicsService {
 
         StringBuffer countSql = new StringBuffer("select count(*) from dynamics dy where 1=1");
 
-        StringBuffer sql = new StringBuffer("select dy.*,u.name, u.profile,u.sex,(select count(*) from dynamics_comment dc where dc.dy_id = dy.id) as count, COALESCE(lk.likes, 0) as is_likes , (select count(*) from likes where lk.dy_id = dy.id) as likes from dynamics dy LEFT " +
-                "JOIN likes lk ON dy.id = lk.dy_id LEFT JOIN user u ON dy.user_id = u.id where dy.pass = 1 ");
+        StringBuffer sql = new StringBuffer("select dy.*,u.name, u.profile,u.sex,(select count(*) from dynamics_comment dc where dc.dy_id = dy.id) as count, COALESCE((select lk.likes from likes lk where lk.user_id = :currentUserId and lk.dy_id = dy.id), 0) as is_likes , (select count(*) from likes lk where lk.dy_id = dy.id) as likes from dynamics dy LEFT " +
+                " JOIN user u ON dy.user_id = u.id where dy.pass = 1 ");
         if (personal) {
             sql.append(" and dy.user_id = :userId");
             countSql.append(" and dy.user_id = :userId");
         }
-        if (tag != null) {
+        if (tag != null && !tag.isEmpty()) {
             sql.append(" and dy.keyword like '%" + tag + "%'");
             countSql.append(" and dy.keyword like '%" + tag + "%'");
         }
@@ -84,6 +84,7 @@ public class DynamicsServiceImpl implements DynamicsService {
 
         Query query = entityManager.createNativeQuery(sql.toString());
         Query countQuery = entityManager.createNativeQuery(countSql.toString());
+        query.setParameter("currentUserId", userId);
         if (personal) {
             query.setParameter("userId", userId);
             countQuery.setParameter("userId", userId);

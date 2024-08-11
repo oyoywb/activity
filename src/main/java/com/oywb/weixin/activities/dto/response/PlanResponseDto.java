@@ -29,5 +29,5 @@ public class PlanResponseDto {
 
     private long activityId;
 
-    private boolean repeatable;
+    private String repeatable;
 }

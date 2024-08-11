@@ -62,7 +62,7 @@ public class PlanServiceImpl implements PlanService {
                         planResponseDto.setTs(new Timestamp(next.getTime()));
                         Date nextAndNext = cron.getNextValidTimeAfter(next);
 
-                        planResponseDto.setRepeatable(nextAndNext != null);
+                        planResponseDto.setRepeatable(getCronFrequency(cron));
 
                         planResponseDtoList.add(planResponseDto);
 
@@ -75,6 +75,32 @@ public class PlanServiceImpl implements PlanService {
         });
         log.debug("test {}", planResponseDtoList);
         return planResponseDtoList;
+    }
+
+    private String getCronFrequency(CronExpression expression) {
+        String[] parts = expression.getCronExpression().split(" ");
+        if (parts.length < 6) {
+            return "Invalid Cron Expression";
+        }
+
+        String dayOfMonth = parts[3];
+        String month = parts[4];
+        String dayOfWeek = parts[5];
+        String year = parts.length > 6 ? parts[6] : "*"; // year is optional
+
+        if ("*".equals(dayOfMonth) && "*".equals(month) && "?".equals(dayOfWeek)) {
+            return "Daily";
+        }
+
+        if ("?".equals(dayOfMonth) && "*".equals(month) && ! "?".equals(dayOfWeek)) {
+            return "Weekly";
+        }
+
+        if (!"*".equals(dayOfMonth) && "*".equals(month) && "?".equals(dayOfWeek)) {
+            return "Monthly";
+        }
+
+        return "Custom";
     }
 
     @Override

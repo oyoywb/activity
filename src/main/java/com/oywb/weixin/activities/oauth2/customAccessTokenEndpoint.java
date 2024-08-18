@@ -91,7 +91,8 @@ public class customAccessTokenEndpoint {
     }
 
     private SessionDto getSession(Object... uriVariables) {
-        ResponseEntity<SessionDto> sessionResponseEntity = this.restTemplate.getForEntity(weChatProperties.getMiniProgram().getCode2SessionApi(), SessionDto.class, uriVariables);
+        ResponseEntity<SessionDto>  sessionResponseEntity= this.restTemplate.getForEntity(weChatProperties.getMiniProgram().getCode2SessionApi(), SessionDto.class, uriVariables);
+        log.warn("{}", sessionResponseEntity);
         userService.checkAndCreate(sessionResponseEntity.getBody().getOpenid());
         return Optional.ofNullable(sessionResponseEntity.getBody()).orElseThrow(() -> new RuntimeException("获取openid失败"));
     }

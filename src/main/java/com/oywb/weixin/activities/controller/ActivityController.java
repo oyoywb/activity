@@ -86,7 +86,7 @@ public class ActivityController {
     //tested
     @PostMapping("/plan")
     public void addActivityToPlan(long activityId, Authentication authentication) throws Exception {
-        log.debug("{}, {}", activityId, authentication.getName());
+        log.warn("{}, {}", activityId, authentication.getName());
         activityService.addToPlan(activityId, authentication.getName());
     }
 

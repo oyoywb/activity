@@ -272,6 +272,7 @@ public class ActivityServiceImpl implements ActivityService {
     public void addToPlan(long activityId, String openId) throws Exception {
         long userId = userService.getUserId(openId);
         ActivityEntity activityEntity = activityRepository.getSignActivityById(activityId);
+        log.debug("{}", activityEntity);
         if (activityEntity != null) {
 
             PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity();

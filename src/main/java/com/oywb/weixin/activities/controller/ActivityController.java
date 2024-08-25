@@ -80,6 +80,7 @@ public class ActivityController {
     //報名
     @PostMapping("/signup")
     public CommonResponse signup(@RequestBody InformationDetailRequestDto informationDetailRequestDto, Authentication authentication) throws Exception {
+        log.warn("{}", informationDetailRequestDto);
         return activityService.signup(informationDetailRequestDto, authentication.getName());
     }
 

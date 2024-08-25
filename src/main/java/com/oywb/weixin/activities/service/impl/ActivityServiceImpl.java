@@ -235,7 +235,7 @@ public class ActivityServiceImpl implements ActivityService {
                 log.warn("2");
                 long userId = userService.getUserId(openId);
 
-                if (informationDetailRepository.getInformationDetailEntitiesByActivityIdAndUserId(informationDetailRequestDto.getActivityId(), userId) != null) {
+                if (!informationDetailRepository.getInformationDetailEntitiesByActivityIdAndUserId(informationDetailRequestDto.getActivityId(), userId).isEmpty()) {
                     log.warn("4");
                     return CommonResponse.builder()
                             .code(HttpStatus.OK.value())

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
@@ -235,9 +236,15 @@ public class ShopServiceImpl implements ShopService {
         Query query = entityManager.createNativeQuery(sql.toString());
         Query countQuery = entityManager.createNativeQuery(countSql.toString());
         query.setFirstResult(pageable.getPageSize() * pageable.getPageNumber());
-        query.setMaxResults(pageable.getPageSize());
+        Query query1 = query.setMaxResults(pageable.getPageSize());
 
-        long total = ((Number) countQuery.getSingleResult()).longValue();
+        long total = 0;
+        try {
+            total = ((Number) countQuery.getSingleResult()).longValue();
+        } catch (NoResultException e) {
+            log.debug("no result return 0");
+        }
+
 
         List<ShopSimpleDto> simpleDtoS = query.getResultList();
 

@@ -18,6 +18,7 @@ import com.oywb.weixin.activities.entity.ShopCommentEntity;
 import com.oywb.weixin.activities.entity.ShopEntity;
 import com.oywb.weixin.activities.entity.UserEntity;
 import com.oywb.weixin.activities.service.ShopService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +37,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ShopServiceImpl implements ShopService {
     private final ShopRepository shopRepository;
 
@@ -189,7 +191,7 @@ public class ShopServiceImpl implements ShopService {
         long userId = userRepository.getUserIdByOpenId(openId);
 
         StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location, shop.picture, shop.start, shop.end FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
-        StringBuffer countSql = new StringBuffer("SELECT count(shop) FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
+        StringBuffer countSql = new StringBuffer("SELECT count(*) FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
 
 
         //if flag == 1 ,获取用户自己创建的店铺
@@ -227,6 +229,7 @@ public class ShopServiceImpl implements ShopService {
 
         sql.append(" GROUP BY shop.id");
         countSql.append(" GROUP BY shop.id");
+        log.warn("{}", countSql);
 
 
         Query query = entityManager.createNativeQuery(sql.toString());

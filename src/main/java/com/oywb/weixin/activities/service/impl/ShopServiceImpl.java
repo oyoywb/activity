@@ -233,7 +233,7 @@ public class ShopServiceImpl implements ShopService {
         Query query = entityManager.createNativeQuery(sql.toString());
         Query countQuery = entityManager.createNativeQuery(countSql.toString());
         query.setFirstResult(pageable.getPageSize() * pageable.getPageNumber());
-        Query query1 = query.setMaxResults(pageable.getPageSize());
+        query.setMaxResults(pageable.getPageSize());
 
         long total = 0;
         try {

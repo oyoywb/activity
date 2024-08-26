@@ -229,9 +229,6 @@ public class ShopServiceImpl implements ShopService {
         countSql.append(" and shop.pass = ").append(pass);
 
         sql.append(" GROUP BY shop.id");
-        countSql.append(" GROUP BY shop.id");
-        log.warn("{}", countSql);
-
 
         Query query = entityManager.createNativeQuery(sql.toString());
         Query countQuery = entityManager.createNativeQuery(countSql.toString());

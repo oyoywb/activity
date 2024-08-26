@@ -80,14 +80,14 @@ public class ActivityController {
     //報名
     @PostMapping("/signup")
     public CommonResponse signup(@RequestBody InformationDetailRequestDto informationDetailRequestDto, Authentication authentication) throws Exception {
-        log.warn("{}", informationDetailRequestDto);
+        log.debug("{}", informationDetailRequestDto);
         return activityService.signup(informationDetailRequestDto, authentication.getName());
     }
 
     //tested
     @PostMapping("/plan")
     public void addActivityToPlan(long activityId, Authentication authentication) throws Exception {
-        log.warn("{}, {}", activityId, authentication.getName());
+        log.debug("{}, {}", activityId, authentication.getName());
         activityService.addToPlan(activityId, authentication.getName());
     }
 

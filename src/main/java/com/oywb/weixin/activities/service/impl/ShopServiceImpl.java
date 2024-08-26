@@ -189,42 +189,56 @@ public class ShopServiceImpl implements ShopService {
         long userId = userRepository.getUserIdByOpenId(openId);
 
         StringBuffer sql = new StringBuffer("SELECT shop.id, shop.user_id, shop.school, shop.zone , shop.name, AVG(shop_comment.score) AS score, shop.type, shop.conditions, shop.status, shop.location, shop.picture, shop.start, shop.end FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
+        StringBuffer countSql = new StringBuffer("SELECT count(*) FROM shop LEFT JOIN shop_comment ON shop.id = shop_comment.shop_id WHERE 1=1");
+
 
         //if flag == 1 ,获取用户自己创建的店铺
         if (flag == 1) {
             sql.append(" and shop.user_id = ").append(userId);
+            countSql.append(" and shop.user_id = ").append(userId);
         }
 
         Optional.ofNullable(school)
                 .ifPresent(value -> {
                     sql.append(" and shop.school = '").append(value).append("'");
+                    countSql.append(" and shop.school = '").append(value).append("'");
                 });
 
         Optional.ofNullable(zone)
                 .ifPresent(value -> {
                     sql.append(" and shop.zone = '").append(value).append("'");
+                    countSql.append(" and shop.zone = '").append(value).append("'");
                 });
 
         Optional.ofNullable(type)
                 .ifPresent(value -> {
                     sql.append(" and shop.type = '").append(value).append("'");
+                    countSql.append(" and shop.type = '").append(value).append("'");
                 });
 
         Optional.ofNullable(name)
                 .ifPresent(value -> {
                     sql.append(" and shop.name like '%").append(name).append("%'");
+                    countSql.append(" and shop.name like '%").append(name).append("%'");
                 });
 
         sql.append(" and shop.pass = ").append(pass);
+        countSql.append(" and shop.pass = ").append(pass);
 
         sql.append(" GROUP BY shop.id");
+        countSql.append(" GROUP BY shop.id");
+
+
         Query query = entityManager.createNativeQuery(sql.toString());
+        Query countQuery = entityManager.createNativeQuery(countSql.toString());
         query.setFirstResult(pageable.getPageSize() * pageable.getPageNumber());
         query.setMaxResults(pageable.getPageSize());
 
+        long total = ((Number) countQuery.getSingleResult()).longValue();
+
         List<ShopSimpleDto> simpleDtoS = query.getResultList();
 
-        return new PageImpl<>(simpleDtoS, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), simpleDtoS.size());
+        return new PageImpl<>(simpleDtoS, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), total);
 
     }
 

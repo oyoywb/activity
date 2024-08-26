@@ -228,22 +228,18 @@ public class ActivityServiceImpl implements ActivityService {
         long activityId = informationDetailRequestDto.getActivityId();
         Optional<ActivityEntity> activityEntityOpt = activityRepository.findById(activityId);
         if (activityEntityOpt.isPresent()) {
-            log.warn("1");
             ActivityEntity activityEntity = activityEntityOpt.get();
 
             if (activityEntity.getStart().after(new Timestamp(System.currentTimeMillis()))) {
-                log.warn("2");
                 long userId = userService.getUserId(openId);
 
                 if (!informationDetailRepository.getInformationDetailEntitiesByActivityIdAndUserId(informationDetailRequestDto.getActivityId(), userId).isEmpty()) {
-                    log.warn("4");
                     return CommonResponse.builder()
                             .code(HttpStatus.OK.value())
                             .message("请勿重复报名")
                             .build();
 
                 } else {
-                    log.warn("3");
                     informationDetailRequestDto.setUserId(userId);
 
 
@@ -276,7 +272,7 @@ public class ActivityServiceImpl implements ActivityService {
     public void addToPlan(long activityId, String openId) throws Exception {
         long userId = userService.getUserId(openId);
         ActivityEntity activityEntity = activityRepository.getSignActivityById(activityId);
-        log.warn("{}", activityEntity);
+        log.debug("{}", activityEntity);
         if (activityEntity != null) {
 
             PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity();

@@ -11,6 +11,7 @@ import com.oywb.weixin.activities.dto.request.DynamicsRequestDto;
 import com.oywb.weixin.activities.entity.*;
 import com.oywb.weixin.activities.service.DynamicsService;
 import com.oywb.weixin.activities.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class DynamicsServiceImpl implements DynamicsService {
     private final DynamicsRepository dynamicsRepository;
     private final static String DY_BUCKET = "dynamics";
@@ -66,6 +68,7 @@ public class DynamicsServiceImpl implements DynamicsService {
 
     @Override
     public Page<DynamicsSimpleEntity> getDynamics(Pageable pageable, String tag, String openId, boolean personal) {
+        log.warn("debug {}", tag);
         long userId = userService.getUserId(openId);
 
         StringBuffer countSql = new StringBuffer("select count(*) from dynamics dy where 1=1");
@@ -81,6 +84,7 @@ public class DynamicsServiceImpl implements DynamicsService {
             countSql.append(" and dy.keyword like '%" + tag + "%'");
         }
         sql.append(" ORDER BY dy.create_ts DESC");
+        log.warn("debug {}", sql);
 
         Query query = entityManager.createNativeQuery(sql.toString());
         Query countQuery = entityManager.createNativeQuery(countSql.toString());

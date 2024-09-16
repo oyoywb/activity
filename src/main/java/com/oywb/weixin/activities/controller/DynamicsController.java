@@ -83,7 +83,7 @@ public class DynamicsController {
         dynamicsService.createComment(authentication.getName(), dyCommentReqDto);
     }
 
-    @PreAuthorize("@roleEvaluator.dyCommentBelongToUser(authentication, #id, #dyCommentId)")
+    @PreAuthorize("@roleEvaluator.dyCommentBelongToUser(authentication, #dyId, #dyCommentId)")
     @DeleteMapping("/comment")
     public void deleteComment(Authentication authentication, @RequestParam(value = "dyId") long dyId, @RequestParam(value = "dyCommentId") long dyCommentId) {
         dynamicsService.deleteDynamicsComment(dyCommentId);

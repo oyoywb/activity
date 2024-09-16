@@ -196,6 +196,7 @@ public class DynamicsServiceImpl implements DynamicsService {
 
     @Override
     public void deleteDynamicsComment(long dyCommentId) {
+        log.warn(" debug 001 {}", dyCommentId);
         dynamicsCommentRepository.deleteById(dyCommentId);
     }
 

@@ -37,7 +37,7 @@ public class DynamicsController {
 
     //tested
     @GetMapping
-    public Page<DynamicsSimpleEntity> getDynamics(Pageable pageable, @RequestParam(required = false) String tag, Authentication authentication, @RequestParam(required = false) boolean personal) {
+    public Page<DynamicsSimpleEntity> getDynamics(Pageable pageable, @RequestParam(required = false, value = "tag") String tag, Authentication authentication, @RequestParam(required = false) boolean personal) {
         return dynamicsService.getDynamics(pageable, tag, authentication.getName(), personal);
     }
     //tested
